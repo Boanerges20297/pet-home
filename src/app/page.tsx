@@ -23,7 +23,7 @@ export default function Home() {
         </div>
         <h1 className="font-headline text-5xl md:text-7xl text-accent">pequenos grandes filhotes</h1>
         <p className="max-w-md font-body text-lg text-muted-foreground">
-          Find your new best friend. Open your heart and home to a pet in need.
+          Encontre o seu novo melhor amigo. Abra o seu coração e a sua casa a um animal de estimação necessitado.
         </p>
       </div>
       <Link href="/home" className="absolute bottom-10 animate-bounce" aria-label="Go to home page">
