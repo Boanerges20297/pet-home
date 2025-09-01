@@ -62,7 +62,7 @@ export default function AudioPlayer() {
       size="icon"
       onClick={toggleMute}
       className="absolute top-4 right-4 z-10 text-accent"
-      aria-label={isMuted ? 'Unmute music' : 'Mute music'}
+      aria-label={isMuted ? 'Ativar som' : 'Desativar som'}
     >
       {isMuted ? <VolumeX className="h-6 w-6" /> : <Volume2 className="h-6 w-6" />}
     </Button>
