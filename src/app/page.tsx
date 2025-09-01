@@ -11,7 +11,7 @@ export default function Home() {
         <div className="relative flex h-64 w-64 items-center justify-center rounded-full bg-primary/20 shadow-lg md:h-80 md:w-80">
           <div className="h-60 w-60 overflow-hidden rounded-full shadow-inner md:h-72 md:w-72">
             <Image
-              src="https://picsum.photos/400/400"
+              src="https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjYWNob3Jyb3xlbnwwfHx8fDE3NTY3MzY4MDh8MA&ixlib=rb-4.1.0&q=80&w=1080"
               alt="A cute dog available for adoption"
               width={400}
               height={400}
