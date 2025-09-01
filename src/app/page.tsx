@@ -21,7 +21,7 @@ export default function Home() {
             />
           </div>
         </div>
-        <h1 className="font-headline text-5xl md:text-7xl text-accent">PetHome</h1>
+        <h1 className="font-headline text-5xl md:text-7xl text-accent">pequenos grandes filhotes</h1>
         <p className="max-w-md font-body text-lg text-muted-foreground">
           Find your new best friend. Open your heart and home to a pet in need.
         </p>
