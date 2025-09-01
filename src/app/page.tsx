@@ -21,7 +21,7 @@ export default function Home() {
             />
           </div>
         </div>
-        <h1 className="font-headline text-5xl md:text-7xl text-accent">pequenos grandes filhotes</h1>
+        <h1 className="font-headline text-5xl md:text-7xl text-accent">Pequenos Grandes Filhotes</h1>
         <p className="max-w-md font-body text-lg text-muted-foreground">
           Encontre o seu novo melhor amigo. Abra o seu coração e a sua casa a um animal de estimação necessitado.
         </p>
