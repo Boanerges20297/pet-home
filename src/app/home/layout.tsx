@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
-import { PawPrint, Search, MapPin, Video, FileText } from 'lucide-react';
+import { PawPrint, Search, ShoppingCart, Gamepad2, PackagePlus } from 'lucide-react';
 import {
   SidebarProvider,
   Sidebar,
@@ -22,41 +22,41 @@ export default function HomeLayout({ children }: { children: ReactNode }) {
           <div className="flex items-center gap-2 p-2">
             <Link href="/home" className="flex items-center gap-2">
               <PawPrint className="h-8 w-8 text-primary" />
-              <h2 className="font-headline text-2xl text-foreground">PetHome</h2>
+              <h2 className="font-headline text-2xl text-foreground">Pequenos Grandes Filhotes</h2>
             </Link>
           </div>
         </SidebarHeader>
         <SidebarContent>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Procurar por pets">
+              <SidebarMenuButton asChild tooltip="Ver seus filhotes">
                 <Link href="/home">
                   <Search />
-                  <span>Procurar</span>
+                  <span>Meus Filhotes</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Encontrar abrigos">
+              <SidebarMenuButton asChild tooltip="Visitar a loja">
                 <Link href="#">
-                  <MapPin />
-                  <span>Abrigos</span>
+                  <ShoppingCart />
+                  <span>Loja</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Tours Virtuais">
+              <SidebarMenuButton asChild tooltip="Jogar minigames">
                 <Link href="#">
-                  <Video />
-                  <span>Tour Virtual</span>
+                  <Gamepad2 />
+                  <span>Minigames</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Formulário de Adoção">
+              <SidebarMenuButton asChild tooltip="Colecionar novos filhotes">
                 <Link href="#">
-                  <FileText />
-                  <span>Adotar</span>
+                  <PackagePlus />
+                  <span>Colecionar</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

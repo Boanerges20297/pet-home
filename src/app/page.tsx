@@ -12,7 +12,7 @@ export default function Home() {
           <div className="h-60 w-60 overflow-hidden rounded-full shadow-inner md:h-72 md:w-72">
             <Image
               src="https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjYWNob3Jyb3xlbnwwfHx8fDE3NTY3MzY4MDh8MA&ixlib=rb-4.1.0&q=80&w=1080"
-              alt="A cute dog available for adoption"
+              alt="Um filhote fofo para colecionar"
               width={400}
               height={400}
               className="h-full w-full object-cover"
@@ -23,10 +23,10 @@ export default function Home() {
         </div>
         <h1 className="font-headline text-5xl md:text-7xl text-accent">Pequenos Grandes Filhotes</h1>
         <p className="max-w-md font-body text-lg text-muted-foreground">
-          Encontre o seu novo melhor amigo. Abra o seu coração e a sua casa a um animal de estimação necessitado.
+          Colecione, cuide e brinque com seus filhotes virtuais. Comece sua jornada agora!
         </p>
       </div>
-      <Link href="/home" className="absolute bottom-10 animate-bounce" aria-label="Go to home page">
+      <Link href="/home" className="absolute bottom-10 animate-bounce" aria-label="Ir para a página inicial do jogo">
         <ArrowDown className="h-10 w-10 text-accent" />
         <span className="sr-only">Go to next page</span>
       </Link>

@@ -3,8 +3,8 @@ import { Toaster } from "@/components/ui/toaster"
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'PetHome',
-  description: 'Find your new best friend. Open your heart and home to a pet in need.',
+  title: 'Pequenos Grandes Filhotes',
+  description: 'Colecione e cuide dos seus filhotes virtuais.',
 };
 
 export default function RootLayout({
