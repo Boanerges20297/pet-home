@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Heart } from 'lucide-react';
+import { Heart, Coins } from 'lucide-react';
 import Link from 'next/link';
 
 export interface Pet {
@@ -12,6 +12,7 @@ export interface Pet {
   breed: string;
   imageUrl: string;
   aiHint: string;
+  price: number;
 }
 
 interface PetCardProps {
@@ -45,8 +46,12 @@ export function PetCard({ pet }: PetCardProps) {
           <Badge variant="secondary">{pet.breed}</Badge>
         </div>
       </CardContent>
-      <CardFooter className="p-4 pt-0">
-        <Button asChild className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
+      <CardFooter className="p-4 pt-0 flex items-center justify-between">
+        <div className="flex items-center gap-2 text-foreground font-headline text-lg">
+            <Coins className="h-5 w-5 text-yellow-500" />
+            <span>{pet.price}</span>
+        </div>
+        <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
           <Link href={`/pet/${pet.id}`}>Comprar</Link>
         </Button>
       </CardFooter>
