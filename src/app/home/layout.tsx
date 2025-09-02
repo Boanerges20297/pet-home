@@ -29,34 +29,34 @@ export default function HomeLayout({ children }: { children: ReactNode }) {
         <SidebarContent>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Search for pets">
+              <SidebarMenuButton asChild tooltip="Procurar por pets">
                 <Link href="/home">
                   <Search />
-                  <span>Search</span>
+                  <span>Procurar</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Find shelters">
+              <SidebarMenuButton asChild tooltip="Encontrar abrigos">
                 <Link href="#">
                   <MapPin />
-                  <span>Shelters</span>
+                  <span>Abrigos</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Virtual Tours">
+              <SidebarMenuButton asChild tooltip="Tours Virtuais">
                 <Link href="#">
                   <Video />
-                  <span>Virtual Tour</span>
+                  <span>Tour Virtual</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Adoption Form">
+              <SidebarMenuButton asChild tooltip="Formulário de Adoção">
                 <Link href="#">
                   <FileText />
-                  <span>Adopt</span>
+                  <span>Adotar</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

@@ -25,7 +25,7 @@ export function PetCard({ pet }: PetCardProps) {
         <div className="relative aspect-square w-full">
           <Image
             src={pet.imageUrl}
-            alt={`A photo of ${pet.name}`}
+            alt={`Uma foto de ${pet.name}`}
             fill
             className="object-cover"
             data-ai-hint={pet.aiHint}
@@ -36,7 +36,7 @@ export function PetCard({ pet }: PetCardProps) {
       <CardContent className="p-4 flex-grow">
         <div className="flex items-start justify-between">
           <CardTitle className="font-headline text-2xl text-foreground">{pet.name}</CardTitle>
-          <Button variant="ghost" size="icon" className="group -mt-1 -mr-2" aria-label={`Favorite ${pet.name}`}>
+          <Button variant="ghost" size="icon" className="group -mt-1 -mr-2" aria-label={`Favoritar ${pet.name}`}>
             <Heart className="h-6 w-6 text-muted-foreground transition-colors group-hover:text-red-500 group-hover:fill-red-500" />
           </Button>
         </div>
@@ -47,7 +47,7 @@ export function PetCard({ pet }: PetCardProps) {
       </CardContent>
       <CardFooter className="p-4 pt-0">
         <Button asChild className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
-          <Link href={`/pet/${pet.id}`}>Learn More</Link>
+          <Link href={`/pet/${pet.id}`}>Saiba Mais</Link>
         </Button>
       </CardFooter>
     </Card>
