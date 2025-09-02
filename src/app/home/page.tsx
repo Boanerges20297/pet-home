@@ -25,7 +25,7 @@ const featuredPets: Pet[] = [
     name: 'Keylo',
     age: '1 year',
     breed: 'Pug',
-    imageUrl: 'https://picsum.photos/seed/keylo/400/400',
+    imageUrl: 'https://images.unsplash.com/photo-1744907451349-c1ece07e6f3b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjYWNob3JybyUyMGRlJTIwNCUyMGFub3N8ZW58MHx8fHwxNzU2ODE5OTIwfDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'pug dog'
   },
 ];
