@@ -9,7 +9,7 @@ const featuredPets: Pet[] = [
     name: 'Blaze',
     age: '3 years',
     breed: 'Siberian Husky',
-    imageUrl: 'https://picsum.photos/seed/blaze/400/400',
+    imageUrl: 'https://images.unsplash.com/photo-1602936742009-0ef4d0ecf929?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjYWNob3JybyUyMGFkdWx0byUyMHxlbnwwfHx8fDE3NTY4MTk4MjB8MA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'siberian husky'
   },
   {
