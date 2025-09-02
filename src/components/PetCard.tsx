@@ -47,7 +47,7 @@ export function PetCard({ pet }: PetCardProps) {
       </CardContent>
       <CardFooter className="p-4 pt-0">
         <Button asChild className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
-          <Link href={`/pet/${pet.id}`}>Ver Detalhes</Link>
+          <Link href={`/pet/${pet.id}`}>Comprar</Link>
         </Button>
       </CardFooter>
     </Card>
