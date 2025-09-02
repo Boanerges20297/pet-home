@@ -17,7 +17,7 @@ const featuredPets: Pet[] = [
     name: 'Lup',
     age: '2 years',
     breed: 'Labrador Retriever',
-    imageUrl: 'https://picsum.photos/seed/lup/400/400',
+    imageUrl: 'https://images.unsplash.com/photo-1527778676396-eceba283ddfa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjYWNob3JybyUyMGZpbGhvdGUlMjB8ZW58MHx8fHwxNzU2ODE5NzYwfDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'labrador retriever'
   },
   {
