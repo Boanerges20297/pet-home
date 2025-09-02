@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search } from 'lucide-react';
+import { Search, Coin } from 'lucide-react';
 import { PetCard, type Pet } from '@/components/PetCard';
 
 const featuredPets: Pet[] = [
@@ -36,6 +36,10 @@ export default function HomePage() {
     <main className="flex-1 overflow-y-auto p-4 md:p-8">
       <div className="mx-auto max-w-6xl">
         <section className="mb-12 text-center">
+          <div className="flex justify-center items-center gap-2 mb-4 text-yellow-500">
+            <Coin className="h-10 w-10" />
+            <span className="font-headline text-4xl text-foreground">1.234</span>
+          </div>
           <h1 className="font-headline text-4xl md:text-5xl text-primary mb-4">
             Coleção de Filhotes
           </h1>
