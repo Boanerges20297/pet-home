@@ -38,7 +38,7 @@ export default function HomePage() {
         <section className="mb-12 text-center">
           <div className="flex justify-center items-center gap-2 mb-4 text-yellow-500">
             <Coins className="h-10 w-10" />
-            <span className="font-headline text-4xl text-foreground">1.234</span>
+            <span className="font-headline text-4xl text-foreground">0</span>
           </div>
           <h1 className="font-headline text-4xl md:text-5xl text-primary mb-4">
             Coleção de Filhotes
