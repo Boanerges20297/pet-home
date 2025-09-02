@@ -6,51 +6,27 @@ import { PetCard, type Pet } from '@/components/PetCard';
 const featuredPets: Pet[] = [
   {
     id: '1',
-    name: 'Buddy',
-    age: '2 years',
-    breed: 'Golden Retriever',
-    imageUrl: 'https://picsum.photos/seed/buddy/400/400',
-    aiHint: 'golden retriever'
+    name: 'Blaze',
+    age: '3 years',
+    breed: 'Siberian Husky',
+    imageUrl: 'https://picsum.photos/seed/blaze/400/400',
+    aiHint: 'siberian husky'
   },
   {
     id: '2',
-    name: 'Lucy',
-    age: '1 year',
-    breed: 'Tabby Cat',
-    imageUrl: 'https://picsum.photos/seed/lucy/400/400',
-    aiHint: 'tabby cat'
+    name: 'Lup',
+    age: '2 years',
+    breed: 'Labrador Retriever',
+    imageUrl: 'https://picsum.photos/seed/lup/400/400',
+    aiHint: 'labrador retriever'
   },
   {
     id: '3',
-    name: 'Max',
-    age: '4 years',
-    breed: 'German Shepherd',
-    imageUrl: 'https://picsum.photos/seed/max/400/400',
-    aiHint: 'german shepherd'
-  },
-  {
-    id: '4',
-    name: 'Daisy',
-    age: '3 years',
-    breed: 'Beagle',
-    imageUrl: 'https://picsum.photos/seed/daisy/400/400',
-    aiHint: 'beagle dog'
-  },
-  {
-    id: '5',
-    name: 'Charlie',
-    age: '5 years',
-    breed: 'Domestic Shorthair',
-    imageUrl: 'https://picsum.photos/seed/charlie/400/400',
-    aiHint: 'shorthair cat'
-  },
-  {
-    id: '6',
-    name: 'Sadie',
-    age: '6 months',
-    breed: 'Labrador Mix',
-    imageUrl: 'https://picsum.photos/seed/sadie/400/400',
-    aiHint: 'labrador puppy'
+    name: 'Keylo',
+    age: '1 year',
+    breed: 'Pug',
+    imageUrl: 'https://picsum.photos/seed/keylo/400/400',
+    aiHint: 'pug dog'
   },
 ];
 
@@ -61,7 +37,7 @@ export default function HomePage() {
       <div className="mx-auto max-w-6xl">
         <section className="mb-12 text-center">
           <h1 className="font-headline text-4xl md:text-5xl text-primary mb-4">
-            Find Your New Best Friend
+            Abrigo de Adoção
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Browse through profiles of lovable pets waiting for a forever home. Your journey to unconditional love starts here.
