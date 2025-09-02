@@ -54,7 +54,7 @@ export default function HomeLayout({ children }: { children: ReactNode }) {
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Colecionar novos filhotes">
-                <Link href="#">
+                <Link href="/home/colecionar">
                   <PackagePlus />
                   <span>Colecionar</span>
                 </Link>
