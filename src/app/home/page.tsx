@@ -45,7 +45,7 @@ const featuredPets: Pet[] = [
     name: 'Rocky',
     age: 'Nível 6',
     breed: 'Bulldog',
-    imageUrl: 'https://picsum.photos/seed/rocky/400/400',
+    imageUrl: 'https://images.unsplash.com/photo-1641069203366-12db9d0831d8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxmaWxob3RlJTIwZGUlMjBjYWNob3JybyUyMGRlJTIwJTIwY2hhcGV1fGVufDB8fHx8MTc1NjkwMDMxMnww&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'bulldog puppy',
     price: 700,
   },
