@@ -62,10 +62,9 @@ const getInitialState = <T,>(key: string, defaultValue: T): T => {
         if (storedValue) {
             return JSON.parse(storedValue);
         }
-
-        // Special handling for new user registration
-        if (key === 'ownedPets' && localStorage.getItem('isNewUser')) {
-             localStorage.removeItem('isNewUser'); // Clear the flag
+         // Handle new user registration
+        if (key === 'ownedPets' && localStorage.getItem('isNewUser') === 'true') {
+             localStorage.removeItem('isNewUser');
              return [initialPetsForNewUser.dog] as T;
         }
 
@@ -153,9 +152,10 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
         toastDescription = `Você ganhou: ${reward.item.name}!`;
       }
 
-      setCollectedDays([...collectedDays, day]);
+      setCollectedDays(prev => [...prev, day]);
+      setCurrentDay(prev => prev + 1);
       addXp(25); // Ganha 25 XP por coletar o prêmio diário
-      setCurrentDay(currentDay + 1);
+      
        toast({
         title: 'Recompensa Coletada!',
         description: toastDescription,
@@ -224,7 +224,7 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
   return (
     <PlayerContext.Provider value={{ coins, gems, level, xp, xpToNextLevel, currentDay, collectedDays, ownedPets, inventory, addCoins, addGems, addXp, collectReward, buyPet, addItemToInventory, useItem }}>
       {children}
-    </PlayerContext.Provider>
+    </PlayerProvider>
   );
 };
 
@@ -235,5 +235,3 @@ export const usePlayer = () => {
   }
   return context;
 };
-
-    
