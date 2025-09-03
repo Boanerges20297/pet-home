@@ -10,7 +10,7 @@ const storeItems = [
     name: 'Pacote de Moedas Pequeno',
     description: 'Um punhado de moedas para começar sua jornada.',
     price: 'R$ 4,99',
-    imageUrl: 'https://picsum.photos/seed/coins1/400/300',
+    imageUrl: 'https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxtb2VkYXN8ZW58MHx8fHwxNzU2OTAyNTMxfDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'stack of coins',
     icon: Coins,
   },
