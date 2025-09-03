@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
 
@@ -23,7 +23,7 @@ export default function InteragirPage() {
     const { toast } = useToast();
     const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
 
-    const handleInteraction = (type: 'petting' | 'playing' | 'feeding' | 'watering') => {
+    const handleInteraction = useCallback((type: 'petting' | 'playing' | 'feeding' | 'watering') => {
         if (selectedPetId) {
             let xpAmount = 0;
             let message = '';
@@ -54,7 +54,7 @@ export default function InteragirPage() {
                 description: `Você ganhou ${xpAmount} XP!`,
             });
         }
-    }
+    }, [selectedPetId, addXp, toast]);
 
     const selectedPet = ownedPets.find(p => p.id === selectedPetId);
 
