@@ -17,11 +17,19 @@ export default function RegisterPage() {
 
   const handleCreateAccount = () => {
     if (typeof window !== 'undefined' && username) {
-        // Clear previous user data
-        localStorage.clear();
-        // Set new user flag
+        // Clear previous user data reliably
+        localStorage.removeItem('coins');
+        localStorage.removeItem('gems');
+        localStorage.removeItem('level');
+        localStorage.removeItem('xp');
+        localStorage.removeItem('currentDay');
+        localStorage.removeItem('collectedDays');
+        localStorage.removeItem('ownedPets');
+        localStorage.removeItem('inventory');
+        localStorage.removeItem('username');
+
+        // Set new user flag and username
         localStorage.setItem('isNewUser', 'true');
-        // Set username
         localStorage.setItem('username', username);
     }
     router.push('/home');
@@ -79,5 +87,3 @@ export default function RegisterPage() {
     </div>
   );
 }
-
-    
