@@ -16,7 +16,7 @@ const featuredPets: Pet[] = [
   {
     id: '2',
     name: 'Lup',
-    age: 'Nível 3',
+    age: 'Nível 1',
     breed: 'Labrador Retriever',
     imageUrl: 'https://images.unsplash.com/photo-1527778676396-eceba283ddfa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjYWNob3JybyUyMGZpbGhvdGUlMjB8ZW58MHx8fHwxNzU2ODE5NzYwfDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'labrador retriever',
@@ -25,7 +25,7 @@ const featuredPets: Pet[] = [
   {
     id: '3',
     name: 'Keylo',
-    age: 'Nível 8',
+    age: 'Nível 1',
     breed: 'Pug',
     imageUrl: 'https://images.unsplash.com/photo-1744907451349-c1ece07e6f3b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjYWNob3JybyUyMGRlJTIwNCUyMGFub3N8ZW58MHx8fHwxNzU2ODE5OTIwfDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'pug dog',
