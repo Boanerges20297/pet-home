@@ -40,27 +40,6 @@ const PlayerContext = createContext<PlayerContextType | undefined>(undefined);
 
 const calculateXpToNextLevel = (level: number) => 100 * level * 1.5;
 
-const initialPets = {
-    dog: {
-        id: 'initial_dog',
-        name: 'Amigão',
-        age: 'Nível 1',
-        breed: 'Vira-lata Caramelo',
-        imageUrl: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxmaWxob3RlfGVufDB8fHx8MTc1NjkwMTEwNnww&ixlib=rb-4.1.0&q=80&w=1080',
-        aiHint: 'caramel dog',
-        price: 0,
-    },
-    cat: {
-        id: 'initial_cat',
-        name: 'Miau',
-        age: 'Nível 1',
-        breed: 'Gato de Pelo Curto',
-        imageUrl: 'https://images.unsplash.com/photo-1578423723952-a3b50cfa5857?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxnYXRpbmhvJTIwZmlsaG90ZXxlbnwwfHx8fDE3NTY5MDA0MjF8MA&ixlib=rb-4.1.0&q=80&w=1080',
-        aiHint: 'short hair cat',
-        price: 0,
-    }
-}
-
 export const PlayerProvider = ({ children }: { children: ReactNode }) => {
   const { toast } = useToast();
   const [coins, setCoins] = useState(0);
@@ -72,18 +51,27 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
   const [collectedDays, setCollectedDays] = useState<number[]>([]);
   const [ownedPets, setOwnedPets] = useState<Pet[]>([]);
   const [inventory, setInventory] = useState<PlayerItem[]>([]);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-        const initialPetType = localStorage.getItem('initialPet');
-        if (initialPetType && ownedPets.length === 0) {
-            const pet = initialPetType === 'dog' ? initialPets.dog : initialPets.cat;
-            setOwnedPets([pet]);
-            // Optional: clear the item so it doesn't get added again on refresh
-            // localStorage.removeItem('initialPet'); 
+    if (typeof window !== 'undefined' && !initialized) {
+        const initialPetData = localStorage.getItem('initialPet');
+        if (initialPetData) {
+            try {
+                const pet: Pet = JSON.parse(initialPetData);
+                if (pet && pet.id && !ownedPets.some(p => p.id === pet.id)) {
+                    setOwnedPets([pet]);
+                    // Optional: clear the item so it doesn't get added again on refresh
+                    localStorage.removeItem('initialPet'); 
+                }
+            } catch(e) {
+                console.error("Failed to parse initial pet data", e)
+                localStorage.removeItem('initialPet');
+            }
         }
+        setInitialized(true);
     }
-  }, []);
+  }, [initialized, ownedPets]);
 
 
   const addCoins = (amount: number) => {

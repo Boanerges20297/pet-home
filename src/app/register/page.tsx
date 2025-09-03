@@ -40,7 +40,7 @@ export default function RegisterPage() {
 
   const handleCreateAccount = () => {
     if (typeof window !== 'undefined' && selectedPet && username) {
-        localStorage.setItem('initialPet', selectedPet);
+        localStorage.setItem('initialPet', JSON.stringify(initialPets[selectedPet]));
         localStorage.setItem('username', username);
     }
     router.push('/home');
