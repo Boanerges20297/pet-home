@@ -16,6 +16,7 @@ const storeItems = [
     name: 'Ração Premium',
     description: 'A melhor ração para seu filhote crescer forte e saudável.',
     price: 150,
+    currency: 'coins',
     isRealMoney: false,
     imageUrl: 'https://images.unsplash.com/photo-1590083863483-2fde6a617c6e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwZXQlMjBmb29kfGVufDB8fHx8MTc1NjkxNzI1NHww&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'pet food',
@@ -26,7 +27,8 @@ const storeItems = [
     id: 'food_biscuit',
     name: 'Biscoito da Sorte',
     description: 'Um biscoito delicioso que dá um bônus de XP para seu filhote.',
-    price: 300,
+    price: 25,
+    currency: 'gems',
     isRealMoney: false,
     imageUrl: 'https://images.unsplash.com/photo-1623826063426-369de1219b16?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwZXQlMjB0cmVhdHN8ZW58MHx8fHwxNzU2OTE3MjkzfDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'pet treats',
@@ -38,6 +40,7 @@ const storeItems = [
     name: 'Frutinhas Silvestres',
     description: 'Um mix de frutas frescas e nutritivas. Um lanche saudável!',
     price: 220,
+    currency: 'coins',
     isRealMoney: false,
     imageUrl: 'https://images.unsplash.com/photo-1610922434032-936d39a349e5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxiZXJyaWVzfGVufDB8fHx8MTc1NjkxNzM1Nnww&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'berries bowl',
@@ -49,6 +52,7 @@ const storeItems = [
     name: 'Pacote de Moedas Pequeno',
     description: 'Um punhado de moedas para começar sua jornada.',
     price: 'R$ 4,99',
+    currency: 'real',
     isRealMoney: true,
     imageUrl: 'https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxtb2VkYXN8ZW58MHx8fHwxNzU2OTAyNTMxfDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'stack of coins',
@@ -60,6 +64,7 @@ const storeItems = [
     name: 'Pacote de Moedas Médio',
     description: 'Uma boa quantidade de moedas para acelerar seu progresso.',
     price: 'R$ 19,99',
+    currency: 'real',
     isRealMoney: true,
     imageUrl: 'https://images.unsplash.com/photo-1634108941345-3a6a66685563?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxM3x8bW9lZGFzfGVufDB8fHx8MTc1NjkwMjUzMXww&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'pile of gold',
@@ -71,6 +76,7 @@ const storeItems = [
     name: 'Pacote de Moedas Grande',
     description: 'Muitas moedas! Compre os filhotes dos seus sonhos.',
     price: 'R$ 49,99',
+    currency: 'real',
     isRealMoney: true,
     imageUrl: 'https://images.unsplash.com/photo-1599038988300-2e3f04d87f8b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxtdWl0YXMlMjBtb2VkYXMlMjB8ZW58MHx8fHwxNzU2OTAyNjQxfDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'treasure chest',
@@ -83,7 +89,7 @@ type StoreItem = typeof storeItems[0];
 
 export default function LojaPage() {
   const { toast } = useToast();
-  const { coins, addCoins, addItemToInventory } = usePlayer();
+  const { coins, gems, addCoins, removeGems, addItemToInventory } = usePlayer();
   const [selectedItem, setSelectedItem] = useState<StoreItem | null>(null);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
@@ -92,21 +98,40 @@ export default function LojaPage() {
         setSelectedItem(item);
         setIsPaymentModalOpen(true);
     } else {
-        if (coins >= (item.price as number)) {
-            addCoins(-(item.price as number));
-            if (item.reward.type === 'item') {
-                addItemToInventory(item.reward.id, item.reward.name, item.reward.quantity);
+        if (item.currency === 'coins') {
+             if (coins >= (item.price as number)) {
+                addCoins(-(item.price as number));
+                if (item.reward.type === 'item') {
+                    addItemToInventory(item.reward.id, item.reward.name, item.reward.quantity);
+                }
+                toast({
+                    title: 'Compra realizada com sucesso!',
+                    description: `Você adquiriu: ${item.name}`,
+                });
+            } else {
+                toast({
+                    title: 'Moedas Insuficientes!',
+                    description: `Você precisa de mais ${item.price as number - coins} moedas.`,
+                    variant: 'destructive'
+                });
             }
-            toast({
-                title: 'Compra realizada com sucesso!',
-                description: `Você adquiriu: ${item.name}`,
-            });
-        } else {
-            toast({
-                title: 'Moedas Insuficientes!',
-                description: `Você precisa de mais ${item.price as number - coins} moedas.`,
-                variant: 'destructive'
-            });
+        } else if (item.currency === 'gems') {
+            if (gems >= (item.price as number)) {
+                removeGems(item.price as number);
+                if (item.reward.type === 'item') {
+                    addItemToInventory(item.reward.id, item.reward.name, item.reward.quantity);
+                }
+                toast({
+                    title: 'Compra realizada com sucesso!',
+                    description: `Você adquiriu: ${item.name}`,
+                });
+            } else {
+                 toast({
+                    title: 'Gemas Insuficientes!',
+                    description: `Você precisa de mais ${item.price as number - gems} gemas.`,
+                    variant: 'destructive'
+                });
+            }
         }
     }
   };
@@ -166,7 +191,7 @@ export default function LojaPage() {
                       <Button onClick={() => handlePurchase(item)} className="w-full bg-primary text-primary-foreground hover:bg-primary/90 text-lg font-bold">
                           {item.isRealMoney ? `Comprar por ${item.price}` : (
                               <div className="flex items-center gap-2">
-                                  <Coins className="h-5 w-5" />
+                                  {item.currency === 'coins' ? <Coins className="h-5 w-5" /> : <Gem className="h-5 w-5 text-blue-400" />}
                                   <span>{item.price}</span>
                               </div>
                           )}

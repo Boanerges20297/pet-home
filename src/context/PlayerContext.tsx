@@ -29,6 +29,7 @@ interface PlayerContextType {
   inventory: PlayerItem[];
   addCoins: (amount: number) => void;
   addGems: (amount: number) => void;
+  removeGems: (amount: number) => void;
   addXp: (amount: number) => void;
   collectReward: (day: number, reward: Reward) => void;
   buyPet: (pet: Pet) => boolean;
@@ -131,6 +132,10 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
   const addGems = (amount: number) => {
     setGems(prevGems => prevGems + amount);
   };
+
+  const removeGems = (amount: number) => {
+    setGems(prevGems => Math.max(0, prevGems - amount));
+  }
   
   const addXp = useCallback((amount: number) => {
     setXp(prevXp => {
@@ -222,7 +227,7 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const useItem = (itemId: string) => {
+  const useItem = (itemId: string): boolean => {
     const item = inventory.find(i => i.id === itemId);
     if (!item || item.quantity <= 0) {
         toast({ title: "Item esgotado!", variant: 'destructive' });
@@ -248,7 +253,7 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
 
 
   return (
-    <PlayerContext.Provider value={{ coins, gems, level, xp, xpToNextLevel, currentDay, collectedDays, ownedPets, inventory, addCoins, addGems, addXp, collectReward, buyPet, addItemToInventory, useItem }}>
+    <PlayerContext.Provider value={{ coins, gems, level, xp, xpToNextLevel, currentDay, collectedDays, ownedPets, inventory, addCoins, addGems, removeGems, addXp, collectReward, buyPet, addItemToInventory, useItem }}>
       {children}
     </PlayerContext.Provider>
   );
