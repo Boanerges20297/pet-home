@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { ArrowLeft, Hand, ToyBrick } from 'lucide-react';
+import { ArrowLeft, Hand, ToyBrick, Utensils, GlassWater } from 'lucide-react';
 import { usePlayer } from '@/context/PlayerContext';
 import {
   Select,
@@ -23,10 +23,29 @@ export default function InteragirPage() {
     const { toast } = useToast();
     const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
 
-    const handleInteraction = (type: 'petting' | 'playing') => {
+    const handleInteraction = (type: 'petting' | 'playing' | 'feeding' | 'watering') => {
         if (selectedPetId) {
-            const xpAmount = type === 'petting' ? 5 : 10;
-            const message = type === 'petting' ? 'Você fez carinho no seu filhote!' : 'Você brincou com seu filhote!';
+            let xpAmount = 0;
+            let message = '';
+
+            switch (type) {
+                case 'petting':
+                    xpAmount = 5;
+                    message = 'Você fez carinho no seu filhote!';
+                    break;
+                case 'playing':
+                    xpAmount = 10;
+                    message = 'Você brincou com seu filhote!';
+                    break;
+                case 'feeding':
+                    xpAmount = 8;
+                    message = 'Você alimentou seu filhote!';
+                    break;
+                case 'watering':
+                    xpAmount = 7;
+                    message = 'Você deu água para seu filhote!';
+                    break;
+            }
             
             addXp(xpAmount);
 
@@ -103,7 +122,7 @@ export default function InteragirPage() {
                 )}
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex flex-wrap justify-center gap-4">
                 <Button onClick={() => handleInteraction('petting')} disabled={!selectedPetId} size="lg">
                     <Hand className="mr-2 h-5 w-5" />
                     Fazer Carinho (5 XP)
@@ -111,6 +130,14 @@ export default function InteragirPage() {
                  <Button onClick={() => handleInteraction('playing')} disabled={!selectedPetId} size="lg" variant="secondary">
                     <ToyBrick className="mr-2 h-5 w-5" />
                     Brincar (10 XP)
+                </Button>
+                <Button onClick={() => handleInteraction('feeding')} disabled={!selectedPetId} size="lg" variant="outline">
+                    <Utensils className="mr-2 h-5 w-5" />
+                    Dar Comida (8 XP)
+                </Button>
+                <Button onClick={() => handleInteraction('watering')} disabled={!selectedPetId} size="lg" variant="outline">
+                    <GlassWater className="mr-2 h-5 w-5" />
+                    Dar Água (7 XP)
                 </Button>
             </div>
 
