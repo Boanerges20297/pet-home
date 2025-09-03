@@ -66,13 +66,13 @@ export default function PassearPage() {
                 )}
              </div>
 
-            <div className="relative w-full h-80 flex items-end justify-center">
+            <div className="relative w-full h-96 flex items-end justify-center">
                 <div className="absolute bottom-0 flex items-end">
                     <Image 
-                        src="https://images.unsplash.com/photo-1499202977793-0b0540673534?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwZXNzb2ElMjBwYXNzZWFuZG8lMjBjb20lMjBjYWNob3Jyb3xlbnwwfHx8fDE3NTY5MDcwODd8MA&ixlib=rb-4.1.0&q=80&w=1080"
+                        src="https://images.unsplash.com/photo-1548681528-6a5c45b66b42?w=500&h=800&fit=crop"
                         alt="Pessoa passeando"
                         width={200}
-                        height={350}
+                        height={400}
                         className="object-contain drop-shadow-2xl"
                         data-ai-hint="person walking"
                     />
