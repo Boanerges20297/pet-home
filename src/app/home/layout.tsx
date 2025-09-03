@@ -29,10 +29,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useToast } from '@/hooks/use-toast';
 
 
 export default function HomeLayout({ children }: { children: ReactNode }) {
   const [username, setUsername] = useState<string | null>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -42,6 +44,13 @@ export default function HomeLayout({ children }: { children: ReactNode }) {
       }
     }
   }, []);
+
+  const handleSettingsClick = () => {
+    toast({
+      title: 'Em Breve!',
+      description: 'A página de configurações estará disponível em breve.',
+    });
+  };
 
 
   return (
@@ -147,7 +156,7 @@ export default function HomeLayout({ children }: { children: ReactNode }) {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>{username ? username : 'Minha Conta'}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleSettingsClick}>
                   <Settings className="mr-2" />
                   Configurações
                 </DropdownMenuItem>
