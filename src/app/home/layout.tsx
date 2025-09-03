@@ -121,9 +121,33 @@ export default function HomeLayout({ children }: { children: ReactNode }) {
         <SidebarInset>
           <header className="flex h-14 items-center gap-4 border-b bg-background px-4 lg:h-[60px] lg:px-6">
             <SidebarTrigger className="md:hidden" />
-            <div className="w-full flex-1">
-               {/* Can add a user menu or search here later */}
-            </div>
+            <div className="w-full flex-1" />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="secondary" size="icon" className="rounded-full">
+                  <Avatar>
+                    <AvatarImage src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&h=200&fit=crop" alt="Avatar do usuário" />
+                    <AvatarFallback>U</AvatarFallback>
+                  </Avatar>
+                  <span className="sr-only">Toggle user menu</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <Settings className="mr-2" />
+                  Configurações
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                 <DropdownMenuItem asChild>
+                    <Link href="/">
+                      <LogOut className="mr-2" />
+                      Sair
+                    </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </header>
           {children}
            <Toaster />
