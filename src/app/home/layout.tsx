@@ -3,7 +3,7 @@
 
 import type { ReactNode } from 'react';
 import Link from 'next/link';
-import { PawPrint, ShoppingCart, Gift, Home } from 'lucide-react';
+import { PawPrint, ShoppingCart, Gift, Home, LogOut } from 'lucide-react';
 import {
   SidebarProvider,
   Sidebar,
@@ -14,6 +14,8 @@ import {
   SidebarMenuButton,
   SidebarTrigger,
   SidebarInset,
+  SidebarFooter,
+  SidebarSeparator,
 } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { PlayerProvider } from '@/context/PlayerContext';
@@ -68,6 +70,19 @@ export default function HomeLayout({ children }: { children: ReactNode }) {
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarContent>
+          <SidebarFooter>
+            <SidebarSeparator />
+            <SidebarMenu>
+                 <SidebarMenuItem>
+                    <SidebarMenuButton asChild tooltip="Voltar para a página inicial">
+                        <Link href="/">
+                            <LogOut />
+                            <span>Sair do Jogo</span>
+                        </Link>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarFooter>
         </Sidebar>
         <SidebarInset>
           <header className="flex h-14 items-center gap-4 border-b bg-background px-4 lg:h-[60px] lg:px-6">
