@@ -99,7 +99,7 @@ const featuredPets: Pet[] = [
     name: 'Milo',
     age: 'Nível 9',
     breed: 'Boxer',
-    imageUrl: 'https://picsum.photos/seed/milo/400/400',
+    imageUrl: 'https://images.unsplash.com/photo-1558945657-484aa38065ec?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb3J1amF8ZW58MHx8fHwxNzU2OTAwODY4fDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'boxer dog',
     price: 900,
   },
