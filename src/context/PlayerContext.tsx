@@ -79,7 +79,7 @@ const getInitialState = <T,>(key: string, defaultValue: T): T => {
 export const PlayerProvider = ({ children }: { children: ReactNode }) => {
   const { toast } = useToast();
   
-  const [coins, setCoins] = useState<number>(() => getInitialState('coins', 500));
+  const [coins, setCoins] = useState<number>(() => getInitialState('coins', 0));
   const [gems, setGems] = useState<number>(() => getInitialState('gems', 20));
   const [level, setLevel] = useState<number>(() => getInitialState('level', 1));
   const [xp, setXp] = useState<number>(() => getInitialState('xp', 0));
