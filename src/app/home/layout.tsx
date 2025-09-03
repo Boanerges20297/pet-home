@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { PlayerProvider } from '@/context/PlayerContext';
+import { Toaster } from '@/components/ui/toaster';
 
 export default function HomeLayout({ children }: { children: ReactNode }) {
   return (
@@ -76,6 +77,7 @@ export default function HomeLayout({ children }: { children: ReactNode }) {
             </div>
           </header>
           {children}
+           <Toaster />
         </SidebarInset>
       </SidebarProvider>
     </PlayerProvider>

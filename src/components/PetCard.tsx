@@ -1,9 +1,11 @@
+
 import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Heart, Coins } from 'lucide-react';
-import Link from 'next/link';
+import { usePlayer } from '@/context/PlayerContext';
+import { useToast } from '@/hooks/use-toast';
 
 export interface Pet {
   id: string;
@@ -20,6 +22,22 @@ interface PetCardProps {
 }
 
 export function PetCard({ pet }: PetCardProps) {
+  const { coins, buyPet, ownedPets } = usePlayer();
+  const { toast } = useToast();
+
+  const isOwned = ownedPets.some(p => p.id === pet.id);
+
+  const handlePurchase = () => {
+    if (!isOwned) {
+      buyPet(pet);
+    } else {
+      toast({
+        title: "Você já possui este filhote!",
+        description: `${pet.name} já faz parte da sua coleção.`,
+      });
+    }
+  };
+
   return (
     <Card className="overflow-hidden bg-card transition-shadow hover:shadow-xl flex flex-col">
       <CardHeader className="p-0">
@@ -51,8 +69,8 @@ export function PetCard({ pet }: PetCardProps) {
             <Coins className="h-5 w-5 text-yellow-500" />
             <span>{pet.price}</span>
         </div>
-        <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
-          <Link href={`/pet/${pet.id}`}>Comprar</Link>
+        <Button onClick={handlePurchase} disabled={isOwned || coins < pet.price} className="bg-accent text-accent-foreground hover:bg-accent/90">
+          {isOwned ? 'Adotado' : 'Comprar'}
         </Button>
       </CardFooter>
     </Card>

@@ -6,7 +6,7 @@ import { useParams, notFound } from 'next/navigation';
 import { houses } from '@/lib/houses';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowLeft, Home, PawPrint, Star, Bath, Utensils, Bed, Sofa } from 'lucide-react';
+import { ArrowLeft, Home, PawPrint, Star, Bath, Utensils, Bed, Sofa, Bone } from 'lucide-react';
 import {
   Card,
   CardContent,
@@ -24,12 +24,25 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { Progress } from '@/components/ui/progress';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { useState } from 'react';
+import type { Pet } from '@/components/PetCard';
+
 
 export default function HousePage() {
   const params = useParams();
   const id = params.id as string;
   const house = houses.find((h) => h.id === id);
-  const { level, xp, xpToNextLevel } = usePlayer();
+  const { level, xp, xpToNextLevel, ownedPets, addXp } = usePlayer();
+
+  const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
+  const [petLocations, setPetLocations] = useState<Record<string, string | null>>({});
 
   if (!house) {
     notFound();
@@ -44,6 +57,31 @@ export default function HousePage() {
     { name: 'Banheiro', id: 'bathroom', icon: Bath, hint: 'bathroom', imageUrl: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxiYW5oZWlybyUyMHxlbnwwfHx8fDE3NTY5MDQxODl8MA&ixlib=rb-4.1.0&q=80&w=1080' },
   ];
 
+  const selectedPet = ownedPets.find(p => p.id === selectedPetId);
+
+  const handlePlacePet = (roomId: string) => {
+    if (selectedPetId) {
+      setPetLocations(prev => {
+        const newLocations = { ...prev };
+        // Remove pet from previous room if it exists
+        Object.keys(newLocations).forEach(key => {
+          if (newLocations[key] === selectedPetId) {
+            newLocations[key] = null;
+          }
+        });
+        // Place pet in new room
+        newLocations[roomId] = selectedPetId;
+        return newLocations;
+      });
+      addXp(10); // Ganha 10 XP por mover um filhote
+    }
+  }
+  
+  const petInRoom = (roomId: string): Pet | undefined => {
+    const petId = petLocations[roomId];
+    if (!petId) return undefined;
+    return ownedPets.find(p => p.id === petId);
+  }
 
   return (
     <main className="flex-1 overflow-y-auto p-4 md:p-8">
@@ -75,7 +113,6 @@ export default function HousePage() {
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-
         </div>
 
         <Card className="overflow-hidden shadow-lg">
@@ -87,10 +124,30 @@ export default function HousePage() {
                   Bem-vindo à sua {house.name}
                 </CardTitle>
                 <CardDescription className="text-lg">
-                  Explore os cômodos e veja que lugar perfeito para seus filhotes.
+                  Explore os cômodos e coloque seus filhotes para brincar.
                 </CardDescription>
               </div>
             </div>
+             {ownedPets.length > 0 && (
+              <div className="mt-4 flex items-center gap-4">
+                  <Select onValueChange={setSelectedPetId} value={selectedPetId ?? ""}>
+                    <SelectTrigger className="w-[280px]">
+                      <SelectValue placeholder="Selecione um filhote para mover" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {ownedPets.map(pet => (
+                        <SelectItem key={pet.id} value={pet.id}>{pet.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {selectedPet && (
+                    <div className='flex items-center gap-2'>
+                        <Image src={selectedPet.imageUrl} alt={selectedPet.name} width={40} height={40} className="rounded-full object-cover" />
+                        <span className="font-medium">Você selecionou {selectedPet.name}!</span>
+                    </div>
+                  )}
+              </div>
+            )}
           </CardHeader>
           <CardContent className="p-4 md:p-6">
              <Tabs defaultValue="living-room" className="w-full">
@@ -113,6 +170,15 @@ export default function HousePage() {
                         className="object-cover"
                         data-ai-hint={`${house.aiHint} ${room.hint}`}
                       />
+                      {petInRoom(room.id) && (
+                        <div className="absolute bottom-5 right-5 w-24 h-24 transform -translate-x-1/2 -translate-y-1/2">
+                          <Image src={petInRoom(room.id)!.imageUrl} alt={petInRoom(room.id)!.name} layout="fill" objectFit="contain" className="drop-shadow-lg" />
+                        </div>
+                      )}
+                      <Button onClick={() => handlePlacePet(room.id)} disabled={!selectedPetId} className="absolute top-2 right-2">
+                        <Bone className="mr-2 h-4 w-4" />
+                        Colocar Filhote Aqui
+                      </Button>
                     </div>
                 </TabsContent>
               ))}
@@ -122,7 +188,7 @@ export default function HousePage() {
             <Button asChild size="lg">
               <Link href="/home">
                 <PawPrint className="mr-2 h-5 w-5" />
-                Encontrar um filhote para este lar
+                Encontrar mais filhotes
               </Link>
             </Button>
           </CardFooter>
