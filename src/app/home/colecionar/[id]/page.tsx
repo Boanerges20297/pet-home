@@ -92,6 +92,10 @@ export default function HousePage() {
             Voltar para a seleção de lares
           </Link>
           <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 text-amber-600">
+                <Utensils className="h-6 w-6" />
+                <span className="font-headline text-2xl text-foreground">{xp.toFixed(0)}</span>
+            </div>
             <div className="flex items-center gap-2 text-blue-500">
                 <Gem className="h-6 w-6" />
                 <span className="font-headline text-2xl text-foreground">{gems}</span>
