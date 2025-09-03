@@ -3,7 +3,7 @@
 
 import type { ReactNode } from 'react';
 import Link from 'next/link';
-import { PawPrint, Search, ShoppingCart, Gift, PackagePlus } from 'lucide-react';
+import { PawPrint, Search, ShoppingCart, Gift, Home } from 'lucide-react';
 import {
   SidebarProvider,
   Sidebar,
@@ -58,10 +58,10 @@ export default function HomeLayout({ children }: { children: ReactNode }) {
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Colecionar novos filhotes">
+                <SidebarMenuButton asChild tooltip="Escolha um lar para seu filhote">
                   <Link href="/home/colecionar">
-                    <PackagePlus />
-                    <span>Colecionar</span>
+                    <Home />
+                    <span>Lares para seu Filhote</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
