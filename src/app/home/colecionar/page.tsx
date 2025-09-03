@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import {
   Carousel,
@@ -69,6 +70,36 @@ const houses = [
     name: 'Nave Espacial',
     imageUrl: 'https://picsum.photos/seed/house10/600/400',
     aiHint: 'space ship',
+  },
+  {
+    id: '11',
+    name: 'Casa de Gengibre',
+    imageUrl: 'https://picsum.photos/seed/house11/600/400',
+    aiHint: 'gingerbread house',
+  },
+  {
+    id: '12',
+    name: 'Bota Gigante',
+    imageUrl: 'https://picsum.photos/seed/house12/600/400',
+    aiHint: 'giant boot',
+  },
+  {
+    id: '13',
+    name: 'Cogumelo Encantado',
+    imageUrl: 'https://picsum.photos/seed/house13/600/400',
+    aiHint: 'enchanted mushroom',
+  },
+  {
+    id: '14',
+    name: 'Faroeste Saloon',
+    imageUrl: 'https://picsum.photos/seed/house14/600/400',
+    aiHint: 'western saloon',
+  },
+  {
+    id: '15',
+    name: 'Templo Antigo',
+    imageUrl: 'https://picsum.photos/seed/house15/600/400',
+    aiHint: 'ancient temple',
   },
 ];
 
