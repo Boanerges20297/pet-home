@@ -53,9 +53,9 @@ const featuredPets: Pet[] = [
     id: '6',
     name: 'Luna',
     age: 'Nível 1',
-    breed: 'Beagle',
-    imageUrl: 'https://picsum.photos/seed/luna/400/400',
-    aiHint: 'beagle puppy',
+    breed: 'Gato Siamês',
+    imageUrl: 'https://images.unsplash.com/photo-1578423723952-a3b50cfa5857?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxnYXRpbmhvJTIwZmlsaG90ZXxlbnwwfHx8fDE3NTY5MDA0MjF8MA&ixlib=rb-4.1.0&q=80&w=1080',
+    aiHint: 'kitten',
     price: 300,
   },
   {
