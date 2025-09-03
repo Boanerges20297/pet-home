@@ -3,8 +3,8 @@ import { Button } from '@/components/ui/button';
 import { CheckCircle, Coins, Gift } from 'lucide-react';
 
 const dailyRewards = [
-  { day: 1, reward: 50, claimed: true },
-  { day: 2, reward: 75, claimed: true },
+  { day: 1, reward: 50, claimed: false },
+  { day: 2, reward: 75, claimed: false },
   { day: 3, reward: 100, claimed: false },
   { day: 4, reward: 125, claimed: false },
   { day: 5, reward: 150, claimed: false },
@@ -13,7 +13,7 @@ const dailyRewards = [
 ];
 
 export default function DailyRewardsPage() {
-  const currentDay = 3; // Example: user is on day 3
+  const currentDay = 1; // Example: user is on day 1
 
   return (
     <main className="flex-1 overflow-y-auto p-4 md:p-8">
