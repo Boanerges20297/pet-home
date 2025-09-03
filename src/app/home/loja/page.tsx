@@ -19,7 +19,7 @@ const storeItems = [
     name: 'Pacote de Moedas Médio',
     description: 'Uma boa quantidade de moedas para acelerar seu progresso.',
     price: 'R$ 19,99',
-    imageUrl: 'https://picsum.photos/seed/coins2/400/300',
+    imageUrl: 'https://images.unsplash.com/photo-1634108941345-3a6a66685563?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxM3x8bW9lZGFzfGVufDB8fHx8MTc1NjkwMjUzMXww&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'pile of gold',
     icon: Coins,
   },
