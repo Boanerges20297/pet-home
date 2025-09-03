@@ -29,12 +29,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useToast } from '@/hooks/use-toast';
 
 
 export default function HomeLayout({ children }: { children: ReactNode }) {
   const [username, setUsername] = useState<string | null>(null);
-  const { toast } = useToast();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -42,16 +40,18 @@ export default function HomeLayout({ children }: { children: ReactNode }) {
       if (storedUsername) {
         setUsername(storedUsername);
       }
+      
+      const handleStorageChange = () => {
+        const updatedUsername = localStorage.getItem('username');
+        setUsername(updatedUsername);
+      };
+
+      window.addEventListener('storage', handleStorageChange);
+      return () => {
+        window.removeEventListener('storage', handleStorageChange);
+      };
     }
   }, []);
-
-  const handleSettingsClick = () => {
-    toast({
-      title: 'Em Breve!',
-      description: 'A página de configurações estará disponível em breve.',
-    });
-  };
-
 
   return (
     <PlayerProvider>
@@ -155,9 +155,11 @@ export default function HomeLayout({ children }: { children: ReactNode }) {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>{username ? username : 'Minha Conta'}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleSettingsClick}>
-                  <Settings className="mr-2" />
-                  Configurações
+                <DropdownMenuItem asChild>
+                    <Link href="/home/settings">
+                      <Settings className="mr-2" />
+                      Configurações
+                    </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                  <DropdownMenuItem asChild>
