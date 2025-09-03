@@ -39,11 +39,11 @@ export default function RegisterPage() {
   const router = useRouter();
 
   const handleCreateAccount = () => {
-    if (typeof window !== 'undefined' && selectedPet) {
+    if (typeof window !== 'undefined' && selectedPet && username) {
         localStorage.setItem('initialPet', selectedPet);
         localStorage.setItem('username', username);
     }
-    router.push('/login');
+    router.push('/home');
   }
 
   return (
