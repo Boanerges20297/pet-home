@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
@@ -14,18 +15,23 @@ export default function AudioPlayer() {
     // Initialize synth on the client side
     synth.current = new Tone.Synth({
       oscillator: {
-        type: 'sine'
+        type: 'triangle8' // A softer, more pleasant sound
       },
       envelope: {
-        attack: 0.005,
+        attack: 0.02,
         decay: 0.1,
-        sustain: 0.3,
-        release: 1
+        sustain: 0.2,
+        release: 0.9
       }
     }).toDestination();
     
-    // A simple, calm arpeggio
-    const notes = ['C4', 'E4', 'G4', 'B4'];
+    // A calmer, more melodic sequence
+    const notes = [
+      'C4', 'E4', 'G4', 'C5', 
+      'A4', 'G4', 'E4', 'D4',
+      'F4', 'A4', 'C5', 'F5',
+      'E5', 'C5', 'A4', 'G4'
+    ];
     let noteIndex = 0;
 
     loop.current = new Tone.Loop(time => {
@@ -34,7 +40,7 @@ export default function AudioPlayer() {
         synth.current.triggerAttackRelease(note, '8n', time);
         noteIndex++;
       }
-    }, '2n').start(0);
+    }, '4n').start(0); // Play a note every quarter note
 
     // Mute by default
     Tone.Destination.mute = true;
