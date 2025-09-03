@@ -38,10 +38,10 @@ export default function HousePage() {
   const xpPercentage = (xp / xpToNextLevel) * 100;
 
   const rooms = [
-    { name: 'Sala de Estar', id: 'living-room', icon: Sofa, hint: 'living room' },
-    { name: 'Cozinha', id: 'kitchen', icon: Utensils, hint: 'kitchen' },
-    { name: 'Quarto', id: 'bedroom', icon: Bed, hint: 'bedroom' },
-    { name: 'Banheiro', id: 'bathroom', icon: Bath, hint: 'bathroom' },
+    { name: 'Sala de Estar', id: 'living-room', icon: Sofa, hint: 'living room', imageUrl: 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzYWxhJTIwZGUlMjBlc3RhcnxlbnwwfHx8fDE3NTY5MDM5Nzl8MA&ixlib=rb-4.1.0&q=80&w=1080' },
+    { name: 'Cozinha', id: 'kitchen', icon: Utensils, hint: 'kitchen', imageUrl: house.imageUrl.replace('600/400', '1280/720') + '&kitchen' },
+    { name: 'Quarto', id: 'bedroom', icon: Bed, hint: 'bedroom', imageUrl: house.imageUrl.replace('600/400', '1280/720') + '&bedroom' },
+    { name: 'Banheiro', id: 'bathroom', icon: Bath, hint: 'bathroom', imageUrl: house.imageUrl.replace('600/400', '1280/720') + '&bathroom' },
   ];
 
 
@@ -107,7 +107,7 @@ export default function HousePage() {
                 <TabsContent key={room.id} value={room.id}>
                     <div className="relative aspect-video w-full mt-4 rounded-lg overflow-hidden border">
                       <Image
-                        src={house.imageUrl.replace('600/400', '1280/720') + `&${room.id}`}
+                        src={room.imageUrl}
                         alt={`Interior da ${house.name} - ${room.name}`}
                         fill
                         className="object-cover"
