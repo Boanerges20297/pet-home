@@ -11,6 +11,12 @@ export interface PlayerItem {
   quantity: number;
 }
 
+type Reward = 
+  | { type: 'coins'; amount: number }
+  | { type: 'gems'; amount: number }
+  | { type: 'item'; item: Omit<PlayerItem, 'quantity'> & { quantity: 1 } };
+
+
 interface PlayerContextType {
   coins: number;
   gems: number;
@@ -24,7 +30,7 @@ interface PlayerContextType {
   addCoins: (amount: number) => void;
   addGems: (amount: number) => void;
   addXp: (amount: number) => void;
-  collectReward: (day: number, amount: number, type: 'coins' | 'gems') => void;
+  collectReward: (day: number, reward: Reward) => void;
   buyPet: (pet: Pet) => boolean;
   addItemToInventory: (itemId: string, itemName: string, quantity: number) => void;
   useItem: (itemId: string) => boolean;
@@ -77,19 +83,26 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
     });
   }, [level, xpToNextLevel, toast]);
 
-  const collectReward = (day: number, amount: number, type: 'coins' | 'gems') => {
+  const collectReward = (day: number, reward: Reward) => {
     if (day === currentDay && !collectedDays.includes(day)) {
-      if (type === 'coins') {
-        addCoins(amount);
-      } else {
-        addGems(amount);
+      let toastDescription = '';
+      if (reward.type === 'coins') {
+        addCoins(reward.amount);
+        toastDescription = `Você ganhou ${reward.amount} moedas!`;
+      } else if (reward.type === 'gems') {
+        addGems(reward.amount);
+        toastDescription = `Você ganhou ${reward.amount} gemas!`;
+      } else if (reward.type === 'item') {
+        addItemToInventory(reward.item.id, reward.item.name, reward.item.quantity);
+        toastDescription = `Você ganhou: ${reward.item.name}!`;
       }
+
       setCollectedDays([...collectedDays, day]);
       addXp(25); // Ganha 25 XP por coletar o prêmio diário
       setCurrentDay(currentDay + 1);
        toast({
         title: 'Recompensa Coletada!',
-        description: `Você ganhou ${amount} ${type === 'coins' ? 'moedas' : 'gemas'}!`,
+        description: toastDescription,
       });
     }
   };
@@ -142,6 +155,7 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
     if (itemId.startsWith('food')) {
         let xpAmount = 10;
         if(itemId === 'food_biscuit') xpAmount = 20;
+        if(itemId === 'food_premium') xpAmount = 25;
         if(itemId === 'food_fruits') xpAmount = 15;
         addXp(xpAmount);
         toast({ title: `Você usou ${item.name}!`, description: `Seu filhote ganhou ${xpAmount} XP.` });

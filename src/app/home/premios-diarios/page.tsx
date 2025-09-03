@@ -4,29 +4,49 @@
 import { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Coins, Gift, CheckCircle2, Gem } from 'lucide-react';
+import { Coins, Gift, CheckCircle2, Gem, Bone, Beef, Apple } from 'lucide-react';
 import { usePlayer } from '@/context/PlayerContext';
+import type { PlayerItem } from '@/context/PlayerContext';
 
-const generateRewards = (days: number) => {
+
+type Reward = 
+  | { type: 'coins'; amount: number }
+  | { type: 'gems'; amount: number }
+  | { type: 'item'; item: Omit<PlayerItem, 'quantity'> & { quantity: 1 } };
+
+
+const storeItemsForRewards = [
+  { id: 'food_biscuit', name: 'Biscoito da Sorte', icon: Bone },
+  { id: 'food_premium', name: 'Ração Premium', icon: Beef },
+  { id: 'food_fruits', name: 'Frutinhas Silvestres', icon: Apple },
+];
+
+const generateRewards = (days: number): { day: number; reward: Reward; isSpecial: boolean }[] => {
   return Array.from({ length: days }, (_, i) => {
     const day = i + 1;
     const week = Math.floor(i / 7);
     const dayOfWeek = i % 7;
     
-    let rewardType: 'coins' | 'gems' = 'coins';
-    let rewardAmount = 50 + dayOfWeek * 25 + week * 50;
+    let reward: Reward;
     let isSpecial = false;
 
-    if (day === 2 || (day > 7 && (day - 2) % 7 === 0)) { // Give gems on day 2 of each week
-        rewardType = 'gems';
-        rewardAmount = 5 + week; // Increasing gem reward each week
-        isSpecial = true;
-    } else if ((day % 7) === 0) { // Big coin reward at the end of the week
-      rewardAmount = 200 + week * 150;
+    if (day % 7 === 0) { // Final de semana
+      reward = { type: 'coins', amount: 200 + week * 150 };
       isSpecial = true;
+    } else if (day % 5 === 0) { // A cada 5 dias
+      const item = storeItemsForRewards[i % storeItemsForRewards.length];
+      reward = { type: 'item', item: { id: item.id, name: item.name, quantity: 1 } };
+      isSpecial = true;
+    } else if (day % 2 === 0 && day > 1) { // Dias pares
+        reward = { type: 'gems', amount: 5 + week };
+        isSpecial = true;
+    }
+    else { // Dias normais
+      reward = { type: 'coins', amount: 50 + dayOfWeek * 25 + week * 50 };
+      isSpecial = false;
     }
 
-    return { day, reward: { type: rewardType, amount: rewardAmount }, isSpecial };
+    return { day, reward, isSpecial };
   });
 };
 
@@ -35,11 +55,29 @@ export default function DailyRewardsPage() {
   
   const dailyRewards = useMemo(() => generateRewards(90), []);
 
-  const handleCollect = (day: number, reward: { type: 'coins' | 'gems'; amount: number }) => {
-    collectReward(day, reward.amount, reward.type);
+  const handleCollect = (day: number, reward: Reward) => {
+    collectReward(day, reward);
   };
 
   const isCollected = (day: number) => collectedDays.includes(day);
+
+  const getRewardIcon = (reward: Reward) => {
+    if (reward.type === 'coins') return <Coins className="h-5 w-5 text-yellow-500" />;
+    if (reward.type === 'gems') return <Gem className="h-5 w-5 text-blue-500" />;
+    if (reward.type === 'item') {
+      if (reward.item.id.includes('biscuit')) return <Bone className="h-5 w-5 text-yellow-600" />;
+      if (reward.item.id.includes('premium')) return <Beef className="h-5 w-5 text-red-600" />;
+      if (reward.item.id.includes('fruits')) return <Apple className="h-5 w-5 text-green-600" />;
+    }
+    return <Gift className="h-5 w-5" />;
+  }
+
+  const getRewardText = (reward: Reward) => {
+      if (reward.type === 'item') {
+          return reward.item.name;
+      }
+      return reward.amount.toString();
+  }
 
   return (
     <main className="flex-1 overflow-y-auto p-4 md:p-8">
@@ -76,13 +114,9 @@ export default function DailyRewardsPage() {
                     ) : (
                       <Gift className="h-10 w-10 mb-2 text-primary" />
                     )}
-                    <div className="flex items-center gap-1">
-                      {item.reward.type === 'coins' ? (
-                        <Coins className="h-5 w-5 text-yellow-500" />
-                      ) : (
-                        <Gem className="h-5 w-5 text-blue-500" />
-                      )}
-                      <span className="font-headline text-xl text-foreground">{item.reward.amount}</span>
+                    <div className="flex items-center gap-1 text-center">
+                      {getRewardIcon(item.reward)}
+                      <span className="font-headline text-lg text-foreground">{getRewardText(item.reward)}</span>
                     </div>
                   </CardContent>
                   <CardFooter className="p-2 w-full">
