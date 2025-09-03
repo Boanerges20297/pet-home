@@ -6,7 +6,7 @@ import { useParams, notFound } from 'next/navigation';
 import { houses } from '@/lib/houses';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowLeft, Home, PawPrint, Star, Bath, Utensils, Bed, Sofa, Bone } from 'lucide-react';
+import { ArrowLeft, Home, PawPrint, Star, Bath, Utensils, Bed, Sofa, Bone, Gem } from 'lucide-react';
 import {
   Card,
   CardContent,
@@ -39,7 +39,7 @@ export default function HousePage() {
   const params = useParams();
   const id = params.id as string;
   const house = houses.find((h) => h.id === id);
-  const { level, xp, xpToNextLevel, ownedPets, addXp } = usePlayer();
+  const { level, xp, xpToNextLevel, ownedPets, addXp, gems } = usePlayer();
 
   const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
   const [petLocations, setPetLocations] = useState<Record<string, string | null>>({});
@@ -91,28 +91,34 @@ export default function HousePage() {
             <ArrowLeft className="h-4 w-4" />
             Voltar para a seleção de lares
           </Link>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 text-blue-500">
+                <Gem className="h-6 w-6" />
+                <span className="font-headline text-2xl text-foreground">{gems}</span>
+            </div>
 
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="flex items-center gap-3">
-                    <div className="relative flex h-12 w-12 items-center justify-center rounded-full bg-primary/20">
-                    <Star className="h-6 w-6 text-primary" />
-                    <span className="absolute -bottom-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full border-2 border-background bg-primary font-bold text-xs text-primary-foreground">
-                        {level}
-                    </span>
-                    </div>
-                    <div className="w-32">
-                        <p className="text-sm font-medium text-foreground">Nível {level}</p>
-                        <Progress value={xpPercentage} className="h-2" />
-                    </div>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{xp.toFixed(0)} / {xpToNextLevel.toFixed(0)} XP para o próximo nível</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="flex items-center gap-3">
+                      <div className="relative flex h-12 w-12 items-center justify-center rounded-full bg-primary/20">
+                      <Star className="h-6 w-6 text-primary" />
+                      <span className="absolute -bottom-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full border-2 border-background bg-primary font-bold text-xs text-primary-foreground">
+                          {level}
+                      </span>
+                      </div>
+                      <div className="w-32">
+                          <p className="text-sm font-medium text-foreground">Nível {level}</p>
+                          <Progress value={xpPercentage} className="h-2" />
+                      </div>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{xp.toFixed(0)} / {xpToNextLevel.toFixed(0)} XP para o próximo nível</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
         </div>
 
         <Card className="overflow-hidden shadow-lg">

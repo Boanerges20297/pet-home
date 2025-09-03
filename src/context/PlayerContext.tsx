@@ -7,6 +7,7 @@ import { useToast } from '@/hooks/use-toast';
 
 interface PlayerContextType {
   coins: number;
+  gems: number;
   level: number;
   xp: number;
   xpToNextLevel: number;
@@ -14,6 +15,7 @@ interface PlayerContextType {
   collectedDays: number[];
   ownedPets: Pet[];
   addCoins: (amount: number) => void;
+  addGems: (amount: number) => void;
   addXp: (amount: number) => void;
   collectReward: (day: number, reward: number) => void;
   buyPet: (pet: Pet) => boolean;
@@ -26,6 +28,7 @@ const calculateXpToNextLevel = (level: number) => 100 * level * 1.5;
 export const PlayerProvider = ({ children }: { children: ReactNode }) => {
   const { toast } = useToast();
   const [coins, setCoins] = useState(1000); // Começar com moedas para testar
+  const [gems, setGems] = useState(0);
   const [level, setLevel] = useState(1);
   const [xp, setXp] = useState(0);
   const [xpToNextLevel, setXpToNextLevel] = useState(calculateXpToNextLevel(1));
@@ -36,6 +39,10 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
 
   const addCoins = (amount: number) => {
     setCoins(prevCoins => prevCoins + amount);
+  };
+
+  const addGems = (amount: number) => {
+    setGems(prevGems => prevGems + amount);
   };
   
   const addXp = useCallback((amount: number) => {
@@ -87,7 +94,7 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
 
 
   return (
-    <PlayerContext.Provider value={{ coins, level, xp, xpToNextLevel, currentDay, collectedDays, ownedPets, addCoins, addXp, collectReward, buyPet }}>
+    <PlayerContext.Provider value={{ coins, gems, level, xp, xpToNextLevel, currentDay, collectedDays, ownedPets, addCoins, addGems, addXp, collectReward, buyPet }}>
       {children}
     </PlayerContext.Provider>
   );
