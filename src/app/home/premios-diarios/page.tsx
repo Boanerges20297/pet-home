@@ -24,7 +24,7 @@ const generateRewards = (days: number) => {
   });
 };
 
-const dailyRewards = generateRewards(30);
+const dailyRewards = generateRewards(90);
 
 export default function DailyRewardsPage() {
   const [currentDay, setCurrentDay] = useState(1);
