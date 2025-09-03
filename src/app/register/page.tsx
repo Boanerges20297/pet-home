@@ -8,15 +8,17 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, PawPrint } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { Separator } from '@/components/ui/separator';
 
 export default function RegisterPage() {
   const [username, setUsername] = useState('');
+  const [petName, setPetName] = useState('');
   const router = useRouter();
 
   const handleCreateAccount = () => {
-    if (typeof window !== 'undefined' && username) {
+    if (typeof window !== 'undefined' && username && petName) {
         // Clear previous user data reliably
         localStorage.removeItem('coins');
         localStorage.removeItem('gems');
@@ -27,10 +29,13 @@ export default function RegisterPage() {
         localStorage.removeItem('ownedPets');
         localStorage.removeItem('inventory');
         localStorage.removeItem('username');
+        localStorage.removeItem('initialPetName');
+
 
         // Set new user flag and username
         localStorage.setItem('isNewUser', 'true');
         localStorage.setItem('username', username);
+        localStorage.setItem('initialPetName', petName);
     }
     router.push('/home');
   }
@@ -62,7 +67,7 @@ export default function RegisterPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="username">Nome de Usuário</Label>
+              <Label htmlFor="username">Seu Nome de Usuário</Label>
               <Input id="username" type="text" placeholder="Seu nome de jogador" value={username} onChange={(e) => setUsername(e.target.value)} />
             </div>
             <div className="space-y-2">
@@ -73,12 +78,20 @@ export default function RegisterPage() {
               <Label htmlFor="password">Senha</Label>
               <Input id="password" type="password" placeholder="Crie uma senha forte" />
             </div>
-             <p className="text-sm text-center text-muted-foreground pt-4">
-                Ao criar sua conta, você receberá um cachorro como seu primeiro amigo!
-            </p>
+             <Separator className="my-6" />
+              <div className="space-y-2 text-center">
+                 <Label htmlFor="petName" className="text-base flex items-center justify-center gap-2">
+                  <PawPrint className="h-5 w-5 text-primary"/>
+                  Dê um nome ao seu primeiro amigo!
+                </Label>
+                <p className="text-sm text-muted-foreground">
+                  Ao criar sua conta, você receberá um cachorro como seu primeiro companheiro.
+                </p>
+                <Input id="petName" type="text" placeholder="Nome do seu filhote" value={petName} onChange={(e) => setPetName(e.target.value)} className="text-center" />
+            </div>
           </CardContent>
           <CardFooter className="flex flex-col gap-4">
-            <Button onClick={handleCreateAccount} className="w-full" size="lg" disabled={!username}>
+            <Button onClick={handleCreateAccount} className="w-full" size="lg" disabled={!username || !petName}>
               Criar Conta e Começar
             </Button>
           </CardFooter>

@@ -40,17 +40,15 @@ const PlayerContext = createContext<PlayerContextType | undefined>(undefined);
 
 const calculateXpToNextLevel = (level: number) => 100 * level * 1.5;
 
-const initialPetsForNewUser = {
-    dog: {
-        id: 'initial_dog',
-        name: 'Amigão',
-        age: 'Nível 1',
-        breed: 'Vira-lata Caramelo',
-        imageUrl: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxmaWxob3RlfGVufDB8fHx8MTc1NjkwMTEwNnww&ixlib=rb-4.1.0&q=80&w=1080',
-        aiHint: 'caramel dog',
-        price: 0,
-    }
-};
+const createInitialDog = (petName: string): Pet => ({
+    id: 'initial_dog',
+    name: petName,
+    age: 'Nível 1',
+    breed: 'Vira-lata Caramelo',
+    imageUrl: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxmaWxob3RlfGVufDB8fHx8MTc1NjkwMTEwNnww&ixlib=rb-4.1.0&q=80&w=1080',
+    aiHint: 'caramel dog',
+    price: 0,
+});
 
 // Function to get the initial state from localStorage
 const getInitialState = <T,>(key: string, defaultValue: T): T => {
@@ -58,16 +56,31 @@ const getInitialState = <T,>(key: string, defaultValue: T): T => {
         return defaultValue;
     }
     try {
+        // Handle new user registration specifically
+        if (localStorage.getItem('isNewUser') === 'true') {
+            switch (key) {
+                case 'coins': return 0 as T;
+                case 'gems': return 20 as T;
+                case 'level': return 1 as T;
+                case 'xp': return 0 as T;
+                case 'currentDay': return 1 as T;
+                case 'collectedDays': return [] as T;
+                case 'inventory': return [] as T;
+                case 'ownedPets':
+                    const petName = localStorage.getItem('initialPetName') || 'Amigão';
+                    return [createInitialDog(petName)] as T;
+                default:
+                    const storedValue = localStorage.getItem(key);
+                    return storedValue ? JSON.parse(storedValue) : defaultValue;
+            }
+        }
+
         const storedValue = localStorage.getItem(key);
         if (storedValue) {
             return JSON.parse(storedValue);
         }
     } catch (error) {
         console.error(`Error reading from localStorage key “${key}”:`, error);
-    }
-    // Handle new user registration specifically
-     if (key === 'ownedPets' && localStorage.getItem('isNewUser') === 'true') {
-        return [initialPetsForNewUser.dog] as T;
     }
     
     return defaultValue;
@@ -99,9 +112,10 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
         localStorage.setItem('ownedPets', JSON.stringify(ownedPets));
         localStorage.setItem('inventory', JSON.stringify(inventory));
 
-        // After the first save for a new user, remove the flag
+        // After the first save for a new user, remove the flags
         if (localStorage.getItem('isNewUser') === 'true') {
           localStorage.removeItem('isNewUser');
+          localStorage.removeItem('initialPetName');
         }
     } catch(e) {
         console.error("Error saving state to localStorage", e);
@@ -235,7 +249,7 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
   return (
     <PlayerContext.Provider value={{ coins, gems, level, xp, xpToNextLevel, currentDay, collectedDays, ownedPets, inventory, addCoins, addGems, addXp, collectReward, buyPet, addItemToInventory, useItem }}>
       {children}
-    </PlayerContext.Provider>
+    </PlayerProvider>
   );
 };
 
