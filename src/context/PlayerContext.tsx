@@ -5,6 +5,12 @@ import { Pet } from '@/components/PetCard';
 import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
+export interface PlayerItem {
+  id: string;
+  name: string;
+  quantity: number;
+}
+
 interface PlayerContextType {
   coins: number;
   gems: number;
@@ -14,11 +20,14 @@ interface PlayerContextType {
   currentDay: number;
   collectedDays: number[];
   ownedPets: Pet[];
+  inventory: PlayerItem[];
   addCoins: (amount: number) => void;
   addGems: (amount: number) => void;
   addXp: (amount: number) => void;
   collectReward: (day: number, amount: number, type: 'coins' | 'gems') => void;
   buyPet: (pet: Pet) => boolean;
+  addItemToInventory: (itemId: string, itemName: string, quantity: number) => void;
+  useItem: (itemId: string) => boolean;
 }
 
 const PlayerContext = createContext<PlayerContextType | undefined>(undefined);
@@ -27,7 +36,7 @@ const calculateXpToNextLevel = (level: number) => 100 * level * 1.5;
 
 export const PlayerProvider = ({ children }: { children: ReactNode }) => {
   const { toast } = useToast();
-  const [coins, setCoins] = useState(0); // Começar com moedas para testar
+  const [coins, setCoins] = useState(0);
   const [gems, setGems] = useState(0);
   const [level, setLevel] = useState(1);
   const [xp, setXp] = useState(0);
@@ -35,6 +44,7 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
   const [currentDay, setCurrentDay] = useState(1);
   const [collectedDays, setCollectedDays] = useState<number[]>([]);
   const [ownedPets, setOwnedPets] = useState<Pet[]>([]);
+  const [inventory, setInventory] = useState<PlayerItem[]>([]);
 
 
   const addCoins = (amount: number) => {
@@ -55,13 +65,17 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
         newXp -= newXpToNextLevel;
         newLevel++;
         newXpToNextLevel = calculateXpToNextLevel(newLevel);
+        toast({
+          title: 'Subiu de Nível!',
+          description: `Parabéns! Você alcançou o nível ${newLevel}.`,
+        });
       }
 
       setLevel(newLevel);
       setXpToNextLevel(newXpToNextLevel);
       return newXp;
     });
-  }, [level, xpToNextLevel]);
+  }, [level, xpToNextLevel, toast]);
 
   const collectReward = (day: number, amount: number, type: 'coins' | 'gems') => {
     if (day === currentDay && !collectedDays.includes(day)) {
@@ -100,9 +114,45 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const addItemToInventory = (itemId: string, itemName: string, quantity: number) => {
+    setInventory(prevInventory => {
+      const existingItem = prevInventory.find(item => item.id === itemId);
+      if (existingItem) {
+        return prevInventory.map(item =>
+          item.id === itemId ? { ...item, quantity: item.quantity + quantity } : item
+        );
+      } else {
+        return [...prevInventory, { id: itemId, name: itemName, quantity }];
+      }
+    });
+  };
+
+  const useItem = (itemId: string) => {
+    const item = inventory.find(i => i.id === itemId);
+    if (!item || item.quantity <= 0) {
+        toast({ title: "Item esgotado!", variant: 'destructive' });
+        return false;
+    }
+
+    setInventory(prev =>
+      prev.map(i => (i.id === itemId ? { ...i, quantity: i.quantity - 1 } : i)).filter(i => i.quantity > 0)
+    );
+    
+    // Grant XP based on item type
+    if (itemId.startsWith('food')) {
+        let xpAmount = 10;
+        if(itemId === 'food_biscuit') xpAmount = 20;
+        if(itemId === 'food_fruits') xpAmount = 15;
+        addXp(xpAmount);
+        toast({ title: `Você usou ${item.name}!`, description: `Seu filhote ganhou ${xpAmount} XP.` });
+    }
+    
+    return true;
+  };
+
 
   return (
-    <PlayerContext.Provider value={{ coins, gems, level, xp, xpToNextLevel, currentDay, collectedDays, ownedPets, addCoins, addGems, addXp, collectReward, buyPet }}>
+    <PlayerContext.Provider value={{ coins, gems, level, xp, xpToNextLevel, currentDay, collectedDays, ownedPets, inventory, addCoins, addGems, addXp, collectReward, buyPet, addItemToInventory, useItem }}>
       {children}
     </PlayerContext.Provider>
   );

@@ -5,17 +5,51 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Coins, Gem, Zap, CreditCard, Banknote, QrCode } from 'lucide-react';
+import { Coins, Gem, Zap, CreditCard, Banknote, QrCode, Bone, Apple, Beef } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { usePlayer } from '@/context/PlayerContext';
 
 const storeItems = [
   {
+    id: 'food_premium',
+    name: 'Ração Premium',
+    description: 'A melhor ração para seu filhote crescer forte e saudável.',
+    price: 150,
+    isRealMoney: false,
+    imageUrl: 'https://images.unsplash.com/photo-1590083863483-2fde6a617c6e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwZXQlMjBmb29kfGVufDB8fHx8MTc1NjkxNzI1NHww&ixlib=rb-4.1.0&q=80&w=1080',
+    aiHint: 'pet food',
+    icon: Beef,
+    reward: { type: 'item', id: 'food_premium', name: 'Ração Premium', quantity: 1 },
+  },
+   {
+    id: 'food_biscuit',
+    name: 'Biscoito da Sorte',
+    description: 'Um biscoito delicioso que dá um bônus de XP para seu filhote.',
+    price: 300,
+    isRealMoney: false,
+    imageUrl: 'https://images.unsplash.com/photo-1623826063426-369de1219b16?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwZXQlMjB0cmVhdHN8ZW58MHx8fHwxNzU2OTE3MjkzfDA&ixlib=rb-4.1.0&q=80&w=1080',
+    aiHint: 'pet treats',
+    icon: Bone,
+    reward: { type: 'item', id: 'food_biscuit', name: 'Biscoito da Sorte', quantity: 1 },
+  },
+  {
+    id: 'food_fruits',
+    name: 'Frutinhas Silvestres',
+    description: 'Um mix de frutas frescas e nutritivas. Um lanche saudável!',
+    price: 220,
+    isRealMoney: false,
+    imageUrl: 'https://images.unsplash.com/photo-1610922434032-936d39a349e5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxiZXJyaWVzfGVufDB8fHx8MTc1NjkxNzM1Nnww&ixlib=rb-4.1.0&q=80&w=1080',
+    aiHint: 'berries bowl',
+    icon: Apple,
+    reward: { type: 'item', id: 'food_fruits', name: 'Frutinhas Silvestres', quantity: 1 },
+  },
+  {
     id: 'coins_small',
     name: 'Pacote de Moedas Pequeno',
     description: 'Um punhado de moedas para começar sua jornada.',
     price: 'R$ 4,99',
+    isRealMoney: true,
     imageUrl: 'https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxtb2VkYXN8ZW58MHx8fHwxNzU2OTAyNTMxfDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'stack of coins',
     icon: Coins,
@@ -26,6 +60,7 @@ const storeItems = [
     name: 'Pacote de Moedas Médio',
     description: 'Uma boa quantidade de moedas para acelerar seu progresso.',
     price: 'R$ 19,99',
+    isRealMoney: true,
     imageUrl: 'https://images.unsplash.com/photo-1634108941345-3a6a66685563?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxM3x8bW9lZGFzfGVufDB8fHx8MTc1NjkwMjUzMXww&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'pile of gold',
     icon: Coins,
@@ -36,40 +71,11 @@ const storeItems = [
     name: 'Pacote de Moedas Grande',
     description: 'Muitas moedas! Compre os filhotes dos seus sonhos.',
     price: 'R$ 49,99',
+    isRealMoney: true,
     imageUrl: 'https://images.unsplash.com/photo-1599038988300-2e3f04d87f8b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxtdWl0YXMlMjBtb2VkYXMlMjB8ZW58MHx8fHwxNzU2OTAyNjQxfDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'treasure chest',
     icon: Coins,
     reward: { type: 'coins', amount: 7000 },
-  },
-  {
-    id: 'gem_pack',
-    name: 'Pacote de Gemas Raras',
-    description: 'Use gemas para adquirir itens exclusivos e filhotes lendários.',
-    price: 'R$ 99,99',
-    imageUrl: 'https://images.unsplash.com/photo-1673031288723-f198cd527b97?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxnZW1hcyUyMHJhcmFzfGVufDB8fHx8MTc1NjkwMjY5Mnww&ixlib=rb-4.1.0&q=80&w=1080',
-    aiHint: 'shiny gems',
-    icon: Gem,
-    reward: { type: 'item', name: 'Pacote de Gemas Raras' },
-  },
-  {
-    id: 'vip_pass',
-    name: 'Passe VIP Mensal',
-    description: 'Receba recompensas diárias exclusivas, descontos e mais.',
-    price: 'R$ 29,99/mês',
-    imageUrl: 'https://images.unsplash.com/photo-1625670413987-0ae649494c61?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzaW1ib2xvJTIwdmlwfGVufDB8fHx8MTc1NjkwMjc0M3ww&ixlib=rb-4.1.0&q=80&w=1080',
-    aiHint: 'gold ticket',
-    icon: Zap,
-    reward: { type: 'item', name: 'Passe VIP Mensal' },
-  },
-   {
-    id: 'special_item',
-    name: 'Coleira de Diamante',
-    description: 'Um item de luxo para o seu filhote mais especial. Mostre seu estilo!',
-    price: 'R$ 79,99',
-    imageUrl: 'https://images.unsplash.com/photo-1568400738102-646ec2a3c3f8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxOXx8Y29sZWlyYSUyMGRlJTIwZGlhbWFudGUlMjB8ZW58MHx8fHwxNzU2OTAyNzk0fDA&ixlib=rb-4.1.0&q=80&w=1080',
-    aiHint: 'diamond collar',
-    icon: Gem,
-    reward: { type: 'item', name: 'Coleira de Diamante' },
   },
 ];
 
@@ -77,13 +83,32 @@ type StoreItem = typeof storeItems[0];
 
 export default function LojaPage() {
   const { toast } = useToast();
-  const { addCoins } = usePlayer();
+  const { coins, addCoins, addItemToInventory } = usePlayer();
   const [selectedItem, setSelectedItem] = useState<StoreItem | null>(null);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
   const handlePurchase = (item: StoreItem) => {
-    setSelectedItem(item);
-    setIsPaymentModalOpen(true);
+    if (item.isRealMoney) {
+        setSelectedItem(item);
+        setIsPaymentModalOpen(true);
+    } else {
+        if (coins >= (item.price as number)) {
+            addCoins(-(item.price as number));
+            if (item.reward.type === 'item') {
+                addItemToInventory(item.reward.id, item.reward.name, item.reward.quantity);
+            }
+            toast({
+                title: 'Compra realizada com sucesso!',
+                description: `Você adquiriu: ${item.name}`,
+            });
+        } else {
+            toast({
+                title: 'Moedas Insuficientes!',
+                description: `Você precisa de mais ${item.price as number - coins} moedas.`,
+                variant: 'destructive'
+            });
+        }
+    }
   };
 
   const handleConfirmPayment = () => {
@@ -139,7 +164,12 @@ export default function LojaPage() {
                   </CardContent>
                   <CardFooter className="p-4 pt-0 mt-auto">
                       <Button onClick={() => handlePurchase(item)} className="w-full bg-primary text-primary-foreground hover:bg-primary/90 text-lg font-bold">
-                          Comprar por {item.price}
+                          {item.isRealMoney ? `Comprar por ${item.price}` : (
+                              <div className="flex items-center gap-2">
+                                  <Coins className="h-5 w-5" />
+                                  <span>{item.price}</span>
+                              </div>
+                          )}
                       </Button>
                   </CardFooter>
                 </Card>
@@ -183,5 +213,3 @@ export default function LojaPage() {
     </>
   );
 }
-
-    
