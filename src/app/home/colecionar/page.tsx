@@ -40,6 +40,36 @@ const houses = [
     imageUrl: 'https://picsum.photos/seed/house5/600/400',
     aiHint: 'luxury mansion',
   },
+  {
+    id: '6',
+    name: 'Iglu de Neve',
+    imageUrl: 'https://picsum.photos/seed/house6/600/400',
+    aiHint: 'snow igloo',
+  },
+  {
+    id: '7',
+    name: 'Casa na Árvore',
+    imageUrl: 'https://picsum.photos/seed/house7/600/400',
+    aiHint: 'tree house',
+  },
+  {
+    id: '8',
+    name: 'Castelo Mágico',
+    imageUrl: 'https://picsum.photos/seed/house8/600/400',
+    aiHint: 'magic castle',
+  },
+  {
+    id: '9',
+    name: 'Casa Subaquática',
+    imageUrl: 'https://picsum.photos/seed/house9/600/400',
+    aiHint: 'underwater house',
+  },
+  {
+    id: '10',
+    name: 'Nave Espacial',
+    imageUrl: 'https://picsum.photos/seed/house10/600/400',
+    aiHint: 'space ship',
+  },
 ];
 
 export default function ColecionarPage() {
