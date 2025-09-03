@@ -6,7 +6,7 @@ import { useParams, notFound } from 'next/navigation';
 import { houses } from '@/lib/houses';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowLeft, Home, PawPrint, Star, Bath, Utensils, Bed, Sofa, Bone, Gem } from 'lucide-react';
+import { ArrowLeft, Home, PawPrint, Star, Bath, Utensils, Bed, Sofa, Bone, Gem, ArrowUp, ArrowDown, ArrowLeft as ArrowLeftIcon, ArrowRight } from 'lucide-react';
 import {
   Card,
   CardContent,
@@ -43,7 +43,9 @@ export default function HousePage() {
   const { level, xp, xpToNextLevel, ownedPets, addXp, gems } = usePlayer();
 
   const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
-  const [petLocations, setPetLocations] = useState<Record<string, string | null>>({});
+  type PetLocationInfo = { petId: string | null; position: { x: number, y: number }};
+  const [petLocations, setPetLocations] = useState<Record<string, PetLocationInfo>>({});
+  const [activeTab, setActiveTab] = useState('living-room');
 
   if (!house) {
     notFound();
@@ -52,10 +54,10 @@ export default function HousePage() {
   const xpPercentage = (xp / xpToNextLevel) * 100;
 
   const rooms = [
-    { name: 'Sala de Estar', id: 'living-room', icon: Sofa, hint: 'living room', imageUrl: 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzYWxhJTIwZGUlMjBlc3RhcnxlbnwwfHx8fDE3NTY5MDM5Nzl8MA&ixlib=rb-4.1.0&q=80&w=1080', petPosition: 'bottom-8 left-12', animation: 'animate-pulse-slow' },
-    { name: 'Cozinha', id: 'kitchen', icon: Utensils, hint: 'kitchen', imageUrl: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjb3ppbmhhJTIwfGVufDB8fHx8MTc1NjkwNDA1Mnww&ixlib=rb-4.1.0&q=80&w=1080', petPosition: 'bottom-10 right-1/4', animation: 'animate-wiggle' },
-    { name: 'Quarto', id: 'bedroom', icon: Bed, hint: 'bedroom', imageUrl: 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxM3x8cXVhcnRvJTIwfGVufDB8fHx8MTc1NjkwNDEzMXww&ixlib=rb-4.1.0&q=80&w=1080', petPosition: 'bottom-5 right-10', animation: 'animate-bounce-slow' },
-    { name: 'Banheiro', id: 'bathroom', icon: Bath, hint: 'bathroom', imageUrl: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxiYW5oZWlybyUyMHxlbnwwfHx8fDE3NTY5MDQxODl8MA&ixlib=rb-4.1.0&q=80&w=1080', petPosition: 'bottom-1/4 left-1/3', animation: 'animate-side-to-side' },
+    { name: 'Sala de Estar', id: 'living-room', icon: Sofa, hint: 'living room', imageUrl: 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzYWxhJTIwZGUlMjBlc3RhcnxlbnwwfHx8fDE3NTY5MDM5Nzl8MA&ixlib=rb-4.1.0&q=80&w=1080', animation: 'animate-pulse-slow' },
+    { name: 'Cozinha', id: 'kitchen', icon: Utensils, hint: 'kitchen', imageUrl: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjb3ppbmhhJTIwfGVufDB8fHx8MTc1NjkwNDA1Mnww&ixlib=rb-4.1.0&q=80&w=1080', animation: 'animate-wiggle' },
+    { name: 'Quarto', id: 'bedroom', icon: Bed, hint: 'bedroom', imageUrl: 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxM3x8cXVhcnRvJTIwfGVufDB8fHx8MTc1NjkwNDEzMXww&ixlib=rb-4.1.0&q=80&w=1080', animation: 'animate-bounce-slow' },
+    { name: 'Banheiro', id: 'bathroom', icon: Bath, hint: 'bathroom', imageUrl: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxiYW5oZWlybyUyMHxlbnwwfHx8fDE3NTY5MDQxODl8MA&ixlib=rb-4.1.0&q=80&w=1080', animation: 'animate-side-to-side' },
   ];
 
   const selectedPet = ownedPets.find(p => p.id === selectedPetId);
@@ -66,22 +68,46 @@ export default function HousePage() {
         const newLocations = { ...prev };
         // Remove pet from previous room if it exists
         Object.keys(newLocations).forEach(key => {
-          if (newLocations[key] === selectedPetId) {
-            newLocations[key] = null;
+          if (newLocations[key]?.petId === selectedPetId) {
+            newLocations[key] = { petId: null, position: { x: 50, y: 50 } };
           }
         });
-        // Place pet in new room
-        newLocations[roomId] = selectedPetId;
+        // Place pet in new room in a default position
+        newLocations[roomId] = { petId: selectedPetId, position: { x: 50, y: 70 } };
         return newLocations;
       });
       addXp(10); // Ganha 10 XP por mover um filhote
     }
   }
+
+  const handleMovePet = (roomId: string, direction: 'up' | 'down' | 'left' | 'right') => {
+    setPetLocations(prev => {
+        const currentLocation = prev[roomId];
+        if (!currentLocation || !currentLocation.petId) return prev;
+
+        const newPosition = { ...currentLocation.position };
+        const step = 5; // Move 5% of the container
+
+        switch(direction) {
+            case 'up': newPosition.y = Math.max(0, newPosition.y - step); break;
+            case 'down': newPosition.y = Math.min(100, newPosition.y + step); break;
+            case 'left': newPosition.x = Math.max(0, newPosition.x - step); break;
+            case 'right': newPosition.x = Math.min(100, newPosition.x + step); break;
+        }
+
+        addXp(2); // Earn 2 XP for moving the pet
+
+        return {
+            ...prev,
+            [roomId]: { ...currentLocation, position: newPosition }
+        };
+    });
+  }
   
   const petInRoom = (roomId: string): Pet | undefined => {
-    const petId = petLocations[roomId];
-    if (!petId) return undefined;
-    return ownedPets.find(p => p.id === petId);
+    const locationInfo = petLocations[roomId];
+    if (!locationInfo?.petId) return undefined;
+    return ownedPets.find(p => p.id === locationInfo.petId);
   }
 
   return (
@@ -161,7 +187,7 @@ export default function HousePage() {
             )}
           </CardHeader>
           <CardContent className="p-4 md:p-6">
-             <Tabs defaultValue="living-room" className="w-full">
+             <Tabs defaultValue="living-room" className="w-full" onValueChange={setActiveTab}>
               <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-auto">
                  {rooms.map((room) => (
                   <TabsTrigger key={room.id} value={room.id} className="flex gap-2 items-center text-xs md:text-sm">
@@ -172,8 +198,8 @@ export default function HousePage() {
               </TabsList>
 
               {rooms.map((room) => (
-                <TabsContent key={room.id} value={room.id}>
-                    <div className="relative aspect-video w-full mt-4 rounded-lg overflow-hidden border">
+                <TabsContent key={room.id} value={room.id} className="mt-4">
+                    <div className="relative aspect-video w-full rounded-lg overflow-hidden border">
                       <Image
                         src={room.imageUrl}
                         alt={`Interior da ${house.name} - ${room.name}`}
@@ -182,7 +208,15 @@ export default function HousePage() {
                         data-ai-hint={`${house.aiHint} ${room.hint}`}
                       />
                       {petInRoom(room.id) && (
-                        <div className={cn("absolute w-24 h-24 drop-shadow-lg", room.petPosition, room.animation)}>
+                        <div 
+                          className={cn("absolute w-24 h-24 drop-shadow-lg", room.animation)}
+                          style={{
+                              left: `${petLocations[room.id]?.position.x}%`,
+                              top: `${petLocations[room.id]?.position.y}%`,
+                              transform: 'translate(-50%, -50%)',
+                              transition: 'left 0.3s ease, top 0.3s ease',
+                          }}
+                        >
                            <Image 
                             src={petInRoom(room.id)!.imageUrl} 
                             alt={petInRoom(room.id)!.name} 
@@ -199,6 +233,19 @@ export default function HousePage() {
                 </TabsContent>
               ))}
             </Tabs>
+             {petInRoom(activeTab) && (
+                <div className="mt-4 flex justify-center items-center gap-2">
+                    <p className="text-sm text-muted-foreground mr-4">Mova seu filhote (2 XP por clique):</p>
+                    <Button variant="outline" size="icon" onClick={() => handleMovePet(activeTab, 'up')}><ArrowUp className="h-4 w-4" /></Button>
+                    <div className="flex flex-col gap-1">
+                        <Button variant="outline" size="icon" onClick={() => handleMovePet(activeTab, 'left')}><ArrowLeftIcon className="h-4 w-4" /></Button>
+                    </div>
+                     <div className="flex flex-col gap-1">
+                        <Button variant="outline" size="icon" onClick={() => handleMovePet(activeTab, 'right')}><ArrowRight className="h-4 w-4" /></Button>
+                    </div>
+                    <Button variant="outline" size="icon" onClick={() => handleMovePet(activeTab, 'down')}><ArrowDown className="h-4 w-4" /></Button>
+                </div>
+            )}
           </CardContent>
           <CardFooter className="flex justify-center bg-muted/20 p-6">
             <Button asChild size="lg">
