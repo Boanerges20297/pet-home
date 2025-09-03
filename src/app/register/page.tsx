@@ -8,8 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ArrowLeft, CheckCircle } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 const initialPets = {
@@ -34,13 +33,13 @@ const initialPets = {
 }
 
 export default function RegisterPage() {
-  const [selectedPet, setSelectedPet] = useState<'dog' | 'cat' | null>(null);
   const [username, setUsername] = useState('');
   const router = useRouter();
 
   const handleCreateAccount = () => {
-    if (typeof window !== 'undefined' && selectedPet && username) {
-        localStorage.setItem('initialPet', JSON.stringify(initialPets[selectedPet]));
+    if (typeof window !== 'undefined' && username) {
+        // Automatically give the user a dog
+        localStorage.setItem('initialPet', JSON.stringify(initialPets.dog));
         localStorage.setItem('username', username);
     }
     router.push('/home');
@@ -84,32 +83,12 @@ export default function RegisterPage() {
               <Label htmlFor="password">Senha</Label>
               <Input id="password" type="password" placeholder="Crie uma senha forte" />
             </div>
-            <div className="space-y-4 pt-4">
-                <Label className="text-center block">Escolha seu primeiro filhote!</Label>
-                <div className="grid grid-cols-2 gap-4">
-                    <Card onClick={() => setSelectedPet('dog')} className={cn("cursor-pointer transition-all", selectedPet === 'dog' ? 'ring-2 ring-primary' : 'hover:shadow-md')}>
-                        <CardContent className="p-2 relative">
-                             {selectedPet === 'dog' && <CheckCircle className="absolute top-2 right-2 h-5 w-5 text-primary" />}
-                            <Image src={initialPets.dog.imageUrl} alt="Cachorro" width={200} height={200} className="rounded-md object-cover aspect-square"/>
-                        </CardContent>
-                        <CardFooter className="p-2 justify-center">
-                            <p className="font-medium">Cachorro</p>
-                        </CardFooter>
-                    </Card>
-                     <Card onClick={() => setSelectedPet('cat')} className={cn("cursor-pointer transition-all", selectedPet === 'cat' ? 'ring-2 ring-primary' : 'hover:shadow-md')}>
-                        <CardContent className="p-2 relative">
-                             {selectedPet === 'cat' && <CheckCircle className="absolute top-2 right-2 h-5 w-5 text-primary" />}
-                            <Image src={initialPets.cat.imageUrl} alt="Gato" width={200} height={200} className="rounded-md object-cover aspect-square"/>
-                        </CardContent>
-                         <CardFooter className="p-2 justify-center">
-                            <p className="font-medium">Gato</p>
-                        </CardFooter>
-                    </Card>
-                </div>
-            </div>
+             <p className="text-sm text-center text-muted-foreground pt-4">
+                Ao criar sua conta, você receberá um cachorro como seu primeiro amigo!
+            </p>
           </CardContent>
           <CardFooter className="flex flex-col gap-4">
-            <Button onClick={handleCreateAccount} className="w-full" size="lg" disabled={!selectedPet || !username}>
+            <Button onClick={handleCreateAccount} className="w-full" size="lg" disabled={!username}>
               Criar Conta e Começar
             </Button>
           </CardFooter>
