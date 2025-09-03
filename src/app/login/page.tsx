@@ -49,7 +49,7 @@ export default function LoginPage() {
             </Button>
              <p className="text-sm text-muted-foreground">
                 Não tem uma conta?{' '}
-                <Link href="#" className="font-medium text-primary underline-offset-4 hover:underline">
+                <Link href="/register" className="font-medium text-primary underline-offset-4 hover:underline">
                     Criar uma conta
                 </Link>
             </p>
