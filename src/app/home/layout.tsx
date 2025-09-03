@@ -18,7 +18,7 @@ import {
   SidebarSeparator,
 } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
-import { PlayerProvider } from '@/context/PlayerContext';
+import { PlayerProvider, usePlayer } from '@/context/PlayerContext';
 import { Toaster } from '@/components/ui/toaster';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -29,9 +29,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Badge } from '@/components/ui/badge';
 
 
-export default function HomeLayout({ children }: { children: ReactNode }) {
+function UserProfile() {
   const [username, setUsername] = useState<string | null>(null);
 
   useEffect(() => {
@@ -54,130 +55,147 @@ export default function HomeLayout({ children }: { children: ReactNode }) {
   }, []);
 
   return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="secondary" size="icon" className="rounded-full">
+          <Avatar>
+            <AvatarFallback>{username ? username.charAt(0).toUpperCase() : 'U'}</AvatarFallback>
+          </Avatar>
+          <span className="sr-only">Toggle user menu</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>{username ? username : 'Minha Conta'}</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+            <Link href="/home/settings">
+              <Settings className="mr-2" />
+              Configurações
+            </Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <Link href="/">
+              <LogOut className="mr-2" />
+              Sair
+            </Link>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
+function MainSidebar() {
+    const { ownedPets } = usePlayer();
+
+    return (
+      <Sidebar>
+        <SidebarHeader>
+          <div className="flex items-center gap-2 p-2">
+            <Link href="/home" className="flex items-center gap-2">
+              <PawPrint className="h-8 w-8 text-primary" />
+              <h2 className="font-headline text-2xl text-foreground">Pequenos Grandes Filhotes</h2>
+            </Link>
+          </div>
+        </SidebarHeader>
+        <SidebarContent>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild tooltip="Ver filhotes à venda">
+                <Link href="/home">
+                  <PawPrint />
+                  <span>Filhotes à Venda</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+              <SidebarMenuItem>
+              <SidebarMenuButton asChild tooltip="Ver sua coleção de filhotes">
+                <Link href="/home/minha-colecao" className="flex justify-between w-full">
+                    <div className="flex items-center gap-2">
+                        <FolderHeart />
+                        <span>Minha Coleção</span>
+                    </div>
+                   {ownedPets.length > 0 && <Badge className="h-6 w-6 flex items-center justify-center p-0">{ownedPets.length}</Badge>}
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild tooltip="Visitar a loja">
+                <Link href="/home/loja">
+                  <ShoppingCart />
+                  <span>Loja</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild tooltip="Coletar prêmios diários">
+                <Link href="/home/premios-diarios">
+                  <Gift />
+                  <span>Prêmios Diários</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild tooltip="Escolha um lar para seu filhote">
+                <Link href="/home/colecionar">
+                  <Home />
+                  <span>Lares para seu Filhote</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild tooltip="Passear com seu filhote">
+                <Link href="/home/passear">
+                  <Dog />
+                  <span>Passear com seu Filhote</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild tooltip="Interagir com seu filhote">
+                <Link href="/home/interagir">
+                  <HandHeart />
+                  <span>Interagir com seu Filhote</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild tooltip="Teste seus conhecimentos">
+                <Link href="/home/quiz">
+                  <BrainCircuit />
+                  <span>Quiz</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarContent>
+        <SidebarFooter>
+          <SidebarSeparator />
+          <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild tooltip="Voltar para a página inicial">
+                      <Link href="/">
+                          <LogOut />
+                          <span>Sair do Jogo</span>
+                      </Link>
+                  </SidebarMenuButton>
+              </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarFooter>
+      </Sidebar>
+    )
+}
+
+export default function HomeLayout({ children }: { children: ReactNode }) {
+  return (
     <PlayerProvider>
       <SidebarProvider>
-        <Sidebar>
-          <SidebarHeader>
-            <div className="flex items-center gap-2 p-2">
-              <Link href="/home" className="flex items-center gap-2">
-                <PawPrint className="h-8 w-8 text-primary" />
-                <h2 className="font-headline text-2xl text-foreground">Pequenos Grandes Filhotes</h2>
-              </Link>
-            </div>
-          </SidebarHeader>
-          <SidebarContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Ver filhotes à venda">
-                  <Link href="/home">
-                    <PawPrint />
-                    <span>Filhotes à Venda</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-               <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Ver sua coleção de filhotes">
-                  <Link href="/home/minha-colecao">
-                    <FolderHeart />
-                    <span>Minha Coleção</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Visitar a loja">
-                  <Link href="/home/loja">
-                    <ShoppingCart />
-                    <span>Loja</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Coletar prêmios diários">
-                  <Link href="/home/premios-diarios">
-                    <Gift />
-                    <span>Prêmios Diários</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Escolha um lar para seu filhote">
-                  <Link href="/home/colecionar">
-                    <Home />
-                    <span>Lares para seu Filhote</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Passear com seu filhote">
-                  <Link href="/home/passear">
-                    <Dog />
-                    <span>Passear com seu Filhote</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Interagir com seu filhote">
-                  <Link href="/home/interagir">
-                    <HandHeart />
-                    <span>Interagir com seu Filhote</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Teste seus conhecimentos">
-                  <Link href="/home/quiz">
-                    <BrainCircuit />
-                    <span>Quiz</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarContent>
-          <SidebarFooter>
-            <SidebarSeparator />
-            <SidebarMenu>
-                 <SidebarMenuItem>
-                    <SidebarMenuButton asChild tooltip="Voltar para a página inicial">
-                        <Link href="/">
-                            <LogOut />
-                            <span>Sair do Jogo</span>
-                        </Link>
-                    </SidebarMenuButton>
-                </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarFooter>
-        </Sidebar>
+        <MainSidebar />
         <SidebarInset>
           <header className="flex h-14 items-center gap-4 border-b bg-background px-4 lg:h-[60px] lg:px-6">
             <SidebarTrigger className="md:hidden" />
             <div className="w-full flex-1" />
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="secondary" size="icon" className="rounded-full">
-                  <Avatar>
-                    <AvatarFallback>{username ? username.charAt(0).toUpperCase() : 'U'}</AvatarFallback>
-                  </Avatar>
-                  <span className="sr-only">Toggle user menu</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>{username ? username : 'Minha Conta'}</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                    <Link href="/home/settings">
-                      <Settings className="mr-2" />
-                      Configurações
-                    </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                 <DropdownMenuItem asChild>
-                    <Link href="/">
-                      <LogOut className="mr-2" />
-                      Sair
-                    </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <UserProfile />
           </header>
           {children}
            <Toaster />
