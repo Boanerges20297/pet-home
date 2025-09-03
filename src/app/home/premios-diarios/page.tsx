@@ -1,10 +1,11 @@
 
 "use client";
 
-import { useState } from 'react';
+import { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Coins, Gift, CheckCircle2 } from 'lucide-react';
+import { usePlayer } from '@/context/PlayerContext';
 
 const generateRewards = (days: number) => {
   return Array.from({ length: days }, (_, i) => {
@@ -24,17 +25,13 @@ const generateRewards = (days: number) => {
   });
 };
 
-const dailyRewards = generateRewards(90);
-
 export default function DailyRewardsPage() {
-  const [currentDay, setCurrentDay] = useState(1);
-  const [collectedDays, setCollectedDays] = useState<number[]>([]);
+  const { currentDay, collectedDays, collectReward } = usePlayer();
+  
+  const dailyRewards = useMemo(() => generateRewards(90), []);
 
-  const handleCollect = (day: number) => {
-    if (day === currentDay) {
-      setCollectedDays([...collectedDays, day]);
-      setCurrentDay(currentDay + 1);
-    }
+  const handleCollect = (day: number, reward: number) => {
+    collectReward(day, reward);
   };
 
   const isCollected = (day: number) => collectedDays.includes(day);
@@ -81,7 +78,7 @@ export default function DailyRewardsPage() {
                   </CardContent>
                   <CardFooter className="p-2 w-full">
                     <Button 
-                      onClick={() => handleCollect(item.day)}
+                      onClick={() => handleCollect(item.day, item.reward)}
                       disabled={!canCollect} 
                       className="w-full bg-accent text-accent-foreground hover:bg-accent/90 disabled:bg-muted disabled:text-muted-foreground"
                     >

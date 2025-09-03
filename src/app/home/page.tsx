@@ -1,7 +1,11 @@
+
+"use client";
+
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search, Coins } from 'lucide-react';
 import { PetCard, type Pet } from '@/components/PetCard';
+import { usePlayer } from '@/context/PlayerContext';
 
 const featuredPets: Pet[] = [
   {
@@ -116,13 +120,15 @@ const featuredPets: Pet[] = [
 
 
 export default function HomePage() {
+  const { coins } = usePlayer();
+  
   return (
     <main className="flex-1 overflow-y-auto p-4 md:p-8">
       <div className="mx-auto max-w-6xl">
         <section className="mb-12">
           <div className="flex justify-end items-center gap-2 mb-4 text-yellow-500">
             <Coins className="h-10 w-10" />
-            <span className="font-headline text-4xl text-foreground">0</span>
+            <span className="font-headline text-4xl text-foreground">{coins}</span>
           </div>
           <div className="text-center">
             <h1 className="font-headline text-4xl md:text-5xl text-primary mb-4">
