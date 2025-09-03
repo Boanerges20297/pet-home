@@ -156,8 +156,9 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
         toastDescription = `Você ganhou: ${reward.item.name}!`;
       }
 
-      setCollectedDays(prev => [...prev, day]);
-      setCurrentDay(prev => prev + 1); // Only advance the day after collecting
+      const newCollectedDays = [...collectedDays, day];
+      setCollectedDays(newCollectedDays);
+      setCurrentDay(day + 1); // Advance the day only after collecting
       addXp(25); // Ganha 25 XP por coletar o prêmio diário
       
        toast({
