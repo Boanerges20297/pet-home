@@ -27,7 +27,7 @@ const calculateXpToNextLevel = (level: number) => 100 * level * 1.5;
 
 export const PlayerProvider = ({ children }: { children: ReactNode }) => {
   const { toast } = useToast();
-  const [coins, setCoins] = useState(1000); // Começar com moedas para testar
+  const [coins, setCoins] = useState(0); // Começar com moedas para testar
   const [gems, setGems] = useState(0);
   const [level, setLevel] = useState(1);
   const [xp, setXp] = useState(0);
