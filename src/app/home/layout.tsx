@@ -46,7 +46,7 @@ export default function HomeLayout({ children }: { children: ReactNode }) {
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Coletar prêmios diários">
-                <Link href="#">
+                <Link href="/home/premios-diarios">
                   <Gift />
                   <span>Prêmios Diários</span>
                 </Link>
