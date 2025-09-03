@@ -1,3 +1,4 @@
+
 import type {Config} from 'tailwindcss';
 
 export default {
@@ -88,10 +89,30 @@ export default {
             height: '0',
           },
         },
+        'pulse-slow': {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.05)' },
+        },
+        'bounce-slow': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-5px)' },
+        },
+        'wiggle': {
+          '0%, 100%': { transform: 'rotate(-3deg)' },
+          '50%': { transform: 'rotate(3deg)' },
+        },
+        'side-to-side': {
+            '0%, 100%': { transform: 'translateX(-5px)' },
+            '50%': { transform: 'translateX(5px)' },
+        }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'pulse-slow': 'pulse-slow 3s infinite ease-in-out',
+        'bounce-slow': 'bounce-slow 2.5s infinite ease-in-out',
+        'wiggle': 'wiggle 2s infinite ease-in-out',
+        'side-to-side': 'side-to-side 2.5s infinite ease-in-out',
       },
     },
   },

@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/select"
 import { useState } from 'react';
 import type { Pet } from '@/components/PetCard';
+import { cn } from '@/lib/utils';
 
 
 export default function HousePage() {
@@ -51,10 +52,10 @@ export default function HousePage() {
   const xpPercentage = (xp / xpToNextLevel) * 100;
 
   const rooms = [
-    { name: 'Sala de Estar', id: 'living-room', icon: Sofa, hint: 'living room', imageUrl: 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzYWxhJTIwZGUlMjBlc3RhcnxlbnwwfHx8fDE3NTY5MDM5Nzl8MA&ixlib=rb-4.1.0&q=80&w=1080' },
-    { name: 'Cozinha', id: 'kitchen', icon: Utensils, hint: 'kitchen', imageUrl: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjb3ppbmhhJTIwfGVufDB8fHx8MTc1NjkwNDA1Mnww&ixlib=rb-4.1.0&q=80&w=1080' },
-    { name: 'Quarto', id: 'bedroom', icon: Bed, hint: 'bedroom', imageUrl: 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxM3x8cXVhcnRvJTIwfGVufDB8fHx8MTc1NjkwNDEzMXww&ixlib=rb-4.1.0&q=80&w=1080' },
-    { name: 'Banheiro', id: 'bathroom', icon: Bath, hint: 'bathroom', imageUrl: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxiYW5oZWlybyUyMHxlbnwwfHx8fDE3NTY5MDQxODl8MA&ixlib=rb-4.1.0&q=80&w=1080' },
+    { name: 'Sala de Estar', id: 'living-room', icon: Sofa, hint: 'living room', imageUrl: 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzYWxhJTIwZGUlMjBlc3RhcnxlbnwwfHx8fDE3NTY5MDM5Nzl8MA&ixlib=rb-4.1.0&q=80&w=1080', petPosition: 'bottom-8 left-12', animation: 'animate-pulse-slow' },
+    { name: 'Cozinha', id: 'kitchen', icon: Utensils, hint: 'kitchen', imageUrl: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjb3ppbmhhJTIwfGVufDB8fHx8MTc1NjkwNDA1Mnww&ixlib=rb-4.1.0&q=80&w=1080', petPosition: 'bottom-10 right-1/4', animation: 'animate-wiggle' },
+    { name: 'Quarto', id: 'bedroom', icon: Bed, hint: 'bedroom', imageUrl: 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxM3x8cXVhcnRvJTIwfGVufDB8fHx8MTc1NjkwNDEzMXww&ixlib=rb-4.1.0&q=80&w=1080', petPosition: 'bottom-5 right-10', animation: 'animate-bounce-slow' },
+    { name: 'Banheiro', id: 'bathroom', icon: Bath, hint: 'bathroom', imageUrl: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxiYW5oZWlybyUyMHxlbnwwfHx8fDE3NTY5MDQxODl8MA&ixlib=rb-4.1.0&q=80&w=1080', petPosition: 'bottom-1/4 left-1/3', animation: 'animate-side-to-side' },
   ];
 
   const selectedPet = ownedPets.find(p => p.id === selectedPetId);
@@ -181,12 +182,12 @@ export default function HousePage() {
                         data-ai-hint={`${house.aiHint} ${room.hint}`}
                       />
                       {petInRoom(room.id) && (
-                        <div className="absolute bottom-5 right-5 w-24 h-24 drop-shadow-lg">
+                        <div className={cn("absolute w-24 h-24 drop-shadow-lg", room.petPosition, room.animation)}>
                            <Image 
                             src={petInRoom(room.id)!.imageUrl} 
                             alt={petInRoom(room.id)!.name} 
-                            fill 
-                            style={{objectFit:"contain"}} 
+                            fill
+                            style={{objectFit:"contain"}}
                            />
                         </div>
                       )}
