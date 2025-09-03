@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
-import { PawPrint, Search, ShoppingCart, Gamepad2, PackagePlus } from 'lucide-react';
+import { PawPrint, Search, ShoppingCart, Gift, PackagePlus } from 'lucide-react';
 import {
   SidebarProvider,
   Sidebar,
@@ -45,10 +45,10 @@ export default function HomeLayout({ children }: { children: ReactNode }) {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Jogar minigames">
+              <SidebarMenuButton asChild tooltip="Coletar prêmios diários">
                 <Link href="#">
-                  <Gamepad2 />
-                  <span>Minigames</span>
+                  <Gift />
+                  <span>Prêmios Diários</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
