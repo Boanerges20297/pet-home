@@ -4,7 +4,7 @@
 import { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Coins, Gift, CheckCircle2, Gem, Bone, Beef, Apple } from 'lucide-react';
+import { Coins, Gift, CheckCircle2, Gem, Bone, Beef, Apple, Utensils } from 'lucide-react';
 import { usePlayer } from '@/context/PlayerContext';
 import type { PlayerItem } from '@/context/PlayerContext';
 
@@ -68,6 +68,7 @@ export default function DailyRewardsPage() {
       if (reward.item.id.includes('biscuit')) return <Bone className="h-5 w-5 text-yellow-600" />;
       if (reward.item.id.includes('premium')) return <Beef className="h-5 w-5 text-red-600" />;
       if (reward.item.id.includes('fruits')) return <Apple className="h-5 w-5 text-green-600" />;
+      return <Utensils className="h-5 w-5 text-muted-foreground" />;
     }
     return <Gift className="h-5 w-5" />;
   }
