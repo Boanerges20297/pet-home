@@ -55,7 +55,7 @@ const storeItems = [
     name: 'Coleira de Diamante',
     description: 'Um item de luxo para o seu filhote mais especial. Mostre seu estilo!',
     price: 'R$ 79,99',
-    imageUrl: 'https://picsum.photos/seed/collar/400/300',
+    imageUrl: 'https://images.unsplash.com/photo-1568400738102-646ec2a3c3f8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxOXx8Y29sZWlyYSUyMGRlJTIwZGlhbWFudGUlMjB8ZW58MHx8fHwxNzU2OTAyNzk0fDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'diamond collar',
     icon: Gem,
   },
