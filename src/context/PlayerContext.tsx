@@ -17,7 +17,7 @@ interface PlayerContextType {
   addCoins: (amount: number) => void;
   addGems: (amount: number) => void;
   addXp: (amount: number) => void;
-  collectReward: (day: number, reward: number) => void;
+  collectReward: (day: number, amount: number, type: 'coins' | 'gems') => void;
   buyPet: (pet: Pet) => boolean;
 }
 
@@ -63,12 +63,20 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
     });
   }, [level, xpToNextLevel]);
 
-  const collectReward = (day: number, reward: number) => {
-    if (day === currentDay) {
+  const collectReward = (day: number, amount: number, type: 'coins' | 'gems') => {
+    if (day === currentDay && !collectedDays.includes(day)) {
+      if (type === 'coins') {
+        addCoins(amount);
+      } else {
+        addGems(amount);
+      }
       setCollectedDays([...collectedDays, day]);
-      addCoins(reward);
       addXp(25); // Ganha 25 XP por coletar o prêmio diário
       setCurrentDay(currentDay + 1);
+       toast({
+        title: 'Recompensa Coletada!',
+        description: `Você ganhou ${amount} ${type === 'coins' ? 'moedas' : 'gemas'}!`,
+      });
     }
   };
 
