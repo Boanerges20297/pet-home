@@ -36,7 +36,7 @@ const featuredPets: Pet[] = [
     name: 'Fido',
     age: 'Nível 2',
     breed: 'Golden Retriever',
-    imageUrl: 'https://picsum.photos/seed/fido/400/400',
+    imageUrl: 'https://images.unsplash.com/photo-1689723671115-3133f055ad33?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyMHx8Y2FjaG9ycm8lMjBhZHVsdG98ZW58MHx8fHwxNzU2OTAwMDI5fDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'golden retriever',
     price: 400,
   },
