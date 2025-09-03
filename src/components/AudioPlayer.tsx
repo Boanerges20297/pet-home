@@ -10,12 +10,26 @@ export default function AudioPlayer() {
   const [isMuted, setIsMuted] = useState(true);
   const synth = useRef<Tone.Synth | null>(null);
   const loop = useRef<Tone.Loop | null>(null);
+  const isInitialized = useRef(false);
 
   useEffect(() => {
-    // Initialize synth on the client side
+    // Cleanup on unmount
+    return () => {
+      loop.current?.dispose();
+      synth.current?.dispose();
+      Tone.Transport.stop();
+      Tone.Transport.cancel();
+    };
+  }, []);
+
+  const initializeAudio = async () => {
+    if (isInitialized.current) return;
+    
+    await Tone.start();
+    
     synth.current = new Tone.Synth({
       oscillator: {
-        type: 'triangle8' // A softer, more pleasant sound
+        type: 'triangle8'
       },
       envelope: {
         attack: 0.02,
@@ -25,7 +39,6 @@ export default function AudioPlayer() {
       }
     }).toDestination();
     
-    // A calmer, more melodic sequence
     const notes = [
       'C4', 'E4', 'G4', 'C5', 
       'A4', 'G4', 'E4', 'D4',
@@ -40,21 +53,16 @@ export default function AudioPlayer() {
         synth.current.triggerAttackRelease(note, '8n', time);
         noteIndex++;
       }
-    }, '4n').start(0); // Play a note every quarter note
+    }, '4n');
 
-    // Mute by default
-    Tone.Destination.mute = true;
-
-    return () => {
-      // Cleanup on unmount
-      loop.current?.dispose();
-      synth.current?.dispose();
-    };
-  }, []);
+    Tone.Transport.start();
+    loop.current.start(0);
+    isInitialized.current = true;
+  };
 
   const toggleMute = async () => {
-    if (Tone.context.state !== 'running') {
-      await Tone.start();
+    if (!isInitialized.current) {
+      await initializeAudio();
     }
     
     const newMutedState = !isMuted;
