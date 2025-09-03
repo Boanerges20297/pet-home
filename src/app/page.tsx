@@ -1,35 +1,52 @@
+
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowDown } from 'lucide-react';
-import AudioPlayer from '@/components/AudioPlayer';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
-export default function Home() {
+export default function LoginPage() {
   return (
-    <div className="relative flex min-h-screen w-full flex-col items-center justify-center bg-background text-foreground overflow-hidden">
-      <AudioPlayer />
-      <div className="flex flex-col items-center justify-center gap-8 text-center p-4">
-        <div className="relative flex h-64 w-64 items-center justify-center rounded-full bg-primary/20 shadow-lg md:h-80 md:w-80">
-          <div className="h-60 w-60 overflow-hidden rounded-full shadow-inner md:h-72 md:w-72">
-            <Image
-              src="https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjYWNob3Jyb3xlbnwwfHx8fDE3NTY3MzY4MDh8MA&ixlib=rb-4.1.0&q=80&w=1080"
-              alt="Um filhote fofo para colecionar"
-              width={400}
-              height={400}
-              className="h-full w-full object-cover"
-              data-ai-hint="cute dog"
-              priority
-            />
-          </div>
-        </div>
-        <h1 className="font-headline text-5xl md:text-7xl text-accent">Pequenos Grandes Filhotes</h1>
-        <p className="max-w-md font-body text-lg text-muted-foreground">
-          Colecione, cuide e brinque com seus filhotes virtuais. Comece sua jornada agora!
-        </p>
+    <div className="relative flex min-h-screen w-full flex-col items-center justify-center bg-background text-foreground p-4">
+      <div className="w-full max-w-md">
+        <Card className="shadow-2xl">
+          <CardHeader className="items-center text-center">
+             <div className="relative mb-4 h-24 w-24">
+                <Image
+                    src="https://images.unsplash.com/photo-1599859556102-1833a691e8e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxsb2dvJTIwY29tJTIwZmlsaG90ZXxlbnwwfHx8fDE3NTY5MDk4MDV8MA&ixlib=rb-4.1.0&q=80&w=1080"
+                    alt="Logo do jogo Pequenos Grandes Filhotes"
+                    fill
+                    className="rounded-full object-cover"
+                    data-ai-hint="cute puppy logo"
+                />
+            </div>
+            <CardTitle className="font-headline text-4xl text-accent">Bem-vindo de volta!</CardTitle>
+            <CardDescription>Faça login para continuar sua aventura.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" placeholder="seuemail@exemplo.com" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Senha</Label>
+              <Input id="password" type="password" placeholder="Sua senha" />
+            </div>
+          </CardContent>
+          <CardFooter className="flex flex-col gap-4">
+            <Button asChild className="w-full" size="lg">
+                <Link href="/home">Entrar</Link>
+            </Button>
+             <p className="text-sm text-muted-foreground">
+                Não tem uma conta?{' '}
+                <Link href="#" className="font-medium text-primary underline-offset-4 hover:underline">
+                    Criar uma conta
+                </Link>
+            </p>
+          </CardFooter>
+        </Card>
       </div>
-      <Link href="/home" className="absolute bottom-10 animate-bounce" aria-label="Ir para a página inicial do jogo">
-        <ArrowDown className="h-10 w-10 text-accent" />
-        <span className="sr-only">Go to next page</span>
-      </Link>
     </div>
   );
 }
