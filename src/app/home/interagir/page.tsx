@@ -24,6 +24,14 @@ export default function InteragirPage() {
     const { toast } = useToast();
     const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
     const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+    const [interactionEffect, setInteractionEffect] = useState<'petting' | 'playing' | 'watering' | 'feeding' | null>(null);
+
+    const triggerInteractionEffect = (effect: 'petting' | 'playing' | 'watering' | 'feeding') => {
+        setInteractionEffect(effect);
+        setTimeout(() => {
+            setInteractionEffect(null);
+        }, 1500); // Animation duration
+    };
 
     const handleInteraction = useCallback((type: 'petting' | 'playing' | 'watering') => {
         if (!selectedPetId) {
@@ -33,6 +41,7 @@ export default function InteragirPage() {
 
         let xpAmount = 0;
         let message = '';
+        triggerInteractionEffect(type);
 
         switch (type) {
             case 'petting':
@@ -69,7 +78,7 @@ export default function InteragirPage() {
 
         const success = useItem(selectedItemId);
         if (success) {
-            // Toast is handled inside useItem
+            triggerInteractionEffect('feeding');
             setSelectedItemId(null); // Reset selection
         }
     };
@@ -83,6 +92,29 @@ export default function InteragirPage() {
         if (itemId.includes('food_fruits')) return <Apple className="h-5 w-5" />;
         return <Utensils className="h-5 w-5" />;
     };
+
+    const InteractionIcon = () => {
+        if (!interactionEffect) return null;
+
+        let icon;
+        switch (interactionEffect) {
+            case 'petting': icon = <Hand className="h-16 w-16 text-primary/80" />; break;
+            case 'playing': icon = <ToyBrick className="h-16 w-16 text-secondary-foreground/80" />; break;
+            case 'watering': icon = <GlassWater className="h-16 w-16 text-blue-400/80" />; break;
+            case 'feeding': 
+                const itemIcon = inventory.find(i => i.id === selectedItemId) ?? { id: 'food_biscuit' };
+                const feedingIcon = getIconForItem(selectedItemId ?? 'food_biscuit');
+                icon = <div className="h-16 w-16 text-yellow-600/80">{React.cloneElement(feedingIcon, { className: 'h-16 w-16' })}</div>;
+                break;
+            default: return null;
+        }
+
+        return (
+            <div className="absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-ping">
+                {icon}
+            </div>
+        );
+    }
 
 
   return (
@@ -120,18 +152,18 @@ export default function InteragirPage() {
             <div className="relative w-full h-80 flex items-center justify-center">
                 {selectedPet && (
                     <>
-                        <div className="relative z-10">
+                        <div className="relative z-10 w-52 h-52">
                             <Image 
                                 src={selectedPet.imageUrl}
                                 alt={selectedPet.name}
-                                width={200}
-                                height={200}
-                                className="object-contain drop-shadow-2xl rounded-full"
+                                fill
+                                className="object-contain drop-shadow-2xl"
                             />
                         </div>
-                        <div className="absolute z-0 -top-4 -right-12 md:top-10 md:right-1/4 transform -translate-x-1/2 -translate-y-1/2 opacity-50">
-                            <Hand className="h-48 w-48 text-primary/20" strokeWidth={1}/>
+                        <div className="absolute z-0 top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-10">
+                            <Hand className="h-64 w-64 text-primary" strokeWidth={1}/>
                         </div>
+                        <InteractionIcon />
                     </>
                 )}
                  {!selectedPet && (
