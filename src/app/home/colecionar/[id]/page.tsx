@@ -181,8 +181,13 @@ export default function HousePage() {
                         data-ai-hint={`${house.aiHint} ${room.hint}`}
                       />
                       {petInRoom(room.id) && (
-                        <div className="absolute bottom-5 right-5 w-24 h-24 transform -translate-x-1/2 -translate-y-1/2">
-                           <Image src={petInRoom(room.id)!.imageUrl} alt={petInRoom(room.id)!.name} fill style={{objectFit:"contain"}} className="drop-shadow-lg" />
+                        <div className="absolute bottom-5 right-5 w-24 h-24 drop-shadow-lg">
+                           <Image 
+                            src={petInRoom(room.id)!.imageUrl} 
+                            alt={petInRoom(room.id)!.name} 
+                            fill 
+                            style={{objectFit:"contain"}} 
+                           />
                         </div>
                       )}
                       <Button onClick={() => handlePlacePet(room.id)} disabled={!selectedPetId} className="absolute top-2 right-2">
@@ -207,3 +212,4 @@ export default function HousePage() {
     </main>
   );
 }
+
