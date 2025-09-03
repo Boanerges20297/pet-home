@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Input } from '@/components/ui/input';
@@ -15,7 +14,7 @@ const featuredPets: Pet[] = [
     breed: 'Husky Siberiano',
     imageUrl: 'https://images.unsplash.com/photo-1602936742009-0ef4d0ecf929?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjYWNob3JybyUyMGFkdWx0byUyMHxlbnwwfHx8fDE3NTY4MTk4MjB8MA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'siberian husky',
-    price: 500,
+    price: 150,
   },
   {
     id: '2',
@@ -24,7 +23,7 @@ const featuredPets: Pet[] = [
     breed: 'Labrador Retriever',
     imageUrl: 'https://images.unsplash.com/photo-1527778676396-eceba283ddfa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjYWNob3JybyUyMGZpbGhvdGUlMjB8ZW58MHx8fHwxNzU2ODE5NzYwfDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'labrador retriever',
-    price: 350,
+    price: 100,
   },
   {
     id: '3',
@@ -33,7 +32,7 @@ const featuredPets: Pet[] = [
     breed: 'Pug',
     imageUrl: 'https://images.unsplash.com/photo-1744907451349-c1ece07e6f3b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjYWNob3JybyUyMGRlJTIwNCUyMGFub3N8ZW58MHx8fHwxNzU2ODE5OTIwfDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'pug dog',
-    price: 800,
+    price: 250,
   },
   {
     id: '4',
@@ -42,7 +41,7 @@ const featuredPets: Pet[] = [
     breed: 'Golden Retriever',
     imageUrl: 'https://images.unsplash.com/photo-1689723671115-3133f055ad33?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyMHx8Y2FjaG9ycm8lMjBhZHVsdG98ZW58MHx8fHwxNzU2OTAwMDI5fDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'golden retriever',
-    price: 400,
+    price: 120,
   },
   {
     id: '5',
@@ -51,7 +50,7 @@ const featuredPets: Pet[] = [
     breed: 'Bulldog',
     imageUrl: 'https://images.unsplash.com/photo-1641069203366-12db9d0831d8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxmaWxob3RlJTIwZGUlMjBjYWNob3JybyUyMGRlJTIwJTIwY2hhcGV1fGVufDB8fHx8MTc1NjkwMDMxMnww&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'bulldog puppy',
-    price: 700,
+    price: 200,
   },
   {
     id: '6',
@@ -60,7 +59,7 @@ const featuredPets: Pet[] = [
     breed: 'Gato Siamês',
     imageUrl: 'https://images.unsplash.com/photo-1578423723952-a3b50cfa5857?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxnYXRpbmhvJTIwZmlsaG90ZXxlbnwwfHx8fDE3NTY5MDA0MjF8MA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'siamese kitten',
-    price: 300,
+    price: 90,
   },
   {
     id: '7',
@@ -69,7 +68,7 @@ const featuredPets: Pet[] = [
     breed: 'Gato de Pelo Curto',
     imageUrl: 'https://images.unsplash.com/photo-1627486553308-e9051454680d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxnYXRvJTIwbm8lMjBhcnJhbmhhZG9yfGVufDB8fHx8MTc1NjkwMDQ3OXww&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'cat scratching post',
-    price: 550,
+    price: 180,
   },
   {
     id: '8',
@@ -78,7 +77,7 @@ const featuredPets: Pet[] = [
     breed: 'gato de roupa',
     imageUrl: 'https://images.unsplash.com/photo-1724286014482-ca026cf24420?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxnYXRvJTIwZGUlMjByb3VwYXxlbnwwfHx8fDE3NTY5MDA2MDh8MA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'poodle puppy',
-    price: 850,
+    price: 300,
   },
   {
     id: '9',
@@ -87,7 +86,7 @@ const featuredPets: Pet[] = [
     breed: 'Shih Tzu',
     imageUrl: 'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjb2VsaG98ZW58MHx8fHwxNzU2OTAwNzc2fDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'shih tzu',
-    price: 650,
+    price: 220,
   },
   {
     id: '10',
@@ -96,7 +95,7 @@ const featuredPets: Pet[] = [
     breed: 'Dachshund',
     imageUrl: 'https://images.unsplash.com/photo-1535241556859-780cb9f395f2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjb2VsaG98ZW58MHx8fHwxNzU2OTAwNzc2fDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'dachshund puppy',
-    price: 450,
+    price: 150,
   },
   {
     id: '11',
@@ -105,7 +104,7 @@ const featuredPets: Pet[] = [
     breed: 'Boxer',
     imageUrl: 'https://images.unsplash.com/photo-1558945657-484aa38065ec?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb3J1amF8ZW58MHx8fHwxNzU2OTAwODY4fDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'boxer dog',
-    price: 900,
+    price: 350,
   },
   {
     id: '12',
@@ -114,7 +113,7 @@ const featuredPets: Pet[] = [
     breed: 'Rottweiler',
     imageUrl: 'https://images.unsplash.com/photo-1710892666816-306673646f25?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjYWNob3Jyb3MlMjByZWNlbSUyMG5hc2NpZG98ZW58MHx8fHwxNzU2OTAwMTE4fDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'rottweiler puppy',
-    price: 500,
+    price: 170,
   },
 ];
 
