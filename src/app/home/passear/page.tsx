@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Dog } from 'lucide-react';
 import { usePlayer } from '@/context/PlayerContext';
 import {
   Select,
@@ -15,15 +15,21 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
 
 
 export default function PassearPage() {
     const { ownedPets, addXp } = usePlayer();
+    const { toast } = useToast();
     const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
 
     const handleWalk = () => {
         if (selectedPetId) {
             addXp(15);
+            toast({
+                title: 'Passeio divertido!',
+                description: 'Você ganhou 15 XP por passear com seu filhote.',
+            });
         }
     }
 
@@ -71,18 +77,18 @@ export default function PassearPage() {
                     <Image 
                         src="https://images.unsplash.com/photo-1548681528-6a5c45b66b42?w=500&h=800&fit=crop"
                         alt="Pessoa passeando"
-                        width={200}
-                        height={400}
+                        width={150}
+                        height={300}
                         className="object-contain drop-shadow-2xl"
                         data-ai-hint="person walking"
                     />
                     {selectedPet && (
-                         <div className="relative -ml-16 mb-4">
+                         <div className="relative -ml-12 mb-2">
                             <Image 
                                 src={selectedPet.imageUrl}
                                 alt={selectedPet.name}
-                                width={120}
-                                height={120}
+                                width={100}
+                                height={100}
                                 className="object-contain drop-shadow-2xl"
                             />
                          </div>
@@ -91,6 +97,7 @@ export default function PassearPage() {
             </div>
 
             <Button onClick={handleWalk} disabled={!selectedPetId} size="lg">
+                <Dog className="mr-2 h-5 w-5" />
                 Passear e ganhar 15 XP
             </Button>
 
