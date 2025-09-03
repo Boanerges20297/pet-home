@@ -35,11 +35,13 @@ const initialPets = {
 
 export default function RegisterPage() {
   const [selectedPet, setSelectedPet] = useState<'dog' | 'cat' | null>(null);
+  const [username, setUsername] = useState('');
   const router = useRouter();
 
   const handleCreateAccount = () => {
     if (typeof window !== 'undefined' && selectedPet) {
         localStorage.setItem('initialPet', selectedPet);
+        localStorage.setItem('username', username);
     }
     router.push('/login');
   }
@@ -72,7 +74,7 @@ export default function RegisterPage() {
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="username">Nome de Usuário</Label>
-              <Input id="username" type="text" placeholder="Seu nome de jogador" />
+              <Input id="username" type="text" placeholder="Seu nome de jogador" value={username} onChange={(e) => setUsername(e.target.value)} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
@@ -107,7 +109,7 @@ export default function RegisterPage() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col gap-4">
-            <Button onClick={handleCreateAccount} className="w-full" size="lg" disabled={!selectedPet}>
+            <Button onClick={handleCreateAccount} className="w-full" size="lg" disabled={!selectedPet || !username}>
               Criar Conta e Começar
             </Button>
           </CardFooter>
