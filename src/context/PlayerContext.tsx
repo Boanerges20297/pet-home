@@ -40,38 +40,70 @@ const PlayerContext = createContext<PlayerContextType | undefined>(undefined);
 
 const calculateXpToNextLevel = (level: number) => 100 * level * 1.5;
 
+const initialPetsForNewUser = {
+    dog: {
+        id: 'initial_dog',
+        name: 'Amigão',
+        age: 'Nível 1',
+        breed: 'Vira-lata Caramelo',
+        imageUrl: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxmaWxob3RlfGVufDB8fHx8MTc1NjkwMTEwNnww&ixlib=rb-4.1.0&q=80&w=1080',
+        aiHint: 'caramel dog',
+        price: 0,
+    }
+};
+
+// Function to get the initial state from localStorage
+const getInitialState = <T,>(key: string, defaultValue: T): T => {
+    if (typeof window === 'undefined') {
+        return defaultValue;
+    }
+    try {
+        const storedValue = localStorage.getItem(key);
+        if (storedValue) {
+            return JSON.parse(storedValue);
+        }
+
+        // Special handling for new user registration
+        if (key === 'ownedPets' && localStorage.getItem('isNewUser')) {
+             localStorage.removeItem('isNewUser'); // Clear the flag
+             return [initialPetsForNewUser.dog] as T;
+        }
+
+    } catch (error) {
+        console.error(`Error reading from localStorage key “${key}”:`, error);
+    }
+    return defaultValue;
+};
+
+
 export const PlayerProvider = ({ children }: { children: ReactNode }) => {
   const { toast } = useToast();
-  const [coins, setCoins] = useState(0);
-  const [gems, setGems] = useState(0);
-  const [level, setLevel] = useState(1);
-  const [xp, setXp] = useState(0);
-  const [xpToNextLevel, setXpToNextLevel] = useState(calculateXpToNextLevel(1));
-  const [currentDay, setCurrentDay] = useState(1);
-  const [collectedDays, setCollectedDays] = useState<number[]>([]);
-  const [ownedPets, setOwnedPets] = useState<Pet[]>([]);
-  const [inventory, setInventory] = useState<PlayerItem[]>([]);
-  const [initialized, setInitialized] = useState(false);
+  
+  const [coins, setCoins] = useState<number>(() => getInitialState('coins', 500));
+  const [gems, setGems] = useState<number>(() => getInitialState('gems', 20));
+  const [level, setLevel] = useState<number>(() => getInitialState('level', 1));
+  const [xp, setXp] = useState<number>(() => getInitialState('xp', 0));
+  const [xpToNextLevel, setXpToNextLevel] = useState(() => calculateXpToNextLevel(getInitialState('level', 1)));
+  const [currentDay, setCurrentDay] = useState<number>(() => getInitialState('currentDay', 1));
+  const [collectedDays, setCollectedDays] = useState<number[]>(() => getInitialState('collectedDays', []));
+  const [ownedPets, setOwnedPets] = useState<Pet[]>(() => getInitialState('ownedPets', []));
+  const [inventory, setInventory] = useState<PlayerItem[]>(() => getInitialState('inventory', []));
 
+  // Effect to save state to localStorage whenever it changes
   useEffect(() => {
-    if (typeof window !== 'undefined' && !initialized) {
-        const initialPetData = localStorage.getItem('initialPet');
-        if (initialPetData) {
-            try {
-                const pet: Pet = JSON.parse(initialPetData);
-                if (pet && pet.id && !ownedPets.some(p => p.id === pet.id)) {
-                    setOwnedPets([pet]);
-                    // Optional: clear the item so it doesn't get added again on refresh
-                    localStorage.removeItem('initialPet'); 
-                }
-            } catch(e) {
-                console.error("Failed to parse initial pet data", e)
-                localStorage.removeItem('initialPet');
-            }
-        }
-        setInitialized(true);
+    try {
+        localStorage.setItem('coins', JSON.stringify(coins));
+        localStorage.setItem('gems', JSON.stringify(gems));
+        localStorage.setItem('level', JSON.stringify(level));
+        localStorage.setItem('xp', JSON.stringify(xp));
+        localStorage.setItem('currentDay', JSON.stringify(currentDay));
+        localStorage.setItem('collectedDays', JSON.stringify(collectedDays));
+        localStorage.setItem('ownedPets', JSON.stringify(ownedPets));
+        localStorage.setItem('inventory', JSON.stringify(inventory));
+    } catch(e) {
+        console.error("Error saving state to localStorage", e);
     }
-  }, [initialized, ownedPets]);
+  }, [coins, gems, level, xp, currentDay, collectedDays, ownedPets, inventory]);
 
 
   const addCoins = (amount: number) => {
@@ -85,21 +117,24 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
   const addXp = useCallback((amount: number) => {
     setXp(prevXp => {
       let newXp = prevXp + amount;
-      let newLevel = level;
-      let newXpToNextLevel = xpToNextLevel;
+      let currentLevel = level; // Use a local variable to track level changes within this update
+      let currentXpToNextLevel = xpToNextLevel;
 
-      while (newXp >= newXpToNextLevel) {
-        newXp -= newXpToNextLevel;
-        newLevel++;
-        newXpToNextLevel = calculateXpToNextLevel(newLevel);
+      while (newXp >= currentXpToNextLevel) {
+        newXp -= currentXpToNextLevel;
+        currentLevel++;
+        currentXpToNextLevel = calculateXpToNextLevel(currentLevel);
+        
+        // Update state directly for level and xpToNextLevel
+        setLevel(currentLevel);
+        setXpToNextLevel(currentXpToNextLevel);
+
         toast({
           title: 'Subiu de Nível!',
-          description: `Parabéns! Você alcançou o nível ${newLevel}.`,
+          description: `Parabéns! Você alcançou o nível ${currentLevel}.`,
         });
       }
 
-      setLevel(newLevel);
-      setXpToNextLevel(newXpToNextLevel);
       return newXp;
     });
   }, [level, xpToNextLevel, toast]);
@@ -200,3 +235,5 @@ export const usePlayer = () => {
   }
   return context;
 };
+
+    

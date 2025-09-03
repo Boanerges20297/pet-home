@@ -11,35 +11,17 @@ import { Label } from '@/components/ui/label';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
-const initialPets = {
-    dog: {
-        id: 'initial_dog',
-        name: 'Amigão',
-        age: 'Nível 1',
-        breed: 'Vira-lata Caramelo',
-        imageUrl: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxmaWxob3RlfGVufDB8fHx8MTc1NjkwMTEwNnww&ixlib=rb-4.1.0&q=80&w=1080',
-        aiHint: 'caramel dog',
-        price: 0,
-    },
-    cat: {
-        id: 'initial_cat',
-        name: 'Miau',
-        age: 'Nível 1',
-        breed: 'Gato de Pelo Curto',
-        imageUrl: 'https://images.unsplash.com/photo-1578423723952-a3b50cfa5857?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxnYXRpbmhvJTIwZmlsaG90ZXxlbnwwfHx8fDE3NTY5MDA0MjF8MA&ixlib=rb-4.1.0&q=80&w=1080',
-        aiHint: 'short hair cat',
-        price: 0,
-    }
-}
-
 export default function RegisterPage() {
   const [username, setUsername] = useState('');
   const router = useRouter();
 
   const handleCreateAccount = () => {
     if (typeof window !== 'undefined' && username) {
-        // Automatically give the user a dog
-        localStorage.setItem('initialPet', JSON.stringify(initialPets.dog));
+        // Clear previous user data
+        localStorage.clear();
+        // Set new user flag
+        localStorage.setItem('isNewUser', 'true');
+        // Set username
         localStorage.setItem('username', username);
     }
     router.push('/home');
@@ -97,3 +79,5 @@ export default function RegisterPage() {
     </div>
   );
 }
+
+    
