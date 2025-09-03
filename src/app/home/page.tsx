@@ -72,7 +72,7 @@ const featuredPets: Pet[] = [
     name: 'Bella',
     age: 'Nível 7',
     breed: 'Poodle',
-    imageUrl: 'https://picsum.photos/seed/bella/400/400',
+    imageUrl: 'https://images.unsplash.com/photo-1724286014482-ca026cf24420?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxnYXRvJTIwZGUlMjByb3VwYXxlbnwwfHx8fDE3NTY5MDA2MDh8MA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'poodle puppy',
     price: 850,
   },
