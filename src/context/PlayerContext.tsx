@@ -62,15 +62,16 @@ const getInitialState = <T,>(key: string, defaultValue: T): T => {
         if (storedValue) {
             return JSON.parse(storedValue);
         }
-         // Handle new user registration
-        if (key === 'ownedPets' && localStorage.getItem('isNewUser') === 'true') {
-             localStorage.removeItem('isNewUser');
-             return [initialPetsForNewUser.dog] as T;
-        }
-
     } catch (error) {
         console.error(`Error reading from localStorage key “${key}”:`, error);
     }
+    // Handle new user registration specifically for ownedPets
+    if (key === 'ownedPets' && localStorage.getItem('isNewUser') === 'true') {
+        localStorage.setItem('ownedPets', JSON.stringify([initialPetsForNewUser.dog]));
+        localStorage.removeItem('isNewUser');
+        return [initialPetsForNewUser.dog] as T;
+    }
+    
     return defaultValue;
 };
 
@@ -153,13 +154,19 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
       }
 
       setCollectedDays(prev => [...prev, day]);
-      setCurrentDay(prev => prev + 1);
+      setCurrentDay(prev => prev + 1); // Only advance the day after collecting
       addXp(25); // Ganha 25 XP por coletar o prêmio diário
       
        toast({
         title: 'Recompensa Coletada!',
         description: toastDescription,
       });
+    } else {
+        toast({
+            title: 'Ops!',
+            description: day < currentDay ? 'Você já coletou este prêmio.' : 'Ainda não é hora de coletar este prêmio.',
+            variant: 'destructive',
+        });
     }
   };
 
