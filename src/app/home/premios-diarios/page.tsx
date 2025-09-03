@@ -2,15 +2,26 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/componen
 import { Button } from '@/components/ui/button';
 import { Coins, Gift } from 'lucide-react';
 
-const dailyRewards = [
-  { day: 1, reward: 50 },
-  { day: 2, reward: 75 },
-  { day: 3, reward: 100 },
-  { day: 4, reward: 125 },
-  { day: 5, reward: 150 },
-  { day: 6, reward: 200 },
-  { day: 7, reward: 500, isSpecial: true },
-];
+const generateRewards = (days: number) => {
+  return Array.from({ length: days }, (_, i) => {
+    const day = i + 1;
+    const week = Math.floor(i / 7);
+    const dayOfWeek = i % 7;
+    
+    let reward = 50 + dayOfWeek * 25 + week * 50;
+    let isSpecial = false;
+
+    if ((day % 7) === 0) {
+      reward = 200 + week * 150;
+      isSpecial = true;
+    }
+
+    return { day, reward, isSpecial };
+  });
+};
+
+const dailyRewards = generateRewards(30);
+
 
 export default function DailyRewardsPage() {
   return (
@@ -21,17 +32,17 @@ export default function DailyRewardsPage() {
             Prêmios Diários
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Volte todos os dias para coletar recompensas. Não perca sua sequência!
+            Volte todos os dias para coletar recompensas. O ciclo continua indefinidamente!
           </p>
         </section>
 
         <section>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {dailyRewards.map((item) => (
               <Card
                 key={item.day}
                 className={`flex flex-col items-center justify-center p-4 text-center transition-all bg-card
-                  ${item.isSpecial ? 'bg-yellow-100 dark:bg-yellow-900/30' : ''}`}
+                  ${item.isSpecial ? 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-400' : ''}`}
               >
                 <CardHeader className="p-2">
                   <CardTitle className="font-headline text-lg text-foreground">Dia {item.day}</CardTitle>
