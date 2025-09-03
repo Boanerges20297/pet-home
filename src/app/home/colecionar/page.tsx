@@ -28,6 +28,18 @@ const houses = [
     imageUrl: 'https://picsum.photos/seed/house3/600/400',
     aiHint: 'beach house',
   },
+  {
+    id: '4',
+    name: 'Cabana na Floresta',
+    imageUrl: 'https://picsum.photos/seed/house4/600/400',
+    aiHint: 'forest cabin',
+  },
+  {
+    id: '5',
+    name: 'Mansão de Luxo',
+    imageUrl: 'https://picsum.photos/seed/house5/600/400',
+    aiHint: 'luxury mansion',
+  },
 ];
 
 export default function ColecionarPage() {
