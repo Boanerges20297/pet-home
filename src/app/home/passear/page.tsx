@@ -75,7 +75,7 @@ export default function PassearPage() {
             <div className="relative w-full h-96 flex items-end justify-center">
                 <div className="absolute bottom-0 flex items-end">
                     <Image 
-                        src="https://images.unsplash.com/photo-1616614992732-6a2eb714f8c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwZXNzb2ElMjAlMjBzZWd1cmFuZG8lMjB1bWElMjBjb2xlaXJhJTIwZGUlMjBjYWNob3Jyb3xlbnwwfHx8fDE3NTY5MzYyMjJ8MA&ixlib=rb-4.1.0&q=80&w=1080"
+                        src="https://images.unsplash.com/photo-1706965241476-6f741676033e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxncmFuZGUlMjBpbWFnZW0lMjBkZSUyMHVtYSUyMHBlc3NvYSUyMHBhc3NlYW5kbyUyMGNvbSUyMHVtJTIwYW5pbWFsfGVufDB8fHx8MTc1NjkzNjMyOXww&ixlib=rb-4.1.0&q=80&w=1080"
                         alt="Pessoa passeando"
                         width={150}
                         height={300}
