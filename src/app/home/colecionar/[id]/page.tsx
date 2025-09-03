@@ -6,7 +6,7 @@ import { useParams, notFound } from 'next/navigation';
 import { houses } from '@/lib/houses';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowLeft, Home, PawPrint, Star } from 'lucide-react';
+import { ArrowLeft, Home, PawPrint, Star, Bath, Utensils, Bed, Sofa } from 'lucide-react';
 import {
   Card,
   CardContent,
@@ -15,6 +15,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { usePlayer } from '@/context/PlayerContext';
 import {
   Tooltip,
@@ -35,6 +36,14 @@ export default function HousePage() {
   }
 
   const xpPercentage = (xp / xpToNextLevel) * 100;
+
+  const rooms = [
+    { name: 'Sala de Estar', id: 'living-room', icon: Sofa, hint: 'living room' },
+    { name: 'Cozinha', id: 'kitchen', icon: Utensils, hint: 'kitchen' },
+    { name: 'Quarto', id: 'bedroom', icon: Bed, hint: 'bedroom' },
+    { name: 'Banheiro', id: 'bathroom', icon: Bath, hint: 'bathroom' },
+  ];
+
 
   return (
     <main className="flex-1 overflow-y-auto p-4 md:p-8">
@@ -78,26 +87,36 @@ export default function HousePage() {
                   Bem-vindo à sua {house.name}
                 </CardTitle>
                 <CardDescription className="text-lg">
-                  Um lugar perfeito para seus filhotes.
+                  Explore os cômodos e veja que lugar perfeito para seus filhotes.
                 </CardDescription>
               </div>
             </div>
           </CardHeader>
-          <CardContent className="p-0">
-            <div className="relative aspect-video w-full">
-              <Image
-                src={house.imageUrl.replace('600/400', '1280/720')}
-                alt={`Interior da ${house.name}`}
-                fill
-                className="object-cover"
-                data-ai-hint={house.aiHint + ' interior'}
-              />
-            </div>
-            <div className="p-6 text-center">
-              <p className="text-muted-foreground">
-                Este é o seu novo lar! Seus filhotes vão adorar este espaço.
-              </p>
-            </div>
+          <CardContent className="p-4 md:p-6">
+             <Tabs defaultValue="living-room" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-auto">
+                 {rooms.map((room) => (
+                  <TabsTrigger key={room.id} value={room.id} className="flex gap-2 items-center text-xs md:text-sm">
+                    <room.icon className="h-4 w-4" />
+                    {room.name}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+
+              {rooms.map((room) => (
+                <TabsContent key={room.id} value={room.id}>
+                    <div className="relative aspect-video w-full mt-4 rounded-lg overflow-hidden border">
+                      <Image
+                        src={house.imageUrl.replace('600/400', '1280/720') + `&${room.id}`}
+                        alt={`Interior da ${house.name} - ${room.name}`}
+                        fill
+                        className="object-cover"
+                        data-ai-hint={`${house.aiHint} ${room.hint}`}
+                      />
+                    </div>
+                </TabsContent>
+              ))}
+            </Tabs>
           </CardContent>
           <CardFooter className="flex justify-center bg-muted/20 p-6">
             <Button asChild size="lg">
