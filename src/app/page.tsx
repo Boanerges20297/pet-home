@@ -24,11 +24,11 @@ export default function WelcomePage() {
           <CardHeader className="items-center text-center">
              <div className="relative mb-4 h-32 w-32">
                 <Image
-                    src="https://images.unsplash.com/photo-1599859556102-1833a691e8e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxsb2dvJTIwY29tJTIwZmlsaG90ZXxlbnwwfHx8fDE3NTY5MDk4MDV8MA&ixlib=rb-4.1.0&q=80&w=1080"
+                    src="https://images.unsplash.com/photo-1730226929939-cac08913f641?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjYWNob3JybyUyMGZlbGl6fGVufDB8fHx8MTc1NjkwODQ3M3ww&ixlib=rb-4.1.0&q=80&w=1080"
                     alt="Logo do jogo Pequenos Grandes Filhotes"
                     fill
                     className="rounded-full object-cover border-4 border-primary"
-                    data-ai-hint="cute puppy logo"
+                    data-ai-hint="happy dog"
                 />
             </div>
             <CardTitle className="font-headline text-5xl text-accent">Pequenos Grandes Filhotes</CardTitle>
