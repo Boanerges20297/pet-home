@@ -65,10 +65,8 @@ const getInitialState = <T,>(key: string, defaultValue: T): T => {
     } catch (error) {
         console.error(`Error reading from localStorage key “${key}”:`, error);
     }
-    // Handle new user registration specifically for ownedPets
-    if (key === 'ownedPets' && localStorage.getItem('isNewUser') === 'true') {
-        localStorage.setItem('ownedPets', JSON.stringify([initialPetsForNewUser.dog]));
-        localStorage.removeItem('isNewUser');
+    // Handle new user registration specifically
+     if (key === 'ownedPets' && localStorage.getItem('isNewUser') === 'true') {
         return [initialPetsForNewUser.dog] as T;
     }
     
@@ -100,6 +98,11 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
         localStorage.setItem('collectedDays', JSON.stringify(collectedDays));
         localStorage.setItem('ownedPets', JSON.stringify(ownedPets));
         localStorage.setItem('inventory', JSON.stringify(inventory));
+
+        // After the first save for a new user, remove the flag
+        if (localStorage.getItem('isNewUser') === 'true') {
+          localStorage.removeItem('isNewUser');
+        }
     } catch(e) {
         console.error("Error saving state to localStorage", e);
     }
