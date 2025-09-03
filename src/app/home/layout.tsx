@@ -3,7 +3,7 @@
 
 import type { ReactNode } from 'react';
 import Link from 'next/link';
-import { PawPrint, ShoppingCart, Gift, Home, LogOut, Dog, HandHeart } from 'lucide-react';
+import { PawPrint, ShoppingCart, Gift, Home, LogOut, Dog, HandHeart, Settings } from 'lucide-react';
 import {
   SidebarProvider,
   Sidebar,
@@ -20,6 +20,16 @@ import {
 import { Button } from '@/components/ui/button';
 import { PlayerProvider } from '@/context/PlayerContext';
 import { Toaster } from '@/components/ui/toaster';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+
 
 export default function HomeLayout({ children }: { children: ReactNode }) {
   return (
@@ -32,6 +42,33 @@ export default function HomeLayout({ children }: { children: ReactNode }) {
                 <PawPrint className="h-8 w-8 text-primary" />
                 <h2 className="font-headline text-2xl text-foreground">Pequenos Grandes Filhotes</h2>
               </Link>
+            </div>
+             <div className="flex items-center gap-3 border-t border-b border-sidebar-border p-3">
+              <Avatar className="h-10 w-10">
+                <AvatarImage src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=50&h=50&fit=crop" alt="Avatar" />
+                <AvatarFallback>LH</AvatarFallback>
+              </Avatar>
+              <div className="flex-1">
+                <p className="text-sm font-semibold text-sidebar-foreground">Luzia Heleno</p>
+                <p className="text-xs text-sidebar-foreground/70">luzia.heleno@exemplo.com</p>
+              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="h-8 w-8 text-sidebar-foreground">
+                    <Settings className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>Configurações</DropdownMenuItem>
+                  <DropdownMenuItem>Suporte</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                   <DropdownMenuItem asChild>
+                     <Link href="/">Sair</Link>
+                   </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </SidebarHeader>
           <SidebarContent>
