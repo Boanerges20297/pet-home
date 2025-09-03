@@ -28,7 +28,7 @@ const storeItems = [
     name: 'Pacote de Moedas Grande',
     description: 'Muitas moedas! Compre os filhotes dos seus sonhos.',
     price: 'R$ 49,99',
-    imageUrl: 'https://picsum.photos/seed/coins3/400/300',
+    imageUrl: 'https://images.unsplash.com/photo-1599038988300-2e3f04d87f8b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxtdWl0YXMlMjBtb2VkYXMlMjB8ZW58MHx8fHwxNzU2OTAyNjQxfDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'treasure chest',
     icon: Coins,
   },
