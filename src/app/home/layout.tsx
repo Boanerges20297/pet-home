@@ -43,7 +43,7 @@ export default function HomeLayout({ children }: { children: ReactNode }) {
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="Visitar a loja">
-                  <Link href="#">
+                  <Link href="/home/loja">
                     <ShoppingCart />
                     <span>Loja</span>
                   </Link>
