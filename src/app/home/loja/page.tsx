@@ -37,7 +37,7 @@ const storeItems = [
     name: 'Pacote de Gemas Raras',
     description: 'Use gemas para adquirir itens exclusivos e filhotes lendários.',
     price: 'R$ 99,99',
-    imageUrl: 'https://picsum.photos/seed/gems/400/300',
+    imageUrl: 'https://images.unsplash.com/photo-1673031288723-f198cd527b97?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxnZW1hcyUyMHJhcmFzfGVufDB8fHx8MTc1NjkwMjY5Mnww&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'shiny gems',
     icon: Gem,
   },
