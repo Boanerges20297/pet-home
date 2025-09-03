@@ -3,7 +3,7 @@
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, Coins } from 'lucide-react';
+import { Search, Coins, PawPrint } from 'lucide-react';
 import { PetCard, type Pet } from '@/components/PetCard';
 import { usePlayer } from '@/context/PlayerContext';
 
@@ -132,10 +132,10 @@ export default function HomePage() {
           </div>
           <div className="text-center">
             <h1 className="font-headline text-4xl md:text-5xl text-primary mb-4">
-              Coleção de Filhotes
+              Filhotes à Venda
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Navegue pelos seus filhotes colecionáveis. A sua jornada para se tornar um mestre de filhotes começa aqui.
+              Navegue pelos filhotes colecionáveis disponíveis para compra. A sua jornada para se tornar um mestre de filhotes começa aqui.
             </p>
             <div className="relative mt-8 max-w-lg mx-auto">
               <Input
