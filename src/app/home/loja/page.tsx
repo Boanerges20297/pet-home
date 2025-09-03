@@ -46,7 +46,7 @@ const storeItems = [
     name: 'Passe VIP Mensal',
     description: 'Receba recompensas diárias exclusivas, descontos e mais.',
     price: 'R$ 29,99/mês',
-    imageUrl: 'https://picsum.photos/seed/vip/400/300',
+    imageUrl: 'https://images.unsplash.com/photo-1625670413987-0ae649494c61?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzaW1ib2xvJTIwdmlwfGVufDB8fHx8MTc1NjkwMjc0M3ww&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'gold ticket',
     icon: Zap,
   },
