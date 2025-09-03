@@ -6,7 +6,7 @@ import { useParams, notFound } from 'next/navigation';
 import { houses } from '@/lib/houses';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowLeft, Home, PawPrint } from 'lucide-react';
+import { ArrowLeft, Home, PawPrint, Star } from 'lucide-react';
 import {
   Card,
   CardContent,
@@ -15,24 +15,58 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { usePlayer } from '@/context/PlayerContext';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { Progress } from '@/components/ui/progress';
 
 export default function HousePage() {
   const params = useParams();
   const id = params.id as string;
   const house = houses.find((h) => h.id === id);
+  const { level, xp, xpToNextLevel } = usePlayer();
 
   if (!house) {
     notFound();
   }
 
+  const xpPercentage = (xp / xpToNextLevel) * 100;
+
   return (
     <main className="flex-1 overflow-y-auto p-4 md:p-8">
       <div className="mx-auto max-w-5xl">
-        <div className="mb-8">
+        <div className="mb-4 flex justify-between items-center">
           <Link href="/home/colecionar" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
             <ArrowLeft className="h-4 w-4" />
             Voltar para a seleção de lares
           </Link>
+
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex items-center gap-3">
+                    <div className="relative flex h-12 w-12 items-center justify-center rounded-full bg-primary/20">
+                    <Star className="h-6 w-6 text-primary" />
+                    <span className="absolute -bottom-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full border-2 border-background bg-primary font-bold text-xs text-primary-foreground">
+                        {level}
+                    </span>
+                    </div>
+                    <div className="w-32">
+                        <p className="text-sm font-medium text-foreground">Nível {level}</p>
+                        <Progress value={xpPercentage} className="h-2" />
+                    </div>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{xp.toFixed(0)} / {xpToNextLevel.toFixed(0)} XP para o próximo nível</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
         </div>
 
         <Card className="overflow-hidden shadow-lg">
