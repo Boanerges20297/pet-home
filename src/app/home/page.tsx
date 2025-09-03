@@ -108,7 +108,7 @@ const featuredPets: Pet[] = [
     name: 'Zoe',
     age: 'Nível 3',
     breed: 'Rottweiler',
-    imageUrl: 'https://picsum.photos/seed/zoe/400/400',
+    imageUrl: 'https://images.unsplash.com/photo-1710892666816-306673646f25?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjYWNob3Jyb3MlMjByZWNlbSUyMG5hc2NpZG98ZW58MHx8fHwxNzU2OTAwMTE4fDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'rottweiler puppy',
     price: 500,
   },
