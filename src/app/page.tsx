@@ -6,7 +6,9 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight } from 'lucide-react';
-import AudioPlayer from '@/components/AudioPlayer';
+import dynamic from 'next/dynamic';
+
+const AudioPlayer = dynamic(() => import('@/components/AudioPlayer'), { ssr: false });
 
 export default function WelcomePage() {
   return (
