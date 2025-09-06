@@ -109,7 +109,7 @@ function MainSidebar() {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <Link href="/home/minha-colecao" legacyBehavior passHref>
+              <Link href="/home/minha-colecao">
                 <SidebarMenuButton tooltip="Ver sua coleção de filhotes">
                     <FolderHeart />
                     <span>Minha Coleção</span>
