@@ -30,6 +30,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
+import { useRouter } from 'next/navigation';
 
 
 function UserProfile() {
@@ -87,6 +88,7 @@ function UserProfile() {
 
 function MainSidebar() {
     const { ownedPets } = usePlayer();
+    const router = useRouter();
 
     return (
       <Sidebar>
@@ -109,13 +111,11 @@ function MainSidebar() {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-                <Link href="/home/minha-colecao">
-                  <SidebarMenuButton tooltip="Ver sua coleção de filhotes">
-                      <FolderHeart />
-                      <span>Minha Coleção</span>
-                      {ownedPets.length > 0 && <Badge className="ml-auto flex h-6 w-6 items-center justify-center p-0">{ownedPets.length}</Badge>}
-                  </SidebarMenuButton>
-                </Link>
+                <SidebarMenuButton onClick={() => router.push('/home/minha-colecao')} tooltip="Ver sua coleção de filhotes">
+                    <FolderHeart />
+                    <span>Minha Coleção</span>
+                    {ownedPets.length > 0 && <Badge className="ml-auto flex h-6 w-6 items-center justify-center p-0">{ownedPets.length}</Badge>}
+                </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Visitar a loja">
