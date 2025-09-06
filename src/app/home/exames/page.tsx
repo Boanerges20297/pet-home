@@ -55,7 +55,7 @@ export default function ExamesPage() {
             console.error("Error during diagnosis:", error);
             toast({
                 title: 'Erro no Diagnóstico',
-                description: 'Não foi possível contatar o veterinário de IA. Tente novamente.',
+                description: 'Não foi possível contatar o veterinário de IA.',
                 variant: 'destructive',
             });
             // Fallback to a simple message if AI fails
