@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { ArrowLeft, Stethoscope, HeartPulse, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Stethoscope, HeartPulse, CheckCircle2, Lightbulb } from 'lucide-react';
 import { usePlayer } from '@/context/PlayerContext';
 import {
   Select,
@@ -18,31 +18,54 @@ import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
+import type { DiagnosePetOutput } from '@/ai/flows/diagnose-pet-flow';
+import { diagnosePet } from '@/ai/flows/diagnose-pet-flow';
 
 export default function ExamesPage() {
     const { ownedPets, addXp } = usePlayer();
     const { toast } = useToast();
     const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
-    const [healthReport, setHealthReport] = useState<string | null>(null);
+    const [healthReport, setHealthReport] = useState<DiagnosePetOutput | null>(null);
     const [isExamining, setIsExamining] = useState(false);
 
-    const handleExam = () => {
-        if (selectedPetId) {
-            const pet = ownedPets.find(p => p.id === selectedPetId);
-            if(!pet) return;
+    const handleExam = async () => {
+        if (!selectedPetId) return;
+        
+        const pet = ownedPets.find(p => p.id === selectedPetId);
+        if(!pet) return;
 
-            setIsExamining(true);
-            setHealthReport(null);
+        setIsExamining(true);
+        setHealthReport(null);
 
-            setTimeout(() => {
-                addXp(20);
-                setHealthReport(`O exame em ${pet.name} foi um sucesso! Todos os sinais vitais estão ótimos. O filhote está saudável e feliz!`);
-                toast({
-                    title: 'Exame Realizado!',
-                    description: 'Você ganhou 20 XP por cuidar da saúde do seu filhote.',
-                });
-                setIsExamining(false);
-            }, 2500); // Duração da animação de exame
+        try {
+            const report = await diagnosePet({
+                petName: pet.name,
+                petBreed: pet.breed,
+                petImageUrl: pet.imageUrl,
+            });
+            
+            addXp(20);
+            setHealthReport(report);
+            toast({
+                title: 'Exame Realizado!',
+                description: 'Você ganhou 20 XP por cuidar da saúde do seu filhote.',
+            });
+
+        } catch (error) {
+            console.error("Error during diagnosis:", error);
+            toast({
+                title: 'Erro no Diagnóstico',
+                description: 'Não foi possível contatar o veterinário de IA. Tente novamente.',
+                variant: 'destructive',
+            });
+            // Fallback to a simple message if AI fails
+            setHealthReport({
+                isHealthy: true,
+                diagnosis: 'O filhote está super saudável!',
+                recommendation: 'Continue dando muito amor e carinho.'
+            });
+        } finally {
+            setIsExamining(false);
         }
     }
 
@@ -62,7 +85,7 @@ export default function ExamesPage() {
                 Check-up do Filhote
             </CardTitle>
             <CardDescription className="text-lg">
-                Selecione um filhote para realizar um check-up de saúde e ganhar XP.
+                Selecione um filhote para um check-up com nosso veterinário de IA e ganhe XP.
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col items-center gap-6">
@@ -100,7 +123,7 @@ export default function ExamesPage() {
                             className={cn("object-contain drop-shadow-2xl", isExamining && "opacity-75")}
                         />
                          {isExamining && (
-                            <div className="absolute inset-0 z-20">
+                            <div className="absolute inset-0 z-20 flex items-center justify-center">
                                 <div className="absolute w-full h-1 bg-cyan-400/80 shadow-[0_0_10px_2px_#0ff] animate-[scan_2.5s_ease-in-out_infinite]" />
                             </div>
                         )}
@@ -110,11 +133,6 @@ export default function ExamesPage() {
                     <div className="text-center text-muted-foreground">
                         <p>Selecione um filhote para começar.</p>
                     </div>
-                )}
-                 {isExamining && !selectedPet && (
-                     <div className="text-center text-primary animate-pulse">
-                        <p>Selecione um filhote...</p>
-                    </div>
                  )}
             </div>
 
@@ -122,7 +140,7 @@ export default function ExamesPage() {
                 {isExamining ? (
                     <>
                         <Stethoscope className="mr-2 h-5 w-5 animate-pulse" />
-                        Examinando...
+                        Examinando com IA...
                     </>
                 ) : (
                     <>
@@ -139,10 +157,21 @@ export default function ExamesPage() {
                 <div className="text-center">
                     <h3 className="font-headline text-2xl text-primary">Boletim de Saúde</h3>
                 </div>
-                <div className="w-full p-4 bg-green-100 dark:bg-green-900/50 rounded-lg text-green-800 dark:text-green-200 border border-green-200 dark:border-green-800">
-                    <div className="flex items-center gap-3">
-                        <CheckCircle2 className="h-8 w-8 text-green-600 dark:text-green-400" />
-                        <p className="flex-1">{healthReport}</p>
+                <div className="w-full p-4 bg-green-100 dark:bg-green-900/50 rounded-lg text-green-800 dark:text-green-200 border border-green-200 dark:border-green-800 space-y-3">
+                    <div className="flex items-start gap-3">
+                        <CheckCircle2 className="h-8 w-8 text-green-600 dark:text-green-400 flex-shrink-0 mt-1" />
+                        <div>
+                            <h4 className='font-bold'>Diagnóstico:</h4>
+                            <p>{healthReport.diagnosis}</p>
+                        </div>
+                    </div>
+                     <Separator className="bg-green-200 dark:bg-green-800"/>
+                     <div className="flex items-start gap-3">
+                        <Lightbulb className="h-8 w-8 text-yellow-500 dark:text-yellow-400 flex-shrink-0 mt-1" />
+                        <div>
+                            <h4 className='font-bold'>Recomendação:</h4>
+                            <p>{healthReport.recommendation}</p>
+                        </div>
                     </div>
                 </div>
               </CardFooter>
