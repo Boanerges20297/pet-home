@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Input } from '@/components/ui/input';
@@ -12,7 +13,7 @@ const featuredPets: Pet[] = [
     name: 'Blaze',
     age: 'Nível 5',
     breed: 'Husky Siberiano',
-    imageUrl: 'https://images.unsplash.com/photo-1602936742009-0ef4d0ecf929?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjYWNob3JybyUyMGFkdWx0byUyMHxlbnwwfHx8fDE3NTY4MTk4MjB8MA&ixlib=rb-4.1.0&q=80&w=1080',
+    imageUrl: 'https://images.unsplash.com/photo-1489924034176-2e678c29d4c6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxodXNreSUyMHNpYmVyaWFubyUyMHxlbnwwfHx8fDE3NTcxNjE4NzZ8MA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'siberian husky',
     price: 150,
   },
@@ -102,7 +103,7 @@ const featuredPets: Pet[] = [
     name: 'Milo',
     age: 'Nível 9',
     breed: 'Boxer',
-    imageUrl: 'https://images.unsplash.com/photo-1558945657-484aa38065ec?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb3J1amF8ZW58MHx8fHwxNzU2OTAwODY4fDA&ixlib=rb-4.1.0&q=80&w=1080',
+    imageUrl: 'https://images.unsplash.com/photo-1558945657-484aa38065ec?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb3J1amF8ZW58MHx8fHwxNzU2OTAwODY4fDA&ixlib.rb-4.1.0&q=80&w=1080',
     aiHint: 'boxer dog',
     price: 350,
   },
@@ -111,7 +112,7 @@ const featuredPets: Pet[] = [
     name: 'Zoe',
     age: 'Nível 3',
     breed: 'Rottweiler',
-    imageUrl: 'https://images.unsplash.com/photo-1710892666816-306673646f25?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjYWNob3Jyb3MlMjByZWNlbSUyMG5hc2NpZG98ZW58MHx8fHwxNzU2OTAwMTE4fDA&ixlib=rb-4.1.0&q=80&w=1080',
+    imageUrl: 'https://images.unsplash.com/photo-1710892666816-306673646f25?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjYWNob3Jyb3MlMjByZWNlbSUyMG5hc2NpZG98ZW58MHx8fHwxNzU2OTAwMTE4fDA&ixlib.rb-4.1.0&q=80&w=1080',
     aiHint: 'rottweiler puppy',
     price: 170,
   },
