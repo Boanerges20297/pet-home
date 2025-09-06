@@ -14,17 +14,8 @@ export default function WelcomePage() {
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center bg-background text-foreground p-4 overflow-hidden">
         <AudioPlayer />
-        <div className="absolute inset-0 z-0 opacity-20">
-             <Image
-                src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxmaWxob3RlfGVufDB8fHx8MTc1NjkwMTEwNnww&ixlib=rb-4.1.0&q=80&w=1080"
-                alt="Fundo com filhotes"
-                fill
-                className="object-cover"
-                data-ai-hint="cute puppies background"
-            />
-        </div>
       <div className="w-full max-w-md z-10">
-        <Card className="shadow-2xl bg-card/80 backdrop-blur-sm">
+        <Card className="shadow-2xl bg-card/80 backdrop-blur-sm border-0">
           <CardHeader className="items-center text-center">
              <div className="relative mb-4 h-32 w-32">
                 <Image
