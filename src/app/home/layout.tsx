@@ -109,13 +109,13 @@ function MainSidebar() {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <Link href="/home/minha-colecao">
-                <SidebarMenuButton tooltip="Ver sua coleção de filhotes">
-                    <FolderHeart />
-                    <span>Minha Coleção</span>
-                    {ownedPets.length > 0 && <Badge className="ml-auto flex h-6 w-6 items-center justify-center p-0">{ownedPets.length}</Badge>}
-                </SidebarMenuButton>
-              </Link>
+                <Link href="/home/minha-colecao">
+                  <SidebarMenuButton tooltip="Ver sua coleção de filhotes">
+                      <FolderHeart />
+                      <span>Minha Coleção</span>
+                      {ownedPets.length > 0 && <Badge className="ml-auto flex h-6 w-6 items-center justify-center p-0">{ownedPets.length}</Badge>}
+                  </SidebarMenuButton>
+                </Link>
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Visitar a loja">
