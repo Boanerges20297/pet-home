@@ -3,7 +3,7 @@
 
 import { useState, useEffect, type ReactNode } from 'react';
 import Link from 'next/link';
-import { PawPrint, ShoppingCart, Gift, Home, LogOut, Dog, HandHeart, Settings, BrainCircuit, FolderHeart, Gamepad2, Stethoscope } from 'lucide-react';
+import { PawPrint, ShoppingCart, Gift, Home, LogOut, Dog, HandHeart, Settings, BrainCircuit, FolderHeart, Gamepad2, Stethoscope, MessageSquareHeart } from 'lucide-react';
 import {
   SidebarProvider,
   Sidebar,
@@ -140,6 +140,14 @@ function MainSidebar() {
                     <SidebarMenuButton tooltip="Coletar prêmios diários">
                         <Gift />
                         <span>Prêmios Diários</span>
+                    </SidebarMenuButton>
+                </Link>
+            </SidebarMenuItem>
+             <SidebarMenuItem>
+                <Link href="/home/adocao">
+                    <SidebarMenuButton tooltip="Adocao com IA">
+                        <MessageSquareHeart />
+                        <span>Adoção com IA</span>
                     </SidebarMenuButton>
                 </Link>
             </SidebarMenuItem>
