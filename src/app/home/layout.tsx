@@ -160,12 +160,12 @@ function MainSidebar() {
               </SidebarMenuButton>
             </SidebarMenuItem>
              <SidebarMenuItem>
-                <Link href="/home/minigames" passHref legacyBehavior>
-                    <SidebarMenuButton>
+                <SidebarMenuButton asChild tooltip="Jogue minigames divertidos">
+                    <Link href="/home/minigames">
                         <Gamepad2 />
                         <span>Minigames</span>
-                    </SidebarMenuButton>
-                </Link>
+                    </Link>
+                </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Teste seus conhecimentos">
@@ -185,7 +185,8 @@ function MainSidebar() {
                       <Link href="/">
                           <LogOut />
                           <span>Sair do Jogo</span>
-                      </Link>                  </SidebarMenuButton>
+                      </Link>                  
+                  </SidebarMenuButton>
               </SidebarMenuItem>
           </SidebarMenu>
         </SidebarFooter>
