@@ -111,7 +111,7 @@ function MainSidebar() {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton onClick={() => router.push('/home/minha-colecao')}>
+              <SidebarMenuButton onClick={() => router.push('/home/minha-colecao')} tooltip="Ver sua coleção">
                 <>
                   <FolderHeart />
                   <span>Minha Coleção</span>
@@ -160,12 +160,12 @@ function MainSidebar() {
               </SidebarMenuButton>
             </SidebarMenuItem>
              <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Jogue minigames divertidos">
-                <Link href="/home/minigames">
-                  <Gamepad2 />
-                  <span>Minigames</span>
+                <Link href="/home/minigames" passHref legacyBehavior>
+                    <SidebarMenuButton>
+                        <Gamepad2 />
+                        <span>Minigames</span>
+                    </SidebarMenuButton>
                 </Link>
-              </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Teste seus conhecimentos">
