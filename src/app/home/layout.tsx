@@ -3,7 +3,7 @@
 
 import { useState, useEffect, type ReactNode } from 'react';
 import Link from 'next/link';
-import { PawPrint, ShoppingCart, Gift, Home, LogOut, Dog, HandHeart, Settings, BrainCircuit, FolderHeart, Gamepad2 } from 'lucide-react';
+import { PawPrint, ShoppingCart, Gift, Home, LogOut, Dog, HandHeart, Settings, BrainCircuit, FolderHeart, Gamepad2, Stethoscope } from 'lucide-react';
 import {
   SidebarProvider,
   Sidebar,
@@ -103,12 +103,12 @@ function MainSidebar() {
         <SidebarContent>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Ver filhotes à venda">
                 <Link href="/home">
-                  <PawPrint />
-                  <span>Filhotes à Venda</span>
+                    <SidebarMenuButton tooltip="Ver filhotes à venda">
+                        <PawPrint />
+                        <span>Filhotes à Venda</span>
+                    </SidebarMenuButton>
                 </Link>
-              </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton onClick={() => router.push('/home/minha-colecao')} tooltip="Ver sua coleção">
@@ -120,60 +120,68 @@ function MainSidebar() {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Visitar a loja">
-                <Link href="/home/loja">
-                  <ShoppingCart />
-                  <span>Loja</span>
+                 <Link href="/home/loja">
+                    <SidebarMenuButton tooltip="Visitar a loja">
+                        <ShoppingCart />
+                        <span>Loja</span>
+                    </SidebarMenuButton>
                 </Link>
-              </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Coletar prêmios diários">
                 <Link href="/home/premios-diarios">
-                  <Gift />
-                  <span>Prêmios Diários</span>
+                    <SidebarMenuButton tooltip="Coletar prêmios diários">
+                        <Gift />
+                        <span>Prêmios Diários</span>
+                    </SidebarMenuButton>
                 </Link>
-              </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Escolha um lar para seu filhote">
                 <Link href="/home/colecionar">
-                  <Home />
-                  <span>Lares para seu Filhote</span>
+                    <SidebarMenuButton tooltip="Escolha um lar para seu filhote">
+                        <Home />
+                        <span>Lares para seu Filhote</span>
+                    </SidebarMenuButton>
                 </Link>
-              </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Passear com seu filhote">
                 <Link href="/home/passear">
-                  <Dog />
-                  <span>Passear com seu Filhote</span>
+                    <SidebarMenuButton tooltip="Passear com seu filhote">
+                        <Dog />
+                        <span>Passear com seu Filhote</span>
+                    </SidebarMenuButton>
                 </Link>
-              </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Interagir com seu filhote">
                 <Link href="/home/interagir">
-                  <HandHeart />
-                  <span>Interagir com seu Filhote</span>
+                    <SidebarMenuButton tooltip="Interagir com seu filhote">
+                        <HandHeart />
+                        <span>Interagir com seu Filhote</span>
+                    </SidebarMenuButton>
                 </Link>
-              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+                <Link href="/home/exames">
+                    <SidebarMenuButton tooltip="Fazer um check-up no seu filhote">
+                        <Stethoscope />
+                        <span>Fazer Exames</span>
+                    </SidebarMenuButton>
+                </Link>
             </SidebarMenuItem>
              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Jogue minigames divertidos">
-                    <Link href="/home/minigames">
+                <Link href="/home/minigames">
+                    <SidebarMenuButton tooltip="Jogue minigames divertidos">
                         <Gamepad2 />
                         <span>Minigames</span>
-                    </Link>
-                </SidebarMenuButton>
+                    </SidebarMenuButton>
+                </Link>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Teste seus conhecimentos">
                 <Link href="/home/quiz">
-                  <BrainCircuit />
-                  <span>Quiz</span>
+                    <SidebarMenuButton tooltip="Teste seus conhecimentos">
+                        <BrainCircuit />
+                        <span>Quiz</span>
+                    </SidebarMenuButton>
                 </Link>
-              </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarContent>
