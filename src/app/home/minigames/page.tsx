@@ -1,162 +1,148 @@
 
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
+import Link from 'next/link';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Gamepad2, Timer, Award, Play, RotateCw } from 'lucide-react';
-import { usePlayer } from '@/context/PlayerContext';
-import { useToast } from '@/hooks/use-toast';
+import { Gamepad2, Play, AlertTriangle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
-const GAME_DURATION = 30; // seconds
-const GRID_SIZE = 9;
+const minigames = [
+  {
+    title: 'Pegue o Filhote!',
+    description: 'Teste seus reflexos e pegue os filhotes que aparecem nos buracos.',
+    href: '/home/minigames/pegue-o-filhote',
+    imageUrl: 'https://images.unsplash.com/photo-1527778676396-eceba283ddfa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjYWNob3JybyUyMGZpbGhvdGUlMjB8ZW58MHx8fHwxNzU2ODE5NzYwfDA&ixlib=rb-4.1.0&q=80&w=1080',
+    aiHint: 'puppy cute',
+    status: 'available',
+  },
+  {
+    title: 'Corrida de Obstáculos',
+    description: 'Guie seu filhote por uma pista cheia de desafios e colete prêmios.',
+    href: '#',
+    imageUrl: 'https://images.unsplash.com/photo-1558929996-da64ba858215?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxhZ2lsaXR5JTIwZG9nfGVufDB8fHx8MTc1ODIyMTc4NXww&ixlib=rb-4.1.0&q=80&w=1080',
+    aiHint: 'dog agility',
+    status: 'coming_soon',
+  },
+  {
+    title: 'Quebra-Cabeça de Pata',
+    description: 'Resolva quebra-cabeças divertidos com imagens dos seus filhotes.',
+    href: '#',
+    imageUrl: 'https://images.unsplash.com/photo-1546419359-2dfb78498a85?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwdXp6bGUlMjBkb2d8ZW58MHx8fHwxNzU4MjIxODM2fDA&ixlib=rb-4.1.0&q=80&w=1080',
+    aiHint: 'puzzle dog',
+    status: 'coming_soon',
+  },
+  {
+    title: 'Encontre o Petisco',
+    description: 'Use seu faro para encontrar os petiscos escondidos no cenário.',
+    href: '#',
+    imageUrl: 'https://images.unsplash.com/photo-1578505779919-3a3c937795c7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzZWFyY2hpbmclMjBkb2d8ZW58MHx8fHwxNzU4MjIxODYwfDA&ixlib=rb-4.1.0&q=80&w=1080',
+    aiHint: 'dog searching',
+    status: 'coming_soon',
+  },
+  {
+    title: 'Memória Animal',
+    description: 'Combine os pares de cartas com imagens de animais fofos.',
+    href: '#',
+    imageUrl: 'https://images.unsplash.com/photo-1516575150278-77133a734612?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtZW1vcnklMjBnYW1lJTIwYW5pbWFsfGVufDB8fHx8MTc1ODIyMTg5MHww&ixlib=rb-4.1.0&q=80&w=1080',
+    aiHint: 'animal memory game',
+    status: 'coming_soon',
+  },
+  {
+    title: 'Vista o Filhote',
+    description: 'Escolha roupas e acessórios divertidos para deixar seu pet estiloso.',
+    href: '#',
+    imageUrl: 'https://images.unsplash.com/photo-1554720460-904d23d34a12?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxOXx8YnVsbGRvZ3VlJTIwZGUlMjBjaGFwZXV8ZW58MHx8fHwxNzU3MTYxOTU3fDA&ixlib=rb-4.1.0&q=80&w=1080',
+    aiHint: 'dog with hat',
+    status: 'coming_soon',
+  },
+  {
+    title: 'Siga o Mestre',
+    description: 'Repita a sequência de latidos e miados para ganhar pontos.',
+    href: '#',
+    imageUrl: 'https://images.unsplash.com/photo-1548681528-6a5c45b66b42?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjYXQlMjB0YWxraW5nfGVufDB8fHx8MTc1ODIyMTk4N3ww&ixlib=rb-4.1.0&q=80&w=1080',
+    aiHint: 'cat talking',
+    status: 'coming_soon',
+  },
+  {
+    title: 'Banho Divertido',
+    description: 'Ajude a dar um banho no seu filhote antes que o tempo acabe.',
+    href: '#',
+    imageUrl: 'https://images.unsplash.com/photo-1556872513-f69904c18596?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxkb2clMjBiYXRofGVufDB8fHx8MTc1ODIyMjAxNHww&ixlib=rb-4.1.0&q=80&w=1080',
+    aiHint: 'dog bath',
+    status: 'coming_soon',
+  },
+  {
+    title: 'Decore o Lar',
+    description: 'Decore os cômodos da casa do seu filhote com móveis e brinquedos.',
+    href: '#',
+    imageUrl: 'https://images.unsplash.com/photo-1600121848594-d8644e57abab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxsaXZpbmclMjByb29tJTIwZnVybml0dXJlfGVufDB8fHx8MTc1ODIyMjA0MXww&ixlib=rb-4.1.0&q=80&w=1080',
+    aiHint: 'living room furniture',
+    status: 'coming_soon',
+  },
+  {
+    title: 'Aventura no Parque',
+    description: 'Explore o parque, encontre outros filhotes e descubra segredos.',
+    href: '#',
+    imageUrl: 'https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwYXJrJTIwZG9nfGVufDB8fHx8MTc1ODIyMjA3M3ww&ixlibrb-4.1.0&q=80&w=1080',
+    aiHint: 'dog park',
+    status: 'coming_soon',
+  },
+];
 
-export default function MinigamesPage() {
-  const { addXp, addCoins, ownedPets } = usePlayer();
-  const { toast } = useToast();
-
-  const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(GAME_DURATION);
-  const [activeHole, setActiveHole] = useState<number | null>(null);
-  const [gameState, setGameState] = useState<'idle' | 'playing' | 'finished'>('idle');
-
-  const gamePets = ownedPets.length > 0 ? ownedPets : [
-    { id: 'default1', name: 'Amiguinho', imageUrl: 'https://images.unsplash.com/photo-1527778676396-eceba283ddfa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjYWNob3JybyUyMGZpbGhvdGUlMjB8ZW58MHx8fHwxNzU2ODE5NzYwfDA&ixlib=rb-4.1.0&q=80&w=1080', aiHint: 'puppy' }
-  ];
-  
-  const [activePetImage, setActivePetImage] = useState(gamePets[0].imageUrl);
-
-
-  const startGame = () => {
-    setScore(0);
-    setTimeLeft(GAME_DURATION);
-    setGameState('playing');
-  };
-
-  const endGame = useCallback(() => {
-    setGameState('finished');
-    setActiveHole(null);
-    const coinsEarned = Math.floor(score / 2);
-    const xpEarned = score * 2;
-
-    if (score > 0) {
-      addCoins(coinsEarned);
-      addXp(xpEarned);
-      toast({
-        title: 'Jogo Finalizado!',
-        description: `Você ganhou ${coinsEarned} moedas e ${xpEarned} XP!`,
-      });
-    }
-  }, [score, addCoins, addXp, toast]);
-
-
-  useEffect(() => {
-    if (gameState !== 'playing') return;
-
-    if (timeLeft <= 0) {
-      endGame();
-      return;
-    }
-
-    const timer = setInterval(() => {
-      setTimeLeft(prevTime => prevTime - 1);
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [gameState, timeLeft, endGame]);
-
-  useEffect(() => {
-    if (gameState !== 'playing') return;
-
-    const showMole = setInterval(() => {
-      const randomHole = Math.floor(Math.random() * GRID_SIZE);
-      const randomPet = gamePets[Math.floor(Math.random() * gamePets.length)];
-      setActivePetImage(randomPet.imageUrl);
-      setActiveHole(randomHole);
-      
-      setTimeout(() => {
-        if(gameState === 'playing') setActiveHole(null);
-      }, 900 - (score * 5)); // Speed increases with score
-    }, 1000 - (score * 5));
-
-    return () => clearInterval(showMole);
-  }, [gameState, score, gamePets]);
-
-
-  const handleHoleClick = (holeIndex: number) => {
-    if (holeIndex === activeHole) {
-      setScore(prev => prev + 1);
-      setActiveHole(null); // Remove instantly after click
-    }
-  };
-
+export default function MinigamesHubPage() {
   return (
     <main className="flex-1 overflow-y-auto p-4 md:p-8">
-      <div className="mx-auto max-w-2xl">
-        <section className="mb-8 text-center">
+      <div className="mx-auto max-w-6xl">
+        <section className="mb-12 text-center">
           <h1 className="font-headline text-4xl md:text-5xl text-primary mb-4 flex items-center justify-center gap-4">
             <Gamepad2 className="h-10 w-10" />
-            Pegue o Filhote!
+            Central de Minigames
           </h1>
-          <p className="text-lg text-muted-foreground">
-            Teste seus reflexos! Clique nos filhotes que aparecem nos buracos para marcar pontos.
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Escolha um jogo para se divertir com seus filhotes e ganhar recompensas.
           </p>
         </section>
 
         <section>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div className="flex flex-col gap-1">
-                <CardTitle>Placar: {score}</CardTitle>
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <Timer className="h-5 w-5" />
-                  <span>Tempo: {timeLeft}s</span>
-                </div>
-              </div>
-              {gameState === 'playing' && <div className="text-lg font-bold text-primary animate-pulse">JOGANDO!</div>}
-            </CardHeader>
-            <CardContent>
-              <div className={cn("grid grid-cols-3 gap-4 p-4 rounded-lg bg-green-200/50 border-4 border-dashed border-yellow-600/50", { 'cursor-not-allowed opacity-70': gameState !== 'playing' })}>
-                {Array.from({ length: GRID_SIZE }).map((_, index) => (
-                  <div key={index} 
-                       className="relative w-full aspect-square bg-yellow-800/70 rounded-full flex items-center justify-center overflow-hidden shadow-inner"
-                       onClick={() => gameState === 'playing' && handleHoleClick(index)}
-                  >
-                    {gameState === 'playing' && activeHole === index && (
-                      <div className="absolute bottom-0 w-3/4 h-3/4 animate-bounce-slow">
-                        <Image
-                          src={activePetImage}
-                          alt="Filhote"
-                          fill
-                          className="object-contain drop-shadow-lg"
-                        />
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-            <CardFooter className="flex justify-center">
-              {gameState === 'idle' && (
-                <Button onClick={startGame} size="lg">
-                  <Play className="mr-2" /> Começar a Jogar
-                </Button>
-              )}
-              {gameState === 'finished' && (
-                 <div className="text-center flex flex-col items-center gap-4">
-                    <div className="flex items-center gap-2 text-2xl font-bold">
-                        <Award className="h-8 w-8 text-yellow-500" />
-                        <span>Pontuação Final: {score}</span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {minigames.map((game) => {
+              const isAvailable = game.status === 'available';
+              return (
+                <Card key={game.title} className={cn("overflow-hidden flex flex-col transition-all", !isAvailable && "bg-muted/50 opacity-70")}>
+                  <CardHeader className="p-0">
+                    <div className="relative aspect-video w-full">
+                      <Image
+                        src={game.imageUrl}
+                        alt={`Imagem do jogo ${game.title}`}
+                        fill
+                        className="object-cover"
+                        data-ai-hint={game.aiHint}
+                      />
+                      {!isAvailable && (
+                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                            <span className="text-white font-bold text-lg">EM BREVE</span>
+                        </div>
+                      )}
                     </div>
-                    <Button onClick={startGame} size="lg">
-                        <RotateCw className="mr-2" /> Jogar Novamente
+                  </CardHeader>
+                  <CardContent className="p-4 flex-grow flex flex-col">
+                    <CardTitle className="font-headline text-2xl text-foreground">{game.title}</CardTitle>
+                    <CardDescription className="mt-1 flex-grow">{game.description}</CardDescription>
+                  </CardContent>
+                  <div className="p-4 pt-0 mt-auto">
+                    <Button asChild className="w-full" disabled={!isAvailable}>
+                      <Link href={isAvailable ? game.href : '#'}>
+                        {isAvailable ? <Play className="mr-2" /> : <AlertTriangle className="mr-2" />}
+                        {isAvailable ? 'Jogar Agora' : 'Em Breve'}
+                      </Link>
                     </Button>
-                </div>
-              )}
-            </CardFooter>
-          </Card>
+                  </div>
+                </Card>
+              );
+            })}
+          </div>
         </section>
       </div>
     </main>
