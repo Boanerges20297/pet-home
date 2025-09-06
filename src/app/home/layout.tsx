@@ -110,14 +110,14 @@ function MainSidebar() {
             </SidebarMenuItem>
               <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Ver sua coleção de filhotes">
-                <Link href="/home/minha-colecao">
-                    <div className="flex w-full items-center justify-between">
-                        <div className="flex items-center gap-2">
-                            <FolderHeart />
-                            <span>Minha Coleção</span>
-                        </div>
-                       {ownedPets.length > 0 && <Badge className="h-6 w-6 flex items-center justify-center p-0">{ownedPets.length}</Badge>}
+                 <Link href="/home/minha-colecao">
+                  <div className="flex w-full items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <FolderHeart />
+                      <span>Minha Coleção</span>
                     </div>
+                    {ownedPets.length > 0 && <Badge className="h-6 w-6 flex items-center justify-center p-0">{ownedPets.length}</Badge>}
+                  </div>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
