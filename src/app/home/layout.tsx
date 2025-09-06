@@ -3,7 +3,7 @@
 
 import { useState, useEffect, type ReactNode } from 'react';
 import Link from 'next/link';
-import { PawPrint, ShoppingCart, Gift, Home, LogOut, Dog, HandHeart, Settings, BrainCircuit, FolderHeart } from 'lucide-react';
+import { PawPrint, ShoppingCart, Gift, Home, LogOut, Dog, HandHeart, Settings, BrainCircuit, FolderHeart, Gamepad2 } from 'lucide-react';
 import {
   SidebarProvider,
   Sidebar,
@@ -159,6 +159,14 @@ function MainSidebar() {
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
+             <SidebarMenuItem>
+              <SidebarMenuButton asChild tooltip="Jogue minigames divertidos">
+                <Link href="/home/minigames">
+                  <Gamepad2 />
+                  <span>Minigames</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Teste seus conhecimentos">
                 <Link href="/home/quiz">
@@ -177,8 +185,7 @@ function MainSidebar() {
                       <Link href="/">
                           <LogOut />
                           <span>Sair do Jogo</span>
-                      </Link>
-                  </SidebarMenuButton>
+                      </Link>                  </SidebarMenuButton>
               </SidebarMenuItem>
           </SidebarMenu>
         </SidebarFooter>
