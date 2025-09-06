@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Gamepad2, Play, AlertTriangle } from 'lucide-react';
+import { Gamepad2, Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
@@ -20,74 +20,74 @@ const minigames = [
   {
     title: 'Corrida de Obstáculos',
     description: 'Guie seu filhote por uma pista cheia de desafios e colete prêmios.',
-    href: '#',
+    href: '/home/minigames/corrida-de-obstaculos',
     imageUrl: 'https://images.unsplash.com/photo-1558929996-da64ba858215?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxhZ2lsaXR5JTIwZG9nfGVufDB8fHx8MTc1ODIyMTc4NXww&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'dog agility',
-    status: 'coming_soon',
+    status: 'available',
   },
   {
     title: 'Quebra-Cabeça de Pata',
     description: 'Resolva quebra-cabeças divertidos com imagens dos seus filhotes.',
-    href: '#',
+    href: '/home/minigames/quebra-cabeca-de-pata',
     imageUrl: 'https://images.unsplash.com/photo-1546419359-2dfb78498a85?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwdXp6bGUlMjBkb2d8ZW58MHx8fHwxNzU4MjIxODM2fDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'puzzle dog',
-    status: 'coming_soon',
+    status: 'available',
   },
   {
     title: 'Encontre o Petisco',
     description: 'Use seu faro para encontrar os petiscos escondidos no cenário.',
-    href: '#',
+    href: '/home/minigames/encontre-o-petisco',
     imageUrl: 'https://images.unsplash.com/photo-1578505779919-3a3c937795c7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzZWFyY2hpbmclMjBkb2d8ZW58MHx8fHwxNzU4MjIxODYwfDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'dog searching',
-    status: 'coming_soon',
+    status: 'available',
   },
   {
     title: 'Memória Animal',
     description: 'Combine os pares de cartas com imagens de animais fofos.',
-    href: '#',
+    href: '/home/minigames/memoria-animal',
     imageUrl: 'https://images.unsplash.com/photo-1516575150278-77133a734612?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtZW1vcnklMjBnYW1lJTIwYW5pbWFsfGVufDB8fHx8MTc1ODIyMTg5MHww&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'animal memory game',
-    status: 'coming_soon',
+    status: 'available',
   },
   {
     title: 'Vista o Filhote',
     description: 'Escolha roupas e acessórios divertidos para deixar seu pet estiloso.',
-    href: '#',
+    href: '/home/minigames/vista-o-filhote',
     imageUrl: 'https://images.unsplash.com/photo-1554720460-904d23d34a12?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxOXx8YnVsbGRvZ3VlJTIwZGUlMjBjaGFwZXV8ZW58MHx8fHwxNzU3MTYxOTU3fDA&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'dog with hat',
-    status: 'coming_soon',
+    status: 'available',
   },
   {
     title: 'Siga o Mestre',
     description: 'Repita a sequência de latidos e miados para ganhar pontos.',
-    href: '#',
+    href: '/home/minigames/siga-o-mestre',
     imageUrl: 'https://images.unsplash.com/photo-1548681528-6a5c45b66b42?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjYXQlMjB0YWxraW5nfGVufDB8fHx8MTc1ODIyMTk4N3ww&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'cat talking',
-    status: 'coming_soon',
+    status: 'available',
   },
   {
     title: 'Banho Divertido',
     description: 'Ajude a dar um banho no seu filhote antes que o tempo acabe.',
-    href: '#',
+    href: '/home/minigames/banho-divertido',
     imageUrl: 'https://images.unsplash.com/photo-1556872513-f69904c18596?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxkb2clMjBiYXRofGVufDB8fHx8MTc1ODIyMjAxNHww&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'dog bath',
-    status: 'coming_soon',
+    status: 'available',
   },
   {
     title: 'Decore o Lar',
     description: 'Decore os cômodos da casa do seu filhote com móveis e brinquedos.',
-    href: '#',
+    href: '/home/minigames/decore-o-lar',
     imageUrl: 'https://images.unsplash.com/photo-1600121848594-d8644e57abab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxsaXZpbmclMjByb29tJTIwZnVybml0dXJlfGVufDB8fHx8MTc1ODIyMjA0MXww&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'living room furniture',
-    status: 'coming_soon',
+    status: 'available',
   },
   {
     title: 'Aventura no Parque',
     description: 'Explore o parque, encontre outros filhotes e descubra segredos.',
-    href: '#',
+    href: '/home/minigames/aventura-no-parque',
     imageUrl: 'https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwYXJrJTIwZG9nfGVufDB8fHx8MTc1ODIyMjA3M3ww&ixlibrb-4.1.0&q=80&w=1080',
     aiHint: 'dog park',
-    status: 'coming_soon',
+    status: 'available',
   },
 ];
 
@@ -110,7 +110,7 @@ export default function MinigamesHubPage() {
             {minigames.map((game) => {
               const isAvailable = game.status === 'available';
               return (
-                <Card key={game.title} className={cn("overflow-hidden flex flex-col transition-all", !isAvailable && "bg-muted/50 opacity-70")}>
+                <Card key={game.title} className={cn("overflow-hidden flex flex-col transition-all")}>
                   <CardHeader className="p-0">
                     <div className="relative aspect-video w-full">
                       <Image
@@ -120,11 +120,6 @@ export default function MinigamesHubPage() {
                         className="object-cover"
                         data-ai-hint={game.aiHint}
                       />
-                      {!isAvailable && (
-                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                            <span className="text-white font-bold text-lg">EM BREVE</span>
-                        </div>
-                      )}
                     </div>
                   </CardHeader>
                   <CardContent className="p-4 flex-grow flex flex-col">
@@ -132,10 +127,10 @@ export default function MinigamesHubPage() {
                     <CardDescription className="mt-1 flex-grow">{game.description}</CardDescription>
                   </CardContent>
                   <div className="p-4 pt-0 mt-auto">
-                    <Button asChild className="w-full" disabled={!isAvailable}>
-                      <Link href={isAvailable ? game.href : '#'}>
-                        {isAvailable ? <Play className="mr-2" /> : <AlertTriangle className="mr-2" />}
-                        {isAvailable ? 'Jogar Agora' : 'Em Breve'}
+                    <Button asChild className="w-full">
+                      <Link href={game.href}>
+                        <Play className="mr-2" />
+                        Jogar Agora
                       </Link>
                     </Button>
                   </div>
