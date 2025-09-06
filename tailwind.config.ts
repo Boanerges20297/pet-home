@@ -104,6 +104,11 @@ export default {
         'side-to-side': {
             '0%, 100%': { transform: 'translateX(-5px)' },
             '50%': { transform: 'translateX(5px)' },
+        },
+        'scan': {
+            '0%': { top: '0%', opacity: '0.5' },
+            '50%': { top: '100%', opacity: '1' },
+            '100%': { top: '0%', opacity: '0.5' },
         }
       },
       animation: {
@@ -113,6 +118,7 @@ export default {
         'bounce-slow': 'bounce-slow 2.5s infinite ease-in-out',
         'wiggle': 'wiggle 2s infinite ease-in-out',
         'side-to-side': 'side-to-side 2.5s infinite ease-in-out',
+        'scan': 'scan 2.5s ease-in-out infinite',
       },
     },
   },

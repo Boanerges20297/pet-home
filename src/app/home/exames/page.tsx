@@ -17,24 +17,32 @@ import {
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
 
 export default function ExamesPage() {
     const { ownedPets, addXp } = usePlayer();
     const { toast } = useToast();
     const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
     const [healthReport, setHealthReport] = useState<string | null>(null);
+    const [isExamining, setIsExamining] = useState(false);
 
     const handleExam = () => {
         if (selectedPetId) {
             const pet = ownedPets.find(p => p.id === selectedPetId);
             if(!pet) return;
 
-            addXp(20);
-            setHealthReport(`O exame em ${pet.name} foi um sucesso! Todos os sinais vitais estão ótimos. O filhote está saudável e feliz!`);
-            toast({
-                title: 'Exame Realizado!',
-                description: 'Você ganhou 20 XP por cuidar da saúde do seu filhote.',
-            });
+            setIsExamining(true);
+            setHealthReport(null);
+
+            setTimeout(() => {
+                addXp(20);
+                setHealthReport(`O exame em ${pet.name} foi um sucesso! Todos os sinais vitais estão ótimos. O filhote está saudável e feliz!`);
+                toast({
+                    title: 'Exame Realizado!',
+                    description: 'Você ganhou 20 XP por cuidar da saúde do seu filhote.',
+                });
+                setIsExamining(false);
+            }, 2500); // Duração da animação de exame
         }
     }
 
@@ -66,6 +74,7 @@ export default function ExamesPage() {
                             setHealthReport(null);
                         }} 
                         value={selectedPetId ?? ""}
+                        disabled={isExamining}
                     >
                         <SelectTrigger>
                             <SelectValue placeholder="Selecione um filhote para examinar" />
@@ -81,30 +90,49 @@ export default function ExamesPage() {
                 )}
              </div>
 
-            <div className="relative w-full h-60 flex items-center justify-center">
+            <div className="relative w-full h-60 flex items-center justify-center overflow-hidden">
                 {selectedPet && (
                     <div className="relative z-10 w-48 h-48">
                         <Image 
                             src={selectedPet.imageUrl}
                             alt={selectedPet.name}
                             fill
-                            className="object-contain drop-shadow-2xl"
+                            className={cn("object-contain drop-shadow-2xl", isExamining && "opacity-75")}
                         />
+                         {isExamining && (
+                            <div className="absolute inset-0 z-20">
+                                <div className="absolute w-full h-1 bg-cyan-400/80 shadow-[0_0_10px_2px_#0ff] animate-[scan_2.5s_ease-in-out_infinite]" />
+                            </div>
+                        )}
                     </div>
                 )}
-                 {!selectedPet && (
+                 {!selectedPet && !isExamining && (
                     <div className="text-center text-muted-foreground">
                         <p>Selecione um filhote para começar.</p>
                     </div>
                 )}
+                 {isExamining && !selectedPet && (
+                     <div className="text-center text-primary animate-pulse">
+                        <p>Selecione um filhote...</p>
+                    </div>
+                 )}
             </div>
 
-            <Button onClick={handleExam} disabled={!selectedPetId} size="lg">
-                <HeartPulse className="mr-2 h-5 w-5" />
-                Realizar Exame (20 XP)
+            <Button onClick={handleExam} disabled={!selectedPetId || isExamining} size="lg">
+                {isExamining ? (
+                    <>
+                        <Stethoscope className="mr-2 h-5 w-5 animate-pulse" />
+                        Examinando...
+                    </>
+                ) : (
+                    <>
+                        <HeartPulse className="mr-2 h-5 w-5" />
+                        Realizar Exame (20 XP)
+                    </>
+                )}
             </Button>
           </CardContent>
-          {healthReport && (
+          {healthReport && !isExamining && (
             <>
               <Separator className="my-6" />
               <CardFooter className="flex flex-col gap-4">
