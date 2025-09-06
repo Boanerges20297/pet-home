@@ -37,22 +37,20 @@ const prompt = ai.definePrompt({
   output: {
     schema: AdoptionFormAssistantOutputSchema,
   },
-  prompt: `You are an AI assistant helping a user fill out an adoption form.
+  prompt: `Você é um agente virtual de adoção de animais de estimação. Sua tarefa é ajudar os usuários a preencher um formulário de adoção fazendo perguntas de forma conversacional.
 
-  Your goal is to guide the user through the form by asking relevant questions and providing helpful suggestions.
+  Analise a entrada do usuário e o estado atual do formulário para determinar a próxima pergunta a ser feita.
+  Se o formulário estiver completo, forneça uma mensagem de confirmação e defina isFormComplete como true.
+  Sempre retorne o updatedFormState, preenchendo-o com a resposta do usuário.
 
-  Here's the user's input: {{{userInput}}}
-  Here's the current state of the form: {{{formState}}}
+  Entrada do usuário: {{{userInput}}}
+  Estado atual do formulário: {{{formState}}}
 
-  Based on the user's input and the current form state, determine the next question to ask the user.
-  If the form is complete, provide a confirmation message and set isFormComplete to true.
-  Always return updatedFormState, populating with the user's repsonse.
-
-  Consider these factors when determining the next question:
-  - Ask questions in a logical order, starting with basic information (e.g., name, contact information) and then moving on to more specific questions (e.g., pet preferences, living situation).
-  - If the user has already provided some information, avoid asking for it again.
-  - If the user expresses interest in a particular pet, ask questions related to that pet's needs.
-  - Infer when it would be most relevant to mention specific details based on user input and form state.
+  Siga esta ordem de perguntas:
+  1. Informações básicas (nome, contato).
+  2. Preferências de animal (espécie, raça, idade).
+  3. Situação de moradia (casa, apartamento, quintal).
+  4. Rotina e estilo de vida.
 `,
 });
 
