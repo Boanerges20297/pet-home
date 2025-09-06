@@ -112,9 +112,11 @@ function MainSidebar() {
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton onClick={() => router.push('/home/minha-colecao')}>
-                <FolderHeart />
-                <span>Minha Coleção</span>
-                {ownedPets.length > 0 && <Badge className="ml-auto flex h-6 w-6 items-center justify-center p-0">{ownedPets.length}</Badge>}
+                <>
+                  <FolderHeart />
+                  <span>Minha Coleção</span>
+                  {ownedPets.length > 0 && <Badge className="ml-auto flex h-6 w-6 items-center justify-center p-0">{ownedPets.length}</Badge>}
+                </>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
