@@ -120,6 +120,14 @@ function MainSidebar() {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
+                <Link href="/home/quiz">
+                    <SidebarMenuButton tooltip="Teste seus conhecimentos">
+                        <BrainCircuit />
+                        <span>Quiz</span>
+                    </SidebarMenuButton>
+                </Link>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
                  <Link href="/home/loja">
                     <SidebarMenuButton tooltip="Visitar a loja">
                         <ShoppingCart />
@@ -172,14 +180,6 @@ function MainSidebar() {
                     <SidebarMenuButton tooltip="Jogue minigames divertidos">
                         <Gamepad2 />
                         <span>Minigames</span>
-                    </SidebarMenuButton>
-                </Link>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-                <Link href="/home/quiz">
-                    <SidebarMenuButton tooltip="Teste seus conhecimentos">
-                        <BrainCircuit />
-                        <span>Quiz</span>
                     </SidebarMenuButton>
                 </Link>
             </SidebarMenuItem>
