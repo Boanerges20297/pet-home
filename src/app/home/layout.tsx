@@ -111,13 +111,11 @@ function MainSidebar() {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-                <SidebarMenuButton onClick={() => router.push('/home/minha-colecao')} tooltip="Ver sua coleção de filhotes">
-                  <>
-                    <FolderHeart />
-                    <span>Minha Coleção</span>
-                    {ownedPets.length > 0 && <Badge className="ml-auto flex h-6 w-6 items-center justify-center p-0">{ownedPets.length}</Badge>}
-                  </>
-                </SidebarMenuButton>
+              <SidebarMenuButton onClick={() => router.push('/home/minha-colecao')}>
+                <FolderHeart />
+                <span>Minha Coleção</span>
+                {ownedPets.length > 0 && <Badge className="ml-auto flex h-6 w-6 items-center justify-center p-0">{ownedPets.length}</Badge>}
+              </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Visitar a loja">
