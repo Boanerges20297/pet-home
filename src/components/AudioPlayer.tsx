@@ -14,19 +14,20 @@ export default function AudioPlayer() {
 
   useEffect(() => {
     // Start audio on mount if not muted
-    if (!isMuted) {
-      initializeAudio();
-    }
+    initializeAudio();
 
     // Cleanup on unmount
     return () => {
-      loop.current?.stop();
-      loop.current?.dispose();
-      synth.current?.dispose();
-      Tone.Transport.stop();
-      Tone.Transport.cancel();
-      isInitialized.current = false;
+      if (isInitialized.current) {
+        loop.current?.stop();
+        loop.current?.dispose();
+        synth.current?.dispose();
+        Tone.Transport.stop();
+        Tone.Transport.cancel();
+        isInitialized.current = false;
+      }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
   useEffect(() => {
@@ -39,6 +40,7 @@ export default function AudioPlayer() {
     if (isInitialized.current) return;
     
     await Tone.start();
+    isInitialized.current = true;
     
     synth.current = new Tone.Synth({
       oscillator: {
@@ -72,7 +74,6 @@ export default function AudioPlayer() {
 
     Tone.Transport.start();
     loop.current.start(0);
-    isInitialized.current = true;
   };
 
   const toggleMute = async () => {
