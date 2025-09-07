@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { ArrowLeft, Stethoscope, HeartPulse, CheckCircle2, Lightbulb } from 'lucide-react';
+import { ArrowLeft, Stethoscope, HeartPulse, CheckCircle2, Lightbulb, AlertTriangle } from 'lucide-react';
 import { usePlayer } from '@/context/PlayerContext';
 import {
   Select,
@@ -157,17 +157,33 @@ export default function ExamesPage() {
                 <div className="text-center">
                     <h3 className="font-headline text-2xl text-primary">Boletim de Saúde</h3>
                 </div>
-                <div className="w-full p-4 bg-green-100 dark:bg-green-900/50 rounded-lg text-green-800 dark:text-green-200 border border-green-200 dark:border-green-800 space-y-3">
+                <div className={cn(
+                  "w-full p-4 rounded-lg border space-y-3",
+                   healthReport.isHealthy
+                    ? "bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200 border-green-200 dark:border-green-800"
+                    : "bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-200 border-yellow-200 dark:border-yellow-800"
+                  )}>
+                    <div className="flex items-center gap-3 font-bold">
+                       {healthReport.isHealthy ? (
+                           <CheckCircle2 className="h-6 w-6 text-green-600 dark:text-green-400 flex-shrink-0" />
+                       ) : (
+                            <AlertTriangle className="h-6 w-6 text-yellow-600 dark:text-yellow-400 flex-shrink-0" />
+                       )}
+                        <span>Status: {healthReport.isHealthy ? "Saudável e Brincalhão!" : "Precisa de Atenção Especial!"}</span>
+                    </div>
+
+                    <Separator className={cn(healthReport.isHealthy ? "bg-green-200 dark:bg-green-800" : "bg-yellow-200 dark:bg-yellow-800")} />
+
                     <div className="flex items-start gap-3">
-                        <CheckCircle2 className="h-8 w-8 text-green-600 dark:text-green-400 flex-shrink-0 mt-1" />
+                        <Stethoscope className="h-8 w-8 flex-shrink-0 mt-1" />
                         <div>
                             <h4 className='font-bold'>Diagnóstico:</h4>
                             <p>{healthReport.diagnosis}</p>
                         </div>
                     </div>
-                     <Separator className="bg-green-200 dark:bg-green-800"/>
+                     <Separator className={cn(healthReport.isHealthy ? "bg-green-200 dark:bg-green-800" : "bg-yellow-200 dark:bg-yellow-800")} />
                      <div className="flex items-start gap-3">
-                        <Lightbulb className="h-8 w-8 text-yellow-500 dark:text-yellow-400 flex-shrink-0 mt-1" />
+                        <Lightbulb className="h-8 w-8 flex-shrink-0 mt-1" />
                         <div>
                             <h4 className='font-bold'>Recomendação:</h4>
                             <p>{healthReport.recommendation}</p>
