@@ -194,7 +194,7 @@ export default function AdocaoPage() {
                 </CardContent>
                 <CardFooter>
                     <Button className='w-full' disabled={!isFinished || petReceived} onClick={handleConfirmAdoption}>
-                        {petReceived ? 'Filhote Recebido!' : 'Confirmar Adoção'}
+                        {petReceived ? 'Filhote Recebido!' : 'Confirmar Adoção e Receber Filhote'}
                     </Button>
                 </CardFooter>
             </Card>
