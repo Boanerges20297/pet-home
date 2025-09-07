@@ -179,7 +179,7 @@ export default function ExamesPage() {
           {healthReport && !isExamining && (
             <>
               <Separator />
-              <CardFooter className="flex-col p-6 gap-4">
+              <CardFooter className="flex-col p-6 gap-4 bg-muted/20">
                 <div className="text-center">
                   <h3 className="font-headline text-2xl text-primary">Boletim de Saúde</h3>
                 </div>
