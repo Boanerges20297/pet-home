@@ -6,8 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/componen
 import { Button } from '@/components/ui/button';
 import { Coins, Gift, CheckCircle2, Gem, Bone, Beef, Apple, Utensils } from 'lucide-react';
 import { usePlayer } from '@/context/PlayerContext';
-import type { PlayerItem, Reward } from '@/context/PlayerContext';
-
+import type { Reward } from '@/context/PlayerContext';
 
 const storeItemsForRewards = [
   { id: 'food_biscuit', name: 'Biscoito da Sorte', icon: Bone },
@@ -27,11 +26,11 @@ const generateRewards = (days: number): { day: number; reward: Reward; isSpecial
     if (day % 7 === 0) { // Final de semana
       reward = { type: 'coins', amount: 200 + week * 150 };
       isSpecial = true;
-    } else if (day % 5 === 0) { // A cada 5 dias
+    } else if (day % 5 === 0 && day > 0) { // A cada 5 dias
       const item = storeItemsForRewards[i % storeItemsForRewards.length];
       reward = { type: 'item', item: { id: item.id, name: item.name, quantity: 1 } };
       isSpecial = true;
-    } else if (day % 2 === 0 && day > 1) { // Dias pares
+    } else if (day % 3 === 0 && day > 0) { // A cada 3 dias
         reward = { type: 'gems', amount: 5 + week };
         isSpecial = true;
     }
@@ -47,14 +46,13 @@ const generateRewards = (days: number): { day: number; reward: Reward; isSpecial
 export default function DailyRewardsPage() {
   const { currentDay, collectedDays, collectReward } = usePlayer();
   
+  // A lista de recompensas é gerada uma vez e memorizada
   const dailyRewards = useMemo(() => generateRewards(90), []);
 
-  const handleCollect = (day: number, reward: Reward) => {
-    collectReward(day, reward);
-  };
-
+  // Verifica se o dia atual já foi coletado
   const isCollected = (day: number) => collectedDays.includes(day);
 
+  // O ícone é determinado com base no tipo de recompensa
   const getRewardIcon = (reward: Reward) => {
     if (reward.type === 'coins') return <Coins className="h-5 w-5 text-yellow-500" />;
     if (reward.type === 'gems') return <Gem className="h-5 w-5 text-blue-500" />;
@@ -65,14 +63,15 @@ export default function DailyRewardsPage() {
       return <Utensils className="h-5 w-5 text-muted-foreground" />;
     }
     return <Gift className="h-5 w-5" />;
-  }
+  };
 
+  // O texto da recompensa também depende do tipo
   const getRewardText = (reward: Reward) => {
       if (reward.type === 'item') {
-          return reward.item.name;
+          return `${reward.item.name}`;
       }
-      return reward.amount.toString();
-  }
+      return `${reward.amount}`;
+  };
 
   return (
     <main className="flex-1 overflow-y-auto p-4 md:p-8">
@@ -90,6 +89,7 @@ export default function DailyRewardsPage() {
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {dailyRewards.map((item) => {
               const collected = isCollected(item.day);
+              // O botão de coleta só está habilitado para o dia atual E se ainda não foi coletado
               const canCollect = item.day === currentDay && !collected;
 
               return (
@@ -116,7 +116,7 @@ export default function DailyRewardsPage() {
                   </CardContent>
                   <CardFooter className="p-2 w-full">
                     <Button 
-                      onClick={() => handleCollect(item.day, item.reward)}
+                      onClick={() => collectReward(item.day, item.reward)}
                       disabled={!canCollect} 
                       className="w-full bg-accent text-accent-foreground hover:bg-accent/90 disabled:bg-muted disabled:text-muted-foreground"
                     >

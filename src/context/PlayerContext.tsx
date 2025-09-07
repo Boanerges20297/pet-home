@@ -169,37 +169,46 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
     });
   }, [level, xpToNextLevel, toast]);
 
-  const collectReward = (day: number, reward: Reward) => {
-    if (day === currentDay && !collectedDays.includes(day)) {
-      let toastDescription = '';
-      if (reward.type === 'coins') {
-        addCoins(reward.amount);
-        toastDescription = `Você ganhou ${reward.amount} moedas!`;
-      } else if (reward.type === 'gems') {
-        addGems(reward.amount);
-        toastDescription = `Você ganhou ${reward.amount} gemas!`;
-      } else if (reward.type === 'item') {
-        addItemToInventory(reward.item.id, reward.item.name, reward.item.quantity);
-        toastDescription = `Você ganhou: ${reward.item.name}!`;
-      }
-
-      const newCollectedDays = [...collectedDays, day];
-      setCollectedDays(newCollectedDays);
-      setCurrentDay(day + 1); // Advance the day only after collecting
-      addXp(25); // Ganha 25 XP por coletar o prêmio diário
-      
-       toast({
-        title: 'Recompensa Coletada!',
-        description: toastDescription,
-      });
-    } else {
+  const collectReward = useCallback((day: number, reward: Reward) => {
+    if (day !== currentDay) {
         toast({
             title: 'Ops!',
             description: day < currentDay ? 'Você já coletou este prêmio.' : 'Ainda não é hora de coletar este prêmio.',
             variant: 'destructive',
         });
+        return;
     }
-  };
+    if (collectedDays.includes(day)) {
+        toast({
+            title: 'Prêmio já coletado',
+            description: 'Você já coletou a recompensa de hoje.',
+            variant: 'destructive',
+        });
+        return;
+    }
+
+    let toastDescription = '';
+    if (reward.type === 'coins') {
+        addCoins(reward.amount);
+        toastDescription = `Você ganhou ${reward.amount} moedas!`;
+    } else if (reward.type === 'gems') {
+        addGems(reward.amount);
+        toastDescription = `Você ganhou ${reward.amount} gemas!`;
+    } else if (reward.type === 'item') {
+        addItemToInventory(reward.item.id, reward.item.name, reward.item.quantity);
+        toastDescription = `Você ganhou: ${reward.item.name}!`;
+    }
+
+    setCollectedDays(prev => [...prev, day]);
+    setCurrentDay(prev => prev + 1);
+    addXp(25);
+
+    toast({
+        title: `Recompensa do Dia ${day} Coletada!`,
+        description: toastDescription,
+    });
+  }, [currentDay, collectedDays, toast, addXp]);
+
 
   const buyPet = (pet: Pet) => {
     if (coins >= pet.price) {
