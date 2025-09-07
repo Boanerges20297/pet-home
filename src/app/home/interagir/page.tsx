@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { ArrowLeft, Hand, ToyBrick, Utensils, GlassWater, Beef, Bone, Apple } from 'lucide-react';
+import { ArrowLeft, Hand, ToyBrick, Utensils, GlassWater, Beef, Bone, Apple, FlaskConical, TestTube2 } from 'lucide-react';
 import { usePlayer } from '@/context/PlayerContext';
 import {
   Select,
@@ -25,9 +25,9 @@ export default function InteragirPage() {
     const { toast } = useToast();
     const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
     const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-    const [interactionEffect, setInteractionEffect] = useState<'petting' | 'playing' | 'watering' | 'feeding' | null>(null);
+    const [interactionEffect, setInteractionEffect] = useState<'petting' | 'playing' | 'watering' | 'feeding' | 'potion' | null>(null);
 
-    const triggerInteractionEffect = (effect: 'petting' | 'playing' | 'watering' | 'feeding') => {
+    const triggerInteractionEffect = (effect: 'petting' | 'playing' | 'watering' | 'feeding' | 'potion') => {
         setInteractionEffect(effect);
         setTimeout(() => {
             setInteractionEffect(null);
@@ -67,13 +67,25 @@ export default function InteragirPage() {
         });
     }, [selectedPetId, addXp, toast]);
 
-    const handleFeed = () => {
-        if (!selectedPetId) {
-            toast({ title: "Selecione um filhote primeiro!", variant: 'destructive' });
+    const handleUseItem = () => {
+        if (!selectedItemId) {
+            toast({ title: "Selecione um item!", variant: 'destructive' });
             return;
         }
-        if (!selectedItemId) {
-            toast({ title: "Selecione uma comidinha!", variant: 'destructive' });
+        
+        const item = inventory.find(i => i.id === selectedItemId);
+        if (!item) return;
+
+        // Potions can be used without a pet
+        if (item.id.startsWith('potion_') && useItem(selectedItemId)) {
+            triggerInteractionEffect('potion');
+            setSelectedItemId(null);
+            return;
+        }
+
+        // Other items need a pet
+        if (!selectedPetId) {
+            toast({ title: "Selecione um filhote primeiro!", variant: 'destructive' });
             return;
         }
 
@@ -91,6 +103,8 @@ export default function InteragirPage() {
         if (itemId.includes('food_premium')) return <Beef className="h-5 w-5" />;
         if (itemId.includes('food_biscuit')) return <Bone className="h-5 w-5" />;
         if (itemId.includes('food_fruits')) return <Apple className="h-5 w-5" />;
+        if (itemId.includes('potion_xp')) return <FlaskConical className="h-5 w-5" />;
+        if (itemId.includes('potion_coin')) return <TestTube2 className="h-5 w-5" />;
         return <Utensils className="h-5 w-5" />;
     };
 
@@ -102,6 +116,7 @@ export default function InteragirPage() {
             case 'petting': icon = <Hand className="h-16 w-16 text-primary/80" />; break;
             case 'playing': icon = <ToyBrick className="h-16 w-16 text-secondary-foreground/80" />; break;
             case 'watering': icon = <GlassWater className="h-16 w-16 text-blue-400/80" />; break;
+            case 'potion': icon = <FlaskConical className="h-16 w-16 text-purple-500/80" />; break;
             case 'feeding': 
                 const feedingIcon = getIconForItem(selectedItemId ?? 'food_biscuit');
                 icon = <div className="h-16 w-16 text-yellow-600/80">{React.cloneElement(feedingIcon, { className: 'h-16 w-16' })}</div>;
@@ -170,7 +185,7 @@ export default function InteragirPage() {
                     <div className="text-center text-muted-foreground">
                         <p>Selecione um filhote para começar a interagir.</p>
                     </div>
-                )}
+                 )}
             </div>
 
             <div className="flex flex-wrap justify-center gap-4">
@@ -191,14 +206,14 @@ export default function InteragirPage() {
           <Separator className="my-6" />
           <CardFooter className="flex flex-col gap-4">
             <div className="text-center">
-                <h3 className="font-headline text-2xl text-primary">Alimentar seu Filhote</h3>
-                <p className="text-muted-foreground">Use itens do seu inventário para ganhar mais XP.</p>
+                <h3 className="font-headline text-2xl text-primary">Usar Itens do Inventário</h3>
+                <p className="text-muted-foreground">Use comidinhas ou poções para ganhar bônus.</p>
             </div>
              {inventory.length > 0 ? (
                 <div className="w-full flex flex-col md:flex-row items-center justify-center gap-4">
                      <Select onValueChange={setSelectedItemId} value={selectedItemId ?? ""}>
                         <SelectTrigger className="w-full md:w-[280px]">
-                            <SelectValue placeholder="Selecione uma comidinha" />
+                            <SelectValue placeholder="Selecione um item" />
                         </SelectTrigger>
                         <SelectContent>
                         {inventory.map(item => (
@@ -211,13 +226,13 @@ export default function InteragirPage() {
                         ))}
                         </SelectContent>
                     </Select>
-                    <Button onClick={handleFeed} disabled={!selectedPetId || !selectedItemId} size="lg">
+                    <Button onClick={handleUseItem} disabled={!selectedItemId} size="lg">
                         <Utensils className="mr-2 h-5 w-5" />
-                        Alimentar Filhote
+                        Usar Item
                     </Button>
                 </div>
             ) : (
-                <p className="text-center text-muted-foreground">Você não tem comidinhas. <Link href="/home/petshop" className="text-primary underline">Visite o Petshop!</Link></p>
+                <p className="text-center text-muted-foreground">Seu inventário está vazio. Visite o <Link href="/home/petshop" className="text-primary underline">Petshop</Link> ou o <Link href="/home/pet-rescue" className="text-primary underline">Resgate de Filhotes</Link>!</p>
             )}
           </CardFooter>
         </Card>
