@@ -241,9 +241,9 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
     // Grant XP based on item type
     if (itemId.startsWith('food')) {
         let xpAmount = 10;
-        if(itemId === 'food_biscuit') xpAmount = 20;
-        if(itemId === 'food_premium') xpAmount = 25;
-        if(itemId === 'food_fruits') xpAmount = 15;
+        if(itemId.includes('biscuit')) xpAmount = 20;
+        if(itemId.includes('premium')) xpAmount = 25;
+        if(itemId.includes('fruits')) xpAmount = 15;
         addXp(xpAmount);
         toast({ title: `Você usou ${item.name}!`, description: `Seu filhote ganhou ${xpAmount} XP.` });
     }

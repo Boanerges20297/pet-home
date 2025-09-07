@@ -14,9 +14,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useState, useCallback } from 'react';
+import { useState, useCallback, ReactElement } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Separator } from '@/components/ui/separator';
+import React from 'react';
 
 
 export default function InteragirPage() {
@@ -86,7 +87,7 @@ export default function InteragirPage() {
 
     const selectedPet = ownedPets.find(p => p.id === selectedPetId);
 
-    const getIconForItem = (itemId: string) => {
+    const getIconForItem = (itemId: string): ReactElement => {
         if (itemId.includes('food_premium')) return <Beef className="h-5 w-5" />;
         if (itemId.includes('food_biscuit')) return <Bone className="h-5 w-5" />;
         if (itemId.includes('food_fruits')) return <Apple className="h-5 w-5" />;
@@ -102,7 +103,6 @@ export default function InteragirPage() {
             case 'playing': icon = <ToyBrick className="h-16 w-16 text-secondary-foreground/80" />; break;
             case 'watering': icon = <GlassWater className="h-16 w-16 text-blue-400/80" />; break;
             case 'feeding': 
-                const itemIcon = inventory.find(i => i.id === selectedItemId) ?? { id: 'food_biscuit' };
                 const feedingIcon = getIconForItem(selectedItemId ?? 'food_biscuit');
                 icon = <div className="h-16 w-16 text-yellow-600/80">{React.cloneElement(feedingIcon, { className: 'h-16 w-16' })}</div>;
                 break;
