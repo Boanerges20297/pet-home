@@ -7,20 +7,33 @@ import * as Tone from 'tone';
 import { Button } from '@/components/ui/button';
 
 export default function AudioPlayer() {
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
   const synth = useRef<Tone.Synth | null>(null);
   const loop = useRef<Tone.Loop | null>(null);
   const isInitialized = useRef(false);
 
   useEffect(() => {
+    // Start audio on mount if not muted
+    if (!isMuted) {
+      initializeAudio();
+    }
+
     // Cleanup on unmount
     return () => {
+      loop.current?.stop();
       loop.current?.dispose();
       synth.current?.dispose();
       Tone.Transport.stop();
       Tone.Transport.cancel();
+      isInitialized.current = false;
     };
   }, []);
+  
+  useEffect(() => {
+    if (isInitialized.current) {
+      Tone.Destination.mute = isMuted;
+    }
+  }, [isMuted]);
 
   const initializeAudio = async () => {
     if (isInitialized.current) return;
@@ -38,6 +51,8 @@ export default function AudioPlayer() {
         release: 0.9
       }
     }).toDestination();
+
+    Tone.Destination.mute = isMuted;
     
     const notes = [
       'C4', 'E4', 'G4', 'C5', 
@@ -64,10 +79,7 @@ export default function AudioPlayer() {
     if (!isInitialized.current) {
       await initializeAudio();
     }
-    
-    const newMutedState = !isMuted;
-    setIsMuted(newMutedState);
-    Tone.Destination.mute = newMutedState;
+    setIsMuted(prevState => !prevState);
   };
 
   return (
