@@ -44,7 +44,9 @@ function AudioPlayer() {
 
   useEffect(() => {
     const handleFirstInteraction = () => {
-      initializeAudio();
+      if (!isInitialized.current) {
+        initializeAudio();
+      }
       window.removeEventListener('click', handleFirstInteraction);
       window.removeEventListener('keydown', handleFirstInteraction);
     };
