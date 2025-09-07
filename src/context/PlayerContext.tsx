@@ -34,7 +34,7 @@ interface PlayerContextType {
   collectReward: (day: number, reward: Reward) => void;
   buyPet: (pet: Pet) => boolean;
   addItemToInventory: (itemId: string, itemName: string, quantity: number) => void;
-  useItem: (itemId: string) => boolean;
+  useItem: (itemId: string, selectedPetId?: string | null) => boolean;
 }
 
 const PlayerContext = createContext<PlayerContextType | undefined>(undefined);
@@ -227,7 +227,7 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const useItem = (itemId: string): boolean => {
+  const useItem = (itemId: string, selectedPetId: string | null = null): boolean => {
     const item = inventory.find(i => i.id === itemId);
     if (!item || item.quantity <= 0) {
         toast({ title: "Item esgotado!", variant: 'destructive' });
@@ -260,6 +260,25 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
                     toast({ title: 'Fortuna!', description: `Você usou ${item.name} e ganhou ${amount} moedas!` });
                 }
             }
+        } else if (itemId === 'potion_stork') {
+            if (!selectedPetId) {
+                toast({ title: 'Selecione um pet!', description: 'Você precisa selecionar um pet para usar a Poção da Cegonha.', variant: 'destructive' });
+                return false; // Return false because item was not used
+            }
+            const parentPet = ownedPets.find(p => p.id === selectedPetId);
+            if (parentPet) {
+                const numberOfPuppies = Math.floor(Math.random() * 3) + 1; // 1 to 3 puppies
+                for (let i = 0; i < numberOfPuppies; i++) {
+                    const newPet: Pet = {
+                        ...createInitialDog(`Mini ${parentPet.name} ${i + 1}`),
+                        id: `mini_${parentPet.id}_${Date.now()}_${i}`,
+                        age: 'Nível 1',
+                        price: 0,
+                    };
+                    setOwnedPets(prev => [...prev, newPet]);
+                }
+                toast({ title: 'Ninhada a caminho!', description: `${parentPet.name} teve ${numberOfPuppies} filhotinhos!` });
+            }
         }
     }
     
@@ -281,3 +300,5 @@ export const usePlayer = () => {
   }
   return context;
 };
+
+    

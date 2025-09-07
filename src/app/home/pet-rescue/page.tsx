@@ -6,21 +6,22 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, LifeBuoy, FlaskConical, TestTube2, Gem, Droplets, Beaker, Bot, Wand2, Sparkles, Star, Atom, CircleDashed, Dna, Eye } from 'lucide-react';
+import { ArrowLeft, LifeBuoy, FlaskConical, TestTube2, Gem, Droplets, Beaker, Bot, Wand2, Sparkles, Star, Atom, CircleDashed, Dna, Eye, Baby } from 'lucide-react';
 import { usePlayer } from '@/context/PlayerContext';
 import { useToast } from '@/hooks/use-toast';
+import type { Pet } from '@/components/PetCard';
 
 const potionItems = [
     {
         id: 'potion_xp_50',
-        name: 'porcao para dor na pata',
+        name: 'par cachorros doents',
         description: 'Concede 50 XP. Perfeito para um pequeno empurrão.',
         price: 5,
         currency: 'gems',
         imageUrl: 'https://images.unsplash.com/photo-1561629518-31f818a70e7d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyMHx8cG9yYW8lMjBtYWdpY2F8ZW58MHx8fHwxNzU3MjcwNjcwfDA&ixlib=rb-4.1.0&q=80&w=1080',
         aiHint: 'blue potion',
         icon: Droplets,
-        reward: { type: 'item', id: 'potion_xp_50', name: 'porcao para dor na pata', quantity: 1 },
+        reward: { type: 'item', id: 'potion_xp_50', name: 'par cachorros doents', quantity: 1 },
     },
     {
         id: 'potion_coin_100',
@@ -45,15 +46,15 @@ const potionItems = [
         reward: { type: 'item', id: 'potion_xp_200', name: 'Poção de Super Pulo de XP', quantity: 1 },
     },
     {
-        id: 'potion_coin_1000',
-        name: 'Elixir da Riqueza Súbita',
-        description: 'Adiciona 1000 moedas diretamente à sua carteira.',
-        price: 25,
+        id: 'potion_stork',
+        name: 'Poção da Cegonha',
+        description: 'Dê para um dos seus pets para que ele tenha uma ninhada de filhotinhos!',
+        price: 50,
         currency: 'gems',
         imageUrl: 'https://images.unsplash.com/photo-1555118228-6951335a8f33?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxnoldJTIwcG90aW9ufGVufDB8fHx8MTc1OTYwMTY2MXww&ixlib=rb-4.1.0&q=80&w=1080',
-        aiHint: 'gold potion',
-        icon: Beaker,
-        reward: { type: 'item', id: 'potion_coin_1000', name: 'Elixir da Riqueza Súbita', quantity: 1 },
+        aiHint: 'stork potion',
+        icon: Baby,
+        reward: { type: 'item', id: 'potion_stork', name: 'Poção da Cegonha', quantity: 1 },
     },
     {
         id: 'potion_xp_500',
@@ -149,7 +150,7 @@ const potionItems = [
         description: 'Concede 350 XP para seu pet.',
         price: 22,
         currency: 'gems',
-        imageUrl: 'https://images.unsplash.com/photo-1555118228-6951335a8f33?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxyYWluYm93JTIwcG90aW9ufGVufDB8fHx8fDE3NTk2MDE2NjF8MA&ixlib=rb-4.1.0&q=80&w=1080',
+        imageUrl: 'https://images.unsplash.com/photo-1555118228-6951335a8f33?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxyYWluYm93JTIwcG90aW9ufGVufDB8fHx8MTc1OTYwMTY2MXww&ixlib=rb-4.1.0&q=80&w=1080',
         aiHint: 'rainbow potion',
         icon: Dna,
         reward: { type: 'item', id: 'potion_xp_350', name: 'Tônico de Crescimento', quantity: 1 },
@@ -324,3 +325,5 @@ export default function PetRescuePage() {
     </main>
   );
 }
+
+    

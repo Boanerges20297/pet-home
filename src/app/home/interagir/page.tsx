@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { ArrowLeft, Hand, ToyBrick, Utensils, GlassWater, Beef, Bone, Apple, FlaskConical, TestTube2, Droplets, Beaker, Bot, Wand2, Sparkles, Star, Atom, CircleDashed, Dna, Eye } from 'lucide-react';
+import { ArrowLeft, Hand, ToyBrick, Utensils, GlassWater, Beef, Bone, Apple, FlaskConical, TestTube2, Droplets, Beaker, Bot, Wand2, Sparkles, Star, Atom, CircleDashed, Dna, Eye, Baby } from 'lucide-react';
 import { usePlayer } from '@/context/PlayerContext';
 import {
   Select,
@@ -76,10 +76,13 @@ export default function InteragirPage() {
         const item = inventory.find(i => i.id === selectedItemId);
         if (!item) return;
 
-        // Potions can be used without a pet
-        if (item.id.startsWith('potion_') && useItem(selectedItemId)) {
-            triggerInteractionEffect('potion');
-            setSelectedItemId(null);
+        // Potions can be used without a pet, unless it's the stork potion
+        if (item.id.startsWith('potion_') && item.id !== 'potion_stork') {
+            const success = useItem(selectedItemId);
+             if (success) {
+                triggerInteractionEffect('potion');
+                setSelectedItemId(null);
+            }
             return;
         }
 
@@ -89,9 +92,10 @@ export default function InteragirPage() {
             return;
         }
 
-        const success = useItem(selectedItemId);
+        const success = useItem(selectedItemId, selectedPetId);
         if (success) {
-            triggerInteractionEffect('feeding');
+            const effect = item.id.startsWith('food') ? 'feeding' : 'potion';
+            triggerInteractionEffect(effect);
             setSelectedItemId(null); // Reset selection
         }
     };
@@ -103,6 +107,7 @@ export default function InteragirPage() {
         if (itemId.includes('food_premium')) return <Beef className="h-5 w-5" />;
         if (itemId.includes('food_biscuit')) return <Bone className="h-5 w-5" />;
         if (itemId.includes('food_fruits')) return <Apple className="h-5 w-5" />;
+        if (itemId.includes('potion_stork')) return <Baby className="h-5 w-5" />;
         if (itemId.includes('potion_coin_10000')) return <CircleDashed className="h-5 w-5" />;
         if (itemId.includes('potion_coin_1000')) return <Beaker className="h-5 w-5" />;
         if (itemId.includes('potion_coin_100')) return <TestTube2 className="h-5 w-5" />;
@@ -237,7 +242,7 @@ export default function InteragirPage() {
                         ))}
                         </SelectContent>
                     </Select>
-                    <Button onClick={handleUseItem} disabled={!selectedItemId} size="lg">
+                    <Button onClick={handleUseItem} disabled={!selectedItemId}>
                         <Utensils className="mr-2 h-5 w-5" />
                         Usar Item
                     </Button>
@@ -251,3 +256,5 @@ export default function InteragirPage() {
     </main>
   );
 }
+
+    
