@@ -25,6 +25,7 @@ export const useChat = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
   const [formState, setFormState] = useState<Record<string, any>>({});
+  const [isFinished, setIsFinished] = useState<boolean>(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setInput(e.target.value);
@@ -41,7 +42,10 @@ export const useChat = ({
       setError(null);
       
       const userMessage: Message = { role: 'user', content: userInput };
-      setMessages(prev => [...prev, userMessage]);
+      // Do not add the initial "start" message to the chat history
+      if (userInput !== 'Olá, gostaria de iniciar o processo de adoção.') {
+        setMessages(prev => [...prev, userMessage]);
+      }
       setInput('');
 
       try {
@@ -56,6 +60,10 @@ export const useChat = ({
         }
         
         setFormState(response.updatedFormState);
+
+        if(response.isFormComplete) {
+            setIsFinished(true);
+        }
 
       } catch (err: any) {
         setError(err);
@@ -75,5 +83,7 @@ export const useChat = ({
     handleSubmit,
     isLoading,
     error,
+    formState,
+    isFinished,
   };
 };
