@@ -3,7 +3,7 @@
 
 import { useState, useEffect, type ReactNode } from 'react';
 import Link from 'next/link';
-import { PawPrint, Store, Gift, Home, LogOut, Dog, HandHeart, Settings, BrainCircuit, FolderHeart, Gamepad2, Stethoscope, MessageSquareHeart, LifeBuoy } from 'lucide-react';
+import { PawPrint, Store, Gift, Home, LogOut, Dog, HandHeart, Settings, BrainCircuit, FolderHeart, Gamepad2, Stethoscope, MessageSquareHeart, LifeBuoy, Backpack } from 'lucide-react';
 import {
   SidebarProvider,
   Sidebar,
@@ -87,7 +87,7 @@ function UserProfile() {
 }
 
 function MainSidebar() {
-    const { ownedPets } = usePlayer();
+    const { ownedPets, inventory } = usePlayer();
     const router = useRouter();
 
     return (
@@ -140,6 +140,15 @@ function MainSidebar() {
                     <SidebarMenuButton tooltip="Visitar o Petshop">
                         <Store />
                         <span>Petshop</span>
+                    </SidebarMenuButton>
+                </Link>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+                <Link href="/home/inventario">
+                    <SidebarMenuButton tooltip="Ver seu inventário">
+                        <Backpack />
+                        <span>Inventário</span>
+                         {inventory.length > 0 && <Badge className="ml-auto flex h-6 w-6 items-center justify-center p-0">{inventory.length}</Badge>}
                     </SidebarMenuButton>
                 </Link>
             </SidebarMenuItem>
