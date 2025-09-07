@@ -12,7 +12,7 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
-export const DiagnosePetInputSchema = z.object({
+const DiagnosePetInputSchema = z.object({
   petName: z.string().describe('The name of the pet.'),
   petBreed: z.string().describe('The breed of the pet.'),
   petImageUrl: z.string().describe("The URL of the pet's image."),
@@ -20,7 +20,7 @@ export const DiagnosePetInputSchema = z.object({
 });
 export type DiagnosePetInput = z.infer<typeof DiagnosePetInputSchema>;
 
-export const DiagnosePetOutputSchema = z.object({
+const DiagnosePetOutputSchema = z.object({
   isHealthy: z.boolean().describe('Whether or not the pet is healthy. Should sometimes be false for creative diagnoses.'),
   diagnosis: z.string().describe("A creative and fun diagnosis of the pet's health. e.g., 'Acute case of the zoomies' or 'Terminal cuteness'."),
   recommendation: z.string().describe('A fun and lighthearted recommendation for the pet owner. e.g., "Administer 3 belly rubs daily" or "Prescription: more squeaky toys".'),
@@ -31,7 +31,7 @@ export async function diagnosePet(input: DiagnosePetInput): Promise<DiagnosePetO
   return diagnosePetFlow(input);
 }
 
-const prompt = ai.definePrompt({
+const diagnosePetPrompt = ai.definePrompt({
   name: 'diagnosePetPrompt',
   input: {schema: DiagnosePetInputSchema},
   output: {schema: DiagnosePetOutputSchema},
@@ -69,7 +69,10 @@ const diagnosePetFlow = ai.defineFlow(
     outputSchema: DiagnosePetOutputSchema,
   },
   async input => {
-    const {output} = await prompt(input);
-    return output!;
+    const {output} = await diagnosePetPrompt(input);
+    if (!output) {
+      throw new Error('AI diagnosis failed to generate a response.');
+    }
+    return output;
   }
 );
