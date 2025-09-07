@@ -149,54 +149,55 @@ export default function ExamesPage() {
           </CardContent>
           {healthReport && !isExamining && (
             <>
-              <Separator className="my-6" />
-              <CardFooter className="flex flex-col gap-4">
+              <Separator />
+              <CardFooter className="flex-col p-6 gap-4">
                 <div className="text-center">
-                    <h3 className="font-headline text-2xl text-primary">Boletim de Saúde</h3>
+                  <h3 className="font-headline text-2xl text-primary">Boletim de Saúde</h3>
                 </div>
-                <div className={cn(
-                  "w-full p-4 rounded-lg border space-y-3",
-                   healthReport.isHealthy
-                    ? "bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200 border-green-200 dark:border-green-800"
-                    : "bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-200 border-yellow-200 dark:border-yellow-800"
-                  )}>
-                    <div className="flex items-center gap-3 font-bold">
-                       {healthReport.isHealthy ? (
-                           <CheckCircle2 className="h-6 w-6 text-green-600 dark:text-green-400 flex-shrink-0" />
-                       ) : (
-                            <AlertTriangle className="h-6 w-6 text-yellow-600 dark:text-yellow-400 flex-shrink-0" />
-                       )}
-                        <span>Status: {healthReport.isHealthy ? "Saudável e Brincalhão!" : "Precisa de Atenção Especial!"}</span>
-                    </div>
+                <div
+                  className={cn(
+                    "w-full space-y-3 rounded-lg border p-4",
+                    healthReport.isHealthy
+                      ? "border-green-200 bg-green-100 text-green-800 dark:border-green-800 dark:bg-green-900/50 dark:text-green-200"
+                      : "border-yellow-200 bg-yellow-100 text-yellow-800 dark:border-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-200"
+                  )}
+                >
+                  <div className="flex items-center gap-3 font-bold">
+                    {healthReport.isHealthy ? (
+                      <CheckCircle2 className="h-6 w-6 flex-shrink-0 text-green-600 dark:text-green-400" />
+                    ) : (
+                      <AlertTriangle className="h-6 w-6 flex-shrink-0 text-yellow-600 dark:text-yellow-400" />
+                    )}
+                    <span>Status: {healthReport.isHealthy ? "Saudável e Brincalhão!" : "Precisa de Atenção Especial!"}</span>
+                  </div>
 
-                    <Separator className={cn(healthReport.isHealthy ? "bg-green-200 dark:bg-green-800" : "bg-yellow-200 dark:bg-yellow-800")} />
+                  <Separator className={cn(healthReport.isHealthy ? "bg-green-200 dark:bg-green-800" : "bg-yellow-200 dark:bg-yellow-800")} />
 
-                    <div className="flex items-start gap-3">
-                        <Stethoscope className="h-8 w-8 flex-shrink-0 mt-1" />
-                        <div>
-                            <h4 className='font-bold'>Diagnóstico:</h4>
-                            <p>{healthReport.diagnosis}</p>
-                        </div>
+                  <div className="flex items-start gap-3">
+                    <Stethoscope className="mt-1 h-8 w-8 flex-shrink-0" />
+                    <div>
+                      <h4 className="font-bold">Diagnóstico:</h4>
+                      <p>{healthReport.diagnosis}</p>
                     </div>
-                     <Separator className={cn(healthReport.isHealthy ? "bg-green-200 dark:bg-green-800" : "bg-yellow-200 dark:bg-yellow-800")} />
-                     <div className="flex items-start gap-3">
-                        <Lightbulb className="h-8 w-8 flex-shrink-0 mt-1" />
-                        <div>
-                            <h4 className='font-bold'>Recomendação:</h4>
-                            <p>{healthReport.recommendation}</p>
-                        </div>
+                  </div>
+                  <Separator className={cn(healthReport.isHealthy ? "bg-green-200 dark:bg-green-800" : "bg-yellow-200 dark:bg-yellow-800")} />
+                  <div className="flex items-start gap-3">
+                    <Lightbulb className="mt-1 h-8 w-8 flex-shrink-0" />
+                    <div>
+                      <h4 className="font-bold">Recomendação:</h4>
+                      <p>{healthReport.recommendation}</p>
                     </div>
+                  </div>
                 </div>
 
                 <div className="mt-2 flex justify-center gap-4 text-sm font-semibold">
-                    <span className={cn("px-3 py-1 rounded-full", healthReport.isHealthy ? "bg-green-500 text-white" : "bg-muted text-muted-foreground")}>
-                        Bem
-                    </span>
-                    <span className={cn("px-3 py-1 rounded-full", !healthReport.isHealthy ? "bg-yellow-500 text-white" : "bg-muted text-muted-foreground")}>
-                        Doente
-                    </span>
+                  <span className={cn("rounded-full px-3 py-1", healthReport.isHealthy ? "bg-green-500 text-white" : "bg-muted text-muted-foreground")}>
+                    Bem
+                  </span>
+                  <span className={cn("rounded-full px-3 py-1", !healthReport.isHealthy ? "bg-yellow-500 text-white" : "bg-muted text-muted-foreground")}>
+                    Doente
+                  </span>
                 </div>
-
               </CardFooter>
             </>
           )}
@@ -205,4 +206,3 @@ export default function ExamesPage() {
     </main>
   );
 }
-
