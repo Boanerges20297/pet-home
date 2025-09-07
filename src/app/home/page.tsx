@@ -1,13 +1,14 @@
 
 "use client";
 
+import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search, Coins, PawPrint } from 'lucide-react';
 import { PetCard, type Pet } from '@/components/PetCard';
 import { usePlayer } from '@/context/PlayerContext';
 
-const featuredPets: Pet[] = [
+const allPets: Pet[] = [
   {
     id: '1',
     name: 'Blaze',
@@ -40,7 +41,7 @@ const featuredPets: Pet[] = [
     name: 'Fido',
     age: 'Nível 2',
     breed: 'Golden Retriever',
-    imageUrl: 'https://images.unsplash.com/photo-1689723671115-3133f055ad33?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyMHx8Y2FjaG9ycm8lMjBhZHVsdG98ZW58MHx8fHwxNzU2OTAwMDI5fDA&ixlib=rb-4.1.0&q=80&w=1080',
+    imageUrl: 'https://images.unsplash.com/photo-1689723671115-3133f055ad33?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyMHx8Y2FjaG9ycm8lMjBhZHVsdG98ZW58MHx8fHwxNzU2OTAwMDI5fDA&ixlib-rb-4.1.0&q=80&w=1080',
     aiHint: 'golden retriever',
     price: 120,
   },
@@ -85,7 +86,7 @@ const featuredPets: Pet[] = [
     name: 'Charlie',
     age: 'Nível 5',
     breed: 'Shih Tzu',
-    imageUrl: 'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjb2VsaG98ZW58MHx8fHwxNzU2OTAwNzc2fDA&ixlib=rb-4.1.0&q=80&w=1080',
+    imageUrl: 'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjb2VsaG98ZW58MHx8fHwxNzU2OTAwNzc2fDA&ixlib.rb-4.1.0&q=80&w=1080',
     aiHint: 'shih tzu',
     price: 220,
   },
@@ -121,6 +122,13 @@ const featuredPets: Pet[] = [
 
 export default function HomePage() {
   const { coins } = usePlayer();
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredPets = allPets.filter(pet =>
+    pet.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    pet.breed.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    pet.age.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   
   return (
     <main className="flex-1 overflow-y-auto p-4 md:p-8">
@@ -141,6 +149,8 @@ export default function HomePage() {
               <Input
                 placeholder="Pesquise por raça, nível ou nome..."
                 className="h-12 pl-4 pr-12 text-base"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
               <Button variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 text-muted-foreground" aria-label="Pesquisar">
                 <Search className="h-6 w-6" />
@@ -152,7 +162,7 @@ export default function HomePage() {
         <section>
           <h2 className="font-headline text-3xl text-foreground mb-6">Filhotes para Colecionar</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredPets.map((pet) => (
+            {filteredPets.map((pet) => (
               <PetCard key={pet.id} pet={pet} />
             ))}
           </div>
@@ -161,3 +171,5 @@ export default function HomePage() {
     </main>
   );
 }
+
+    

@@ -27,6 +27,7 @@ interface PlayerContextType {
   collectedDays: number[];
   ownedPets: Pet[];
   inventory: PlayerItem[];
+  favorites: string[];
   addCoins: (amount: number) => void;
   addGems: (amount: number) => void;
   removeGems: (amount: number) => void;
@@ -35,6 +36,7 @@ interface PlayerContextType {
   buyPet: (pet: Pet) => boolean;
   addItemToInventory: (itemId: string, itemName: string, quantity: number) => void;
   useItem: (itemId: string, selectedPetId?: string | null) => boolean;
+  toggleFavorite: (petId: string) => void;
 }
 
 const PlayerContext = createContext<PlayerContextType | undefined>(undefined);
@@ -68,6 +70,7 @@ const getInitialState = <T,>(key: string, defaultValue: T): T => {
                 case 'currentDay': return 1 as T;
                 case 'collectedDays': return [] as T;
                 case 'inventory': return [] as T;
+                case 'favorites': return [] as T;
                 case 'ownedPets':
                     const petName = localStorage.getItem('initialPetName') || 'Amigão';
                     return [createInitialDog(petName)] as T;
@@ -101,6 +104,7 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
   const [collectedDays, setCollectedDays] = useState<number[]>(() => getInitialState('collectedDays', []));
   const [ownedPets, setOwnedPets] = useState<Pet[]>(() => getInitialState('ownedPets', []));
   const [inventory, setInventory] = useState<PlayerItem[]>(() => getInitialState('inventory', []));
+  const [favorites, setFavorites] = useState<string[]>(() => getInitialState('favorites', []));
 
   // Effect to save state to localStorage whenever it changes
   useEffect(() => {
@@ -113,6 +117,7 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
         localStorage.setItem('collectedDays', JSON.stringify(collectedDays));
         localStorage.setItem('ownedPets', JSON.stringify(ownedPets));
         localStorage.setItem('inventory', JSON.stringify(inventory));
+        localStorage.setItem('favorites', JSON.stringify(favorites));
 
         // After the first save for a new user, remove the flags
         if (localStorage.getItem('isNewUser') === 'true') {
@@ -122,7 +127,7 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
     } catch(e) {
         console.error("Error saving state to localStorage", e);
     }
-  }, [coins, gems, level, xp, currentDay, collectedDays, ownedPets, inventory]);
+  }, [coins, gems, level, xp, currentDay, collectedDays, ownedPets, inventory, favorites]);
 
 
   const addCoins = (amount: number) => {
@@ -287,9 +292,19 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
     return true;
   };
 
+  const toggleFavorite = (petId: string) => {
+    setFavorites(prevFavorites => {
+      if (prevFavorites.includes(petId)) {
+        return prevFavorites.filter(id => id !== petId);
+      } else {
+        return [...prevFavorites, petId];
+      }
+    });
+  };
+
 
   return (
-    <PlayerContext.Provider value={{ coins, gems, level, xp, xpToNextLevel, currentDay, collectedDays, ownedPets, inventory, addCoins, addGems, removeGems, addXp, collectReward, buyPet, addItemToInventory, useItem }}>
+    <PlayerContext.Provider value={{ coins, gems, level, xp, xpToNextLevel, currentDay, collectedDays, ownedPets, inventory, favorites, addCoins, addGems, removeGems, addXp, collectReward, buyPet, addItemToInventory, useItem, toggleFavorite }}>
       {children}
     </PlayerContext.Provider>
   );
@@ -302,3 +317,5 @@ export const usePlayer = () => {
   }
   return context;
 };
+
+    

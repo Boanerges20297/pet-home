@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Heart, Coins } from 'lucide-react';
 import { usePlayer } from '@/context/PlayerContext';
 import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 
 export interface Pet {
   id: string;
@@ -22,10 +23,11 @@ interface PetCardProps {
 }
 
 export function PetCard({ pet }: PetCardProps) {
-  const { coins, buyPet, ownedPets } = usePlayer();
+  const { coins, buyPet, ownedPets, favorites, toggleFavorite } = usePlayer();
   const { toast } = useToast();
 
   const isOwned = ownedPets.some(p => p.id === pet.id);
+  const isFavorite = favorites.includes(pet.id);
 
   const handlePurchase = () => {
     if (!isOwned) {
@@ -36,6 +38,10 @@ export function PetCard({ pet }: PetCardProps) {
         description: `${pet.name} já faz parte da sua coleção.`,
       });
     }
+  };
+  
+  const handleFavoriteClick = () => {
+    toggleFavorite(pet.id);
   };
 
   return (
@@ -55,8 +61,8 @@ export function PetCard({ pet }: PetCardProps) {
       <CardContent className="p-4 flex-grow">
         <div className="flex items-start justify-between">
           <CardTitle className="font-headline text-2xl text-foreground">{pet.name}</CardTitle>
-          <Button variant="ghost" size="icon" className="group -mt-1 -mr-2" aria-label={`Favoritar ${pet.name}`}>
-            <Heart className="h-6 w-6 text-muted-foreground transition-colors group-hover:text-red-500 group-hover:fill-red-500" />
+          <Button variant="ghost" size="icon" className="group -mt-1 -mr-2" aria-label={`Favoritar ${pet.name}`} onClick={handleFavoriteClick}>
+            <Heart className={cn("h-6 w-6 text-muted-foreground transition-colors group-hover:text-red-500", isFavorite && "fill-red-500 text-red-500")} />
           </Button>
         </div>
         <div className="mt-2 flex flex-wrap gap-2">
@@ -76,3 +82,5 @@ export function PetCard({ pet }: PetCardProps) {
     </Card>
   );
 }
+
+    
