@@ -20,11 +20,20 @@ import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import type { DiagnosePetOutput } from '@/ai/flows/diagnose-pet-flow';
 import { diagnosePet } from '@/ai/flows/diagnose-pet-flow';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+
+const symptoms = [
+    { id: 'dor-pata', label: 'Dor na pata' },
+    { id: 'vomitando', label: 'Vomitando' },
+    { id: 'nao-come', label: 'Não come' },
+];
 
 export default function ExamesPage() {
     const { ownedPets, addXp } = usePlayer();
     const { toast } = useToast();
     const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
+    const [selectedSymptom, setSelectedSymptom] = useState<string | null>(null);
     const [healthReport, setHealthReport] = useState<DiagnosePetOutput | null>(null);
     const [isExamining, setIsExamining] = useState(false);
 
@@ -45,6 +54,7 @@ export default function ExamesPage() {
                 petName: pet.name,
                 petBreed: pet.breed,
                 petImageUrl: pet.imageUrl,
+                symptom: selectedSymptom ?? 'Nenhum sintoma aparente',
             });
             
             addXp(20);
@@ -132,6 +142,25 @@ export default function ExamesPage() {
                     </div>
                  )}
             </div>
+
+            {selectedPet && (
+                <div className="w-full max-w-sm space-y-4">
+                    <Label className="font-semibold text-center block">O que seu pet está sentindo?</Label>
+                    <RadioGroup 
+                        onValueChange={setSelectedSymptom} 
+                        value={selectedSymptom ?? ""}
+                        className="flex justify-center gap-4"
+                        disabled={isExamining}
+                    >
+                        {symptoms.map((symptom) => (
+                             <div key={symptom.id} className="flex items-center space-x-2">
+                                <RadioGroupItem value={symptom.label} id={symptom.id} />
+                                <Label htmlFor={symptom.id}>{symptom.label}</Label>
+                            </div>
+                        ))}
+                    </RadioGroup>
+                </div>
+            )}
 
             <Button onClick={handleExam} disabled={!selectedPetId || isExamining} size="lg">
                 {isExamining ? (

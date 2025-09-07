@@ -16,6 +16,7 @@ export const DiagnosePetInputSchema = z.object({
   petName: z.string().describe('The name of the pet.'),
   petBreed: z.string().describe('The breed of the pet.'),
   petImageUrl: z.string().describe("The URL of the pet's image."),
+  symptom: z.string().optional().describe('The symptom reported by the user.'),
 });
 export type DiagnosePetInput = z.infer<typeof DiagnosePetInputSchema>;
 
@@ -43,7 +44,7 @@ Exemplos de "doenças" divertidas:
 - "Febre da preguiça aguda" (Recomendação: "Tratamento com 5 sessões de carinho na barriga e uma soneca prolongada.")
 - "Surto de fofura excessiva" (Recomendação: "Quarentena imediata em uma cama macia.")
 
-Incorpore o nome, a raça e a imagem do animal para gerar um diagnóstico e uma recomendação.
+Incorpore o nome, a raça, a imagem e o sintoma relatado do animal para gerar um diagnóstico e uma recomendação.
 
 Exemplos de diagnósticos saudáveis:
 - Nome: Rex, Raça: Golden Retriever -> Diagnóstico: "Síndrome crônica de abanar o rabo.", Recomendação: "Prescrever sessões diárias de buscar e coçar extra as orelhas."
@@ -53,6 +54,9 @@ Detalhes do Animal:
 - Nome: {{{petName}}}
 - Raça: {{{petBreed}}}
 - Foto: {{media url=petImageUrl}}
+- Sintoma Relatado: {{{symptom}}}
+
+Baseado no sintoma, gere um diagnóstico ainda mais criativo. Por exemplo, se o sintoma for "dor na pata", o diagnóstico poderia ser "Excesso de sapateado noturno".
 
 Atue como um veterinário e gere o diagnóstico. Decida se o animal está "saudável" ou tem uma "doença" divertida. Seja criativo e faça o dono sorrir.
 `,
