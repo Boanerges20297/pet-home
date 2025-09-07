@@ -1,42 +1,18 @@
 
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
 import * as Tone from 'tone';
 import { Button } from '@/components/ui/button';
 
 export default function AudioPlayer() {
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
   const synth = useRef<Tone.Synth | null>(null);
   const loop = useRef<Tone.Loop | null>(null);
   const isInitialized = useRef(false);
 
-  useEffect(() => {
-    // Start audio on mount if not muted
-    initializeAudio();
-
-    // Cleanup on unmount
-    return () => {
-      if (isInitialized.current) {
-        loop.current?.stop();
-        loop.current?.dispose();
-        synth.current?.dispose();
-        Tone.Transport.stop();
-        Tone.Transport.cancel();
-        isInitialized.current = false;
-      }
-    };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  
-  useEffect(() => {
-    if (isInitialized.current) {
-      Tone.Destination.mute = isMuted;
-    }
-  }, [isMuted]);
-
-  const initializeAudio = async () => {
+  const initializeAudio = useCallback(async () => {
     if (isInitialized.current) return;
     
     await Tone.start();
@@ -53,8 +29,6 @@ export default function AudioPlayer() {
         release: 0.9
       }
     }).toDestination();
-
-    Tone.Destination.mute = isMuted;
     
     const notes = [
       'C4', 'E4', 'G4', 'C5', 
@@ -70,17 +44,49 @@ export default function AudioPlayer() {
         synth.current.triggerAttackRelease(note, '8n', time);
         noteIndex++;
       }
-    }, '4n');
+    }, '4n').start(0);
 
     Tone.Transport.start();
-    loop.current.start(0);
-  };
+    setIsMuted(false); // Unmute after initialization
+  }, []);
 
-  const toggleMute = async () => {
-    if (!isInitialized.current) {
-      await initializeAudio();
+  useEffect(() => {
+    const handleFirstInteraction = () => {
+        initializeAudio();
+        window.removeEventListener('click', handleFirstInteraction);
+        window.removeEventListener('keydown', handleFirstInteraction);
+    };
+
+    window.addEventListener('click', handleFirstInteraction);
+    window.addEventListener('keydown', handleFirstInteraction);
+
+    return () => {
+      window.removeEventListener('click', handleFirstInteraction);
+      window.removeEventListener('keydown', handleFirstInteraction);
+      if (isInitialized.current) {
+        loop.current?.stop(0);
+        loop.current?.dispose();
+        synth.current?.dispose();
+        Tone.Transport.stop();
+        Tone.Transport.cancel();
+        isInitialized.current = false;
+      }
+    };
+  }, [initializeAudio]);
+  
+  useEffect(() => {
+    if (isInitialized.current) {
+      Tone.Destination.mute = isMuted;
     }
-    setIsMuted(prevState => !prevState);
+  }, [isMuted]);
+
+
+  const toggleMute = () => {
+    if (!isInitialized.current) {
+      initializeAudio();
+    } else {
+      setIsMuted(prevState => !prevState);
+    }
   };
 
   return (
