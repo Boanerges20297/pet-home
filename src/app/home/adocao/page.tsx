@@ -20,6 +20,9 @@ import { adoptionFormAssistant } from '@/ai/flows/adoption-form-assistant';
 import { Separator } from '@/components/ui/separator';
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import Link from 'next/link';
+import { usePlayer } from '@/context/PlayerContext';
+import { allPets } from '@/lib/allPets';
+
 
 function ChatMessage({
   message,
@@ -90,8 +93,10 @@ export default function AdocaoPage() {
     useChat({
       api: adoptionFormAssistant,
     });
-    
+  const { adoptPet, ownedPets } = usePlayer();
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+  const [petReceived, setPetReceived] = useState(false);
+
 
   useEffect(() => {
     // Iniciar a conversa quando o componente for montado
@@ -106,6 +111,18 @@ export default function AdocaoPage() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleConfirmAdoption = () => {
+    if (petReceived) return;
+
+    // Pick a pet that the user doesn't own yet
+    const availablePets = allPets.filter(p => !ownedPets.some(op => op.id === p.id));
+    const petToAdopt = availablePets[Math.floor(Math.random() * availablePets.length)] || allPets[0];
+    
+    adoptPet(petToAdopt);
+    setPetReceived(true);
+    setIsConfirmationOpen(true);
+  }
 
   return (
     <>
@@ -176,8 +193,8 @@ export default function AdocaoPage() {
                   <SummaryItem icon={<Activity />} label="Estilo de Vida" value={formState.estiloDeVida} />
                 </CardContent>
                 <CardFooter>
-                    <Button className='w-full' disabled={!isFinished} onClick={() => setIsConfirmationOpen(true)}>
-                        Confirmar Adoção
+                    <Button className='w-full' disabled={!isFinished || petReceived} onClick={handleConfirmAdoption}>
+                        {petReceived ? 'Filhote Recebido!' : 'Confirmar Adoção'}
                     </Button>
                 </CardFooter>
             </Card>

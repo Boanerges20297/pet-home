@@ -34,6 +34,7 @@ interface PlayerContextType {
   addXp: (amount: number) => void;
   collectReward: (day: number, reward: Reward) => void;
   buyPet: (pet: Pet) => boolean;
+  adoptPet: (pet: Pet) => void;
   addItemToInventory: (itemId: string, itemName: string, quantity: number) => void;
   useItem: (itemId: string, selectedPetId?: string | null) => boolean;
   toggleFavorite: (petId: string) => void;
@@ -219,6 +220,15 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const adoptPet = (pet: Pet) => {
+    setOwnedPets(prevPets => [...prevPets, pet]);
+    addXp(50); // Bonus XP for adoption
+    toast({
+      title: 'Novo Amigo na Coleção!',
+      description: `Parabéns! Você adotou ${pet.name}.`,
+    });
+  };
+
   const addItemToInventory = (itemId: string, itemName: string, quantity: number) => {
     setInventory(prevInventory => {
       const existingItem = prevInventory.find(item => item.id === itemId);
@@ -304,7 +314,7 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
 
 
   return (
-    <PlayerContext.Provider value={{ coins, gems, level, xp, xpToNextLevel, currentDay, collectedDays, ownedPets, inventory, favorites, addCoins, addGems, removeGems, addXp, collectReward, buyPet, addItemToInventory, useItem, toggleFavorite }}>
+    <PlayerContext.Provider value={{ coins, gems, level, xp, xpToNextLevel, currentDay, collectedDays, ownedPets, inventory, favorites, addCoins, addGems, removeGems, addXp, collectReward, buyPet, adoptPet, addItemToInventory, useItem, toggleFavorite }}>
       {children}
     </PlayerContext.Provider>
   );
@@ -317,5 +327,3 @@ export const usePlayer = () => {
   }
   return context;
 };
-
-    
