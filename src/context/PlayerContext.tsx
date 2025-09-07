@@ -29,6 +29,7 @@ interface PlayerContextType {
   ownedPets: Pet[];
   inventory: PlayerItem[];
   favorites: string[];
+  isLoading: boolean;
   addCoins: (amount: number) => void;
   addGems: (amount: number) => void;
   removeGems: (amount: number) => void;
@@ -50,66 +51,84 @@ const createInitialDog = (petName: string): Pet => ({
     name: petName,
     age: 'Nível 1',
     breed: 'Vira-lata Caramelo',
-    imageUrl: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxmaWxob3RlfGVufDB8fHx8MTc1NjkwMTEwNnww&ixlib=rb-4.1.0&q=80&w=1080',
+    imageUrl: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxmaWxob3RlfGVufDB8fHx8MTc1NjkwMTEwNnww&ixlib.rb-4.1.0&q=80&w=1080',
     aiHint: 'caramel dog',
     price: 0,
 });
 
 
-// Function to get the initial state from localStorage
-const getInitialState = <T,>(key: string, defaultValue: T): T => {
-    if (typeof window === 'undefined') {
-        return defaultValue;
-    }
-    try {
-        // Handle new user registration specifically
-        if (localStorage.getItem('isNewUser') === 'true') {
-            switch (key) {
-                case 'coins': return 0 as T;
-                case 'gems': return 20 as T;
-                case 'level': return 1 as T;
-                case 'xp': return 0 as T;
-                case 'currentDay': return 1 as T;
-                case 'collectedDays': return [] as T;
-                case 'inventory': return [] as T;
-                case 'favorites': return [] as T;
-                case 'ownedPets':
-                    const petName = localStorage.getItem('initialPetName') || 'Amigão';
-                    return [createInitialDog(petName)] as T;
-                default:
-                    const storedValue = localStorage.getItem(key);
-                    return storedValue ? JSON.parse(storedValue) : defaultValue;
-            }
-        }
-
-        const storedValue = localStorage.getItem(key);
-        if (storedValue) {
-            return JSON.parse(storedValue);
-        }
-    } catch (error) {
-        console.error(`Error reading from localStorage key “${key}”:`, error);
-    }
-    
-    return defaultValue;
-};
-
-
 export const PlayerProvider = ({ children }: { children: ReactNode }) => {
   const { toast } = useToast();
   
-  const [coins, setCoins] = useState<number>(() => getInitialState('coins', 0));
-  const [gems, setGems] = useState<number>(() => getInitialState('gems', 20));
-  const [level, setLevel] = useState<number>(() => getInitialState('level', 1));
-  const [xp, setXp] = useState<number>(() => getInitialState('xp', 0));
-  const [xpToNextLevel, setXpToNextLevel] = useState(() => calculateXpToNextLevel(getInitialState('level', 1)));
-  const [currentDay, setCurrentDay] = useState<number>(() => getInitialState('currentDay', 1));
-  const [collectedDays, setCollectedDays] = useState<number[]>(() => getInitialState('collectedDays', []));
-  const [ownedPets, setOwnedPets] = useState<Pet[]>(() => getInitialState('ownedPets', []));
-  const [inventory, setInventory] = useState<PlayerItem[]>(() => getInitialState('inventory', []));
-  const [favorites, setFavorites] = useState<string[]>(() => getInitialState('favorites', []));
+  const [coins, setCoins] = useState<number>(0);
+  const [gems, setGems] = useState<number>(20);
+  const [level, setLevel] = useState<number>(1);
+  const [xp, setXp] = useState<number>(0);
+  const [xpToNextLevel, setXpToNextLevel] = useState(() => calculateXpToNextLevel(1));
+  const [currentDay, setCurrentDay] = useState<number>(1);
+  const [collectedDays, setCollectedDays] = useState<number[]>([]);
+  const [ownedPets, setOwnedPets] = useState<Pet[]>([]);
+  const [inventory, setInventory] = useState<PlayerItem[]>([]);
+  const [favorites, setFavorites] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Effect to load state from localStorage on mount
+  useEffect(() => {
+    const loadState = () => {
+      try {
+         // Function to get the initial state from localStorage
+        const getInitialState = <T,>(key: string, defaultValue: T): T => {
+          // Handle new user registration specifically
+          if (localStorage.getItem('isNewUser') === 'true') {
+              switch (key) {
+                  case 'coins': return 0 as T;
+                  case 'gems': return 20 as T;
+                  case 'level': return 1 as T;
+                  case 'xp': return 0 as T;
+                  case 'currentDay': return 1 as T;
+                  case 'collectedDays': return [] as T;
+                  case 'inventory': return [] as T;
+                  case 'favorites': return [] as T;
+                  case 'ownedPets':
+                      const petName = localStorage.getItem('initialPetName') || 'Amigão';
+                      return [createInitialDog(petName)] as T;
+                  default:
+                      const storedValue = localStorage.getItem(key);
+                      return storedValue ? JSON.parse(storedValue) : defaultValue;
+              }
+          }
+
+          const storedValue = localStorage.getItem(key);
+          if (storedValue) {
+              return JSON.parse(storedValue);
+          }
+          return defaultValue;
+        };
+
+        setCoins(getInitialState('coins', 0));
+        setGems(getInitialState('gems', 20));
+        const savedLevel = getInitialState('level', 1);
+        setLevel(savedLevel);
+        setXp(getInitialState('xp', 0));
+        setXpToNextLevel(calculateXpToNextLevel(savedLevel));
+        setCurrentDay(getInitialState('currentDay', 1));
+        setCollectedDays(getInitialState('collectedDays', []));
+        setOwnedPets(getInitialState('ownedPets', []));
+        setInventory(getInitialState('inventory', []));
+        setFavorites(getInitialState('favorites', []));
+
+      } catch (error) {
+        console.error("Error loading state from localStorage", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadState();
+  }, []);
 
   // Effect to save state to localStorage whenever it changes
   useEffect(() => {
+    if (isLoading) return; // Don't save while loading
     try {
         localStorage.setItem('coins', JSON.stringify(coins));
         localStorage.setItem('gems', JSON.stringify(gems));
@@ -129,7 +148,7 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
     } catch(e) {
         console.error("Error saving state to localStorage", e);
     }
-  }, [coins, gems, level, xp, currentDay, collectedDays, ownedPets, inventory, favorites]);
+  }, [coins, gems, level, xp, currentDay, collectedDays, ownedPets, inventory, favorites, isLoading]);
 
 
   const addCoins = (amount: number) => {
@@ -326,7 +345,7 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
 
 
   return (
-    <PlayerContext.Provider value={{ coins, gems, level, xp, xpToNextLevel, currentDay, collectedDays, ownedPets, inventory, favorites, addCoins, addGems, removeGems, addXp, collectReward, buyPet, adoptPet, addItemToInventory, useItem, toggleFavorite }}>
+    <PlayerContext.Provider value={{ coins, gems, level, xp, xpToNextLevel, currentDay, collectedDays, ownedPets, inventory, favorites, isLoading, addCoins, addGems, removeGems, addXp, collectReward, buyPet, adoptPet, addItemToInventory, useItem, toggleFavorite }}>
       {children}
     </PlayerContext.Provider>
   );

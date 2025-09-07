@@ -31,6 +31,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
 import { useRouter } from 'next/navigation';
+import { Skeleton } from '@/components/ui/skeleton';
 
 
 function UserProfile() {
@@ -87,8 +88,46 @@ function UserProfile() {
 }
 
 function MainSidebar() {
-    const { ownedPets, inventory } = usePlayer();
+    const { ownedPets, inventory, isLoading } = usePlayer();
     const router = useRouter();
+
+    if (isLoading) {
+      return (
+        <Sidebar>
+          <SidebarHeader>
+            <div className="flex items-center gap-2 p-2">
+              <Skeleton className="h-8 w-8" />
+              <Skeleton className="h-6 w-32" />
+            </div>
+          </SidebarHeader>
+          <SidebarContent>
+            <SidebarMenu>
+              {Array.from({ length: 12 }).map((_, i) => (
+                 <SidebarMenuItem key={i}>
+                    <SidebarMenuButton>
+                      <Skeleton className="h-5 w-5" />
+                      <Skeleton className="h-4 w-3/4" />
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarContent>
+           <SidebarFooter>
+              <SidebarSeparator />
+              <SidebarMenu>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton asChild tooltip="Voltar para a página inicial">
+                          <Link href="/">
+                              <LogOut />
+                              <span>Sair do Jogo</span>
+                          </Link>                  
+                      </SidebarMenuButton>
+                  </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarFooter>
+        </Sidebar>
+      )
+    }
 
     return (
       <Sidebar>
