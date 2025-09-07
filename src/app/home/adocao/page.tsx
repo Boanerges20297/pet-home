@@ -163,6 +163,7 @@ export default function AdocaoPage() {
                 )}
                 </div>
             </CardContent>
+            {/* Oculta o input de chat quando o formulário é finalizado */}
             {!isFinished && (
                 <ChatInput
                     input={input}
@@ -196,11 +197,14 @@ export default function AdocaoPage() {
                    <Separator />
                   <SummaryItem icon={<Activity />} label="Estilo de Vida" value={formState.estiloDeVida} />
                 </CardContent>
-                <CardFooter>
-                    <Button className='w-full' disabled={!isFinished || petReceived} onClick={handleConfirmAdoption}>
-                        {petReceived ? 'Filhote Recebido!' : 'Confirmar Adoção e Receber Filhote'}
-                    </Button>
-                </CardFooter>
+                {/* O botão aparece e é habilitado quando o formulário é finalizado */}
+                {isFinished && (
+                    <CardFooter>
+                        <Button className='w-full' disabled={petReceived} onClick={handleConfirmAdoption}>
+                            {petReceived ? 'Filhote Recebido!' : 'Confirmar Adoção e Receber Filhote'}
+                        </Button>
+                    </CardFooter>
+                )}
             </Card>
         </div>
       </div>
