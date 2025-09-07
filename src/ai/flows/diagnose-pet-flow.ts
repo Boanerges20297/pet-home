@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -14,7 +15,7 @@ import {z} from 'genkit';
 export const DiagnosePetInputSchema = z.object({
   petName: z.string().describe('The name of the pet.'),
   petBreed: z.string().describe('The breed of the pet.'),
-  petImageUrl: z.string().describe('The URL of the pet\'s image.'),
+  petImageUrl: z.string().describe("The URL of the pet's image."),
 });
 export type DiagnosePetInput = z.infer<typeof DiagnosePetInputSchema>;
 
