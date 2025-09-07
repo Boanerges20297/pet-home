@@ -38,6 +38,9 @@ export default function ExamesPage() {
         setHealthReport(null);
 
         try {
+            // Simulate examination time
+            await new Promise(resolve => setTimeout(resolve, 2500));
+
             const report = await diagnosePet({
                 petName: pet.name,
                 petBreed: pet.breed,
@@ -57,12 +60,6 @@ export default function ExamesPage() {
                 title: 'Erro no Diagnóstico',
                 description: 'Não foi possível contatar o veterinário de IA.',
                 variant: 'destructive',
-            });
-            // Fallback to a simple message if AI fails
-            setHealthReport({
-                isHealthy: true,
-                diagnosis: 'O filhote está super saudável!',
-                recommendation: 'Continue dando muito amor e carinho.'
             });
         } finally {
             setIsExamining(false);
@@ -120,11 +117,11 @@ export default function ExamesPage() {
                             src={selectedPet.imageUrl}
                             alt={selectedPet.name}
                             fill
-                            className={cn("object-contain drop-shadow-2xl", isExamining && "opacity-75")}
+                            className={cn("object-contain drop-shadow-2xl transition-opacity duration-300", isExamining && "opacity-50")}
                         />
                          {isExamining && (
                             <div className="absolute inset-0 z-20 flex items-center justify-center">
-                                <div className="absolute w-full h-1 bg-cyan-400/80 shadow-[0_0_10px_2px_#0ff] animate-[scan_2.5s_ease-in-out_infinite]" />
+                                <div className="absolute w-full h-1 bg-cyan-400/80 shadow-[0_0_10px_2px_#0ff]" style={{ animation: 'scan 2.5s ease-in-out infinite' }} />
                             </div>
                         )}
                     </div>
@@ -208,3 +205,4 @@ export default function ExamesPage() {
     </main>
   );
 }
+
