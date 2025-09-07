@@ -87,7 +87,7 @@ const storeItems = [
 
 type StoreItem = typeof storeItems[0];
 
-export default function LojaPage() {
+export default function PetshopPage() {
   const { toast } = useToast();
   const { coins, gems, addCoins, removeGems, addItemToInventory } = usePlayer();
   const [selectedItem, setSelectedItem] = useState<StoreItem | null>(null);
@@ -158,7 +158,7 @@ export default function LojaPage() {
         <div className="mx-auto max-w-6xl">
           <section className="mb-12 text-center">
             <h1 className="font-headline text-4xl md:text-5xl text-primary mb-4">
-              Loja Exclusiva
+              Petshop Exclusivo
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Acelere sua coleção e dê um trato nos seus filhotes com nossos itens especiais.

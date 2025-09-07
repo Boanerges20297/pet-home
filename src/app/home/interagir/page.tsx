@@ -217,7 +217,7 @@ export default function InteragirPage() {
                     </Button>
                 </div>
             ) : (
-                <p className="text-center text-muted-foreground">Você não tem comidinhas. <Link href="/home/loja" className="text-primary underline">Visite a loja!</Link></p>
+                <p className="text-center text-muted-foreground">Você não tem comidinhas. <Link href="/home/petshop" className="text-primary underline">Visite o Petshop!</Link></p>
             )}
           </CardFooter>
         </Card>

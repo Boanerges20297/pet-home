@@ -3,7 +3,7 @@
 
 import { useState, useEffect, type ReactNode } from 'react';
 import Link from 'next/link';
-import { PawPrint, ShoppingCart, Gift, Home, LogOut, Dog, HandHeart, Settings, BrainCircuit, FolderHeart, Gamepad2, Stethoscope, MessageSquareHeart } from 'lucide-react';
+import { PawPrint, Store, Gift, Home, LogOut, Dog, HandHeart, Settings, BrainCircuit, FolderHeart, Gamepad2, Stethoscope, MessageSquareHeart } from 'lucide-react';
 import {
   SidebarProvider,
   Sidebar,
@@ -128,10 +128,10 @@ function MainSidebar() {
                 </Link>
             </SidebarMenuItem>
             <SidebarMenuItem>
-                 <Link href="/home/loja">
-                    <SidebarMenuButton tooltip="Visitar a loja">
-                        <ShoppingCart />
-                        <span>Loja</span>
+                 <Link href="/home/petshop">
+                    <SidebarMenuButton tooltip="Visitar o Petshop">
+                        <Store />
+                        <span>Petshop</span>
                     </SidebarMenuButton>
                 </Link>
             </SidebarMenuItem>
