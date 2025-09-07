@@ -12,7 +12,7 @@ export interface PlayerItem {
   quantity: number;
 }
 
-type Reward = 
+export type Reward = 
   | { type: 'coins'; amount: number }
   | { type: 'gems'; amount: number }
   | { type: 'item'; item: Omit<PlayerItem, 'quantity'> & { quantity: 1 } };

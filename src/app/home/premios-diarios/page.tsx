@@ -6,13 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/componen
 import { Button } from '@/components/ui/button';
 import { Coins, Gift, CheckCircle2, Gem, Bone, Beef, Apple, Utensils } from 'lucide-react';
 import { usePlayer } from '@/context/PlayerContext';
-import type { PlayerItem } from '@/context/PlayerContext';
-
-
-type Reward = 
-  | { type: 'coins'; amount: number }
-  | { type: 'gems'; amount: number }
-  | { type: 'item'; item: Omit<PlayerItem, 'quantity'> & { quantity: 1 } };
+import type { PlayerItem, Reward } from '@/context/PlayerContext';
 
 
 const storeItemsForRewards = [
