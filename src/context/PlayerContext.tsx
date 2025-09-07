@@ -247,12 +247,19 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
         addXp(xpAmount);
         toast({ title: `Você usou ${item.name}!`, description: `Seu filhote ganhou ${xpAmount} XP.` });
     } else if (itemId.startsWith('potion')) {
-        if (itemId.includes('xp_boost')) {
-            addXp(200);
-            toast({ title: 'Magia!', description: 'Você usou a Poção de XP e ganhou 200 XP!' });
-        } else if (itemId.includes('coin_elixir')) {
-            addCoins(1000);
-            toast({ title: 'Fortuna!', description: 'Você usou o Elixir da Riqueza e ganhou 1000 moedas!' });
+        const parts = itemId.split('_'); // e.g., ['potion', 'xp', '500']
+        if (parts.length === 3) {
+            const type = parts[1]; // 'xp' or 'coin'
+            const amount = parseInt(parts[2], 10);
+            if (!isNaN(amount)) {
+                if (type === 'xp') {
+                    addXp(amount);
+                    toast({ title: 'Magia!', description: `Você usou ${item.name} e ganhou ${amount} XP!` });
+                } else if (type === 'coin') {
+                    addCoins(amount);
+                    toast({ title: 'Fortuna!', description: `Você usou ${item.name} e ganhou ${amount} moedas!` });
+                }
+            }
         }
     }
     

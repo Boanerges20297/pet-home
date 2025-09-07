@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { ArrowLeft, Hand, ToyBrick, Utensils, GlassWater, Beef, Bone, Apple, FlaskConical, TestTube2 } from 'lucide-react';
+import { ArrowLeft, Hand, ToyBrick, Utensils, GlassWater, Beef, Bone, Apple, FlaskConical, TestTube2, Droplets, Beaker, Bot, Wand2, Sparkles, Star, Atom, CircleDashed, Dna, Eye } from 'lucide-react';
 import { usePlayer } from '@/context/PlayerContext';
 import {
   Select,
@@ -103,8 +103,19 @@ export default function InteragirPage() {
         if (itemId.includes('food_premium')) return <Beef className="h-5 w-5" />;
         if (itemId.includes('food_biscuit')) return <Bone className="h-5 w-5" />;
         if (itemId.includes('food_fruits')) return <Apple className="h-5 w-5" />;
-        if (itemId.includes('potion_xp')) return <FlaskConical className="h-5 w-5" />;
-        if (itemId.includes('potion_coin')) return <TestTube2 className="h-5 w-5" />;
+        if (itemId.includes('potion_coin_10000')) return <CircleDashed className="h-5 w-5" />;
+        if (itemId.includes('potion_coin_1000')) return <Beaker className="h-5 w-5" />;
+        if (itemId.includes('potion_coin_100')) return <TestTube2 className="h-5 w-5" />;
+        if (itemId.includes('potion_coin')) return <Wand2 className="h-5 w-5" />;
+        if (itemId.includes('potion_xp_5000')) return <Sparkles className="h-5 w-5" />;
+        if (itemId.includes('potion_xp_4000')) return <Atom className="h-5 w-5" />;
+        if (itemId.includes('potion_xp_2500')) return <Atom className="h-5 w-5" />;
+        if (itemId.includes('potion_xp_1000')) return <Sparkles className="h-5 w-5" />;
+        if (itemId.includes('potion_xp_750')) return <Eye className="h-5 w-5" />;
+        if (itemId.includes('potion_xp_500')) return <Bot className="h-5 w-5" />;
+        if (itemId.includes('potion_xp_350')) return <Dna className="h-5 w-5" />;
+        if (itemId.includes('potion_xp_200')) return <FlaskConical className="h-5 w-5" />;
+        if (itemId.includes('potion_xp')) return <Droplets className="h-5 w-5" />;
         return <Utensils className="h-5 w-5" />;
     };
 
