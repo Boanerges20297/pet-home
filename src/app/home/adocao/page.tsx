@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useChat } from '@/hooks/use-chat';
 import {
   Card,
@@ -14,10 +14,12 @@ import {
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Send, CheckCircle, User, Mail, PawPrint, Home, Activity } from 'lucide-react';
+import { Send, CheckCircle, User, Mail, PawPrint, Home, Activity, PartyPopper } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { adoptionFormAssistant } from '@/ai/flows/adoption-form-assistant';
 import { Separator } from '@/components/ui/separator';
+import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import Link from 'next/link';
 
 function ChatMessage({
   message,
@@ -88,6 +90,8 @@ export default function AdocaoPage() {
     useChat({
       api: adoptionFormAssistant,
     });
+    
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
 
   useEffect(() => {
     // Iniciar a conversa quando o componente for montado
@@ -104,6 +108,7 @@ export default function AdocaoPage() {
   }, []);
 
   return (
+    <>
     <main className="flex-1 overflow-y-auto p-4 md:p-8">
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2">
@@ -171,7 +176,7 @@ export default function AdocaoPage() {
                   <SummaryItem icon={<Activity />} label="Estilo de Vida" value={formState.estiloDeVida} />
                 </CardContent>
                 <CardFooter>
-                    <Button className='w-full' disabled={!isFinished}>
+                    <Button className='w-full' disabled={!isFinished} onClick={() => setIsConfirmationOpen(true)}>
                         Confirmar Adoção
                     </Button>
                 </CardFooter>
@@ -179,5 +184,27 @@ export default function AdocaoPage() {
         </div>
       </div>
     </main>
+    <AlertDialog open={isConfirmationOpen} onOpenChange={setIsConfirmationOpen}>
+        <AlertDialogContent>
+            <AlertDialogHeader>
+                <AlertDialogTitle className="flex items-center gap-2">
+                    <PartyPopper className="h-6 w-6 text-primary" />
+                    Adoção Confirmada!
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                    Parabéns! Você tem um novo amigo esperando por você. O que gostaria de fazer agora?
+                </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+                <AlertDialogAction asChild>
+                    <Link href="/home/minha-colecao">
+                        Ver meus filhotes
+                    </Link>
+                </AlertDialogAction>
+            </AlertDialogFooter>
+        </AlertDialogContent>
+    </AlertDialog>
+
+    </>
   );
 }
