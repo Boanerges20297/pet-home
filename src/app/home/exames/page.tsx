@@ -190,6 +190,16 @@ export default function ExamesPage() {
                         </div>
                     </div>
                 </div>
+
+                <div className="mt-2 flex justify-center gap-4 text-sm font-semibold">
+                    <span className={cn("px-3 py-1 rounded-full", healthReport.isHealthy ? "bg-green-500 text-white" : "bg-muted text-muted-foreground")}>
+                        Bem
+                    </span>
+                    <span className={cn("px-3 py-1 rounded-full", !healthReport.isHealthy ? "bg-yellow-500 text-white" : "bg-muted text-muted-foreground")}>
+                        Doente
+                    </span>
+                </div>
+
               </CardFooter>
             </>
           )}
