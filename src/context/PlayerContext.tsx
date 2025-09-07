@@ -248,9 +248,9 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
         toast({ title: `Você usou ${item.name}!`, description: `Seu filhote ganhou ${xpAmount} XP.` });
     } else if (itemId.startsWith('potion')) {
         const parts = itemId.split('_'); // e.g., ['potion', 'xp', '500']
-        if (parts.length === 3) {
+        if (parts.length >= 3) {
             const type = parts[1]; // 'xp' or 'coin'
-            const amount = parseInt(parts[2], 10);
+            const amount = parseInt(parts.slice(2).join('_'), 10);
             if (!isNaN(amount)) {
                 if (type === 'xp') {
                     addXp(amount);
@@ -263,7 +263,9 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
         } else if (itemId === 'potion_stork') {
             if (!selectedPetId) {
                 toast({ title: 'Selecione um pet!', description: 'Você precisa selecionar um pet para usar a Poção da Cegonha.', variant: 'destructive' });
-                return false; // Return false because item was not used
+                // Return item to inventory since it wasn't used
+                addItemToInventory(itemId, item.name, 1);
+                return false; 
             }
             const parentPet = ownedPets.find(p => p.id === selectedPetId);
             if (parentPet) {
@@ -300,5 +302,3 @@ export const usePlayer = () => {
   }
   return context;
 };
-
-    
