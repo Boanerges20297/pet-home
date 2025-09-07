@@ -4,6 +4,7 @@
 import { Pet } from '@/components/PetCard';
 import React, { createContext, useContext, useState, ReactNode, useCallback, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { allPets } from '@/lib/allPets';
 
 export interface PlayerItem {
   id: string;
@@ -286,9 +287,11 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
             if (parentPet) {
                 const numberOfPuppies = Math.floor(Math.random() * 3) + 1; // 1 to 3 puppies
                 for (let i = 0; i < numberOfPuppies; i++) {
+                    const puppyTemplate = allPets[Math.floor(Math.random() * allPets.length)];
                     const newPet: Pet = {
-                        ...createInitialDog(`Mini ${parentPet.name} ${i + 1}`),
+                        ...puppyTemplate,
                         id: `mini_${parentPet.id}_${Date.now()}_${i}`,
+                        name: `Filhote de ${parentPet.name} ${i + 1}`,
                         age: 'Nível 1',
                         price: 0,
                     };

@@ -117,11 +117,15 @@ export default function AdocaoPage() {
 
     // Pick a pet that the user doesn't own yet
     const availablePets = allPets.filter(p => !ownedPets.some(op => op.id === p.id));
-    const petToAdopt = availablePets[Math.floor(Math.random() * availablePets.length)] || allPets[0];
+    const petToAdopt = availablePets.length > 0 
+      ? availablePets[Math.floor(Math.random() * availablePets.length)] 
+      : allPets[Math.floor(Math.random() * allPets.length)]; // Fallback to any pet if all are owned
     
-    adoptPet(petToAdopt);
-    setPetReceived(true);
-    setIsConfirmationOpen(true);
+    if (petToAdopt) {
+        adoptPet(petToAdopt);
+        setPetReceived(true);
+        setIsConfirmationOpen(true);
+    }
   }
 
   return (
