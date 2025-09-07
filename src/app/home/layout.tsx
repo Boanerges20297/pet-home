@@ -3,7 +3,7 @@
 
 import { useState, useEffect, type ReactNode } from 'react';
 import Link from 'next/link';
-import { PawPrint, Store, Gift, Home, LogOut, Dog, HandHeart, Settings, BrainCircuit, FolderHeart, Gamepad2, Stethoscope, MessageSquareHeart } from 'lucide-react';
+import { PawPrint, Store, Gift, Home, LogOut, Dog, HandHeart, Settings, BrainCircuit, FolderHeart, Gamepad2, Stethoscope, MessageSquareHeart, LifeBuoy } from 'lucide-react';
 import {
   SidebarProvider,
   Sidebar,
@@ -118,6 +118,14 @@ function MainSidebar() {
                   {ownedPets.length > 0 && <Badge className="ml-auto flex h-6 w-6 items-center justify-center p-0">{ownedPets.length}</Badge>}
                 </>
               </SidebarMenuButton>
+            </SidebarMenuItem>
+             <SidebarMenuItem>
+                <Link href="/home/pet-rescue">
+                    <SidebarMenuButton tooltip="Resgate um filhote">
+                        <LifeBuoy />
+                        <span>Pet Rescue</span>
+                    </SidebarMenuButton>
+                </Link>
             </SidebarMenuItem>
             <SidebarMenuItem>
                 <Link href="/home/quiz">
