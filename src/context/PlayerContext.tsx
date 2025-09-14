@@ -51,7 +51,7 @@ const createInitialDog = (petName: string): Pet => ({
     name: petName,
     age: 'Nível 1',
     breed: 'Vira-lata Caramelo',
-    imageUrl: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxmaWxob3RlfGVufDB8fHx8MTc1NjkwMTEwNnww&ixlib.rb-4.1.0&q=80&w=1080',
+    imageUrl: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxmaWxob3RlfGVufDB8fHx8MTc1NjkwMTEwNnww&ixlib=rb-4.1.0&q=80&w=1080',
     aiHint: 'caramel dog',
     price: 0,
 });
@@ -187,6 +187,19 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
       return newXp;
     });
   }, [level, xpToNextLevel, toast]);
+  
+  const addItemToInventory = useCallback((itemId: string, itemName: string, quantity: number) => {
+    setInventory(prevInventory => {
+      const existingItem = prevInventory.find(item => item.id === itemId);
+      if (existingItem) {
+        return prevInventory.map(item =>
+          item.id === itemId ? { ...item, quantity: item.quantity + quantity } : item
+        );
+      } else {
+        return [...prevInventory, { id: itemId, name: itemName, quantity }];
+      }
+    });
+  }, []);
 
   const collectReward = useCallback((day: number, reward: Reward) => {
     if (collectedDays.includes(day)) {
@@ -256,19 +269,6 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
     toast({
       title: 'Novo Amigo na Coleção!',
       description: `Parabéns! Você adotou ${pet.name}.`,
-    });
-  };
-
-  const addItemToInventory = (itemId: string, itemName: string, quantity: number) => {
-    setInventory(prevInventory => {
-      const existingItem = prevInventory.find(item => item.id === itemId);
-      if (existingItem) {
-        return prevInventory.map(item =>
-          item.id === itemId ? { ...item, quantity: item.quantity + quantity } : item
-        );
-      } else {
-        return [...prevInventory, { id: itemId, name: itemName, quantity }];
-      }
     });
   };
 
