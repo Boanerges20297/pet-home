@@ -120,7 +120,7 @@ export default function DailyRewardsPage() {
                       disabled={!canCollect} 
                       className="w-full bg-accent text-accent-foreground hover:bg-accent/90 disabled:bg-muted disabled:text-muted-foreground"
                     >
-                      {collected ? 'Coletado' : 'Coletar'}
+                      {collected ? 'Coletado' : `Coletar (Dia ${item.day})`}
                     </Button>
                   </CardFooter>
                 </Card>
