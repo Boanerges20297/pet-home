@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Award, Search } from 'lucide-react';
+import { ArrowLeft, Award, Search, RotateCw } from 'lucide-react';
 import Link from 'next/link';
 import { usePlayer } from '@/context/PlayerContext';
 import { useToast } from '@/hooks/use-toast';
@@ -96,7 +96,7 @@ export default function ParkAdventurePage() {
              {allFound && (
                  <div className='text-center flex flex-col items-center gap-2'>
                     <p className="text-2xl font-bold text-yellow-500 flex items-center gap-2"><Award /> Você encontrou tudo!</p>
-                     <Button onClick={() => setHiddenItems(initialItems)}><RotateCw className="mr-2" />Jogar Novamente</Button>
+                     <Button onClick={() => setHiddenItems(initialItems.map(i => ({...i, found: false})))}><RotateCw className="mr-2" />Jogar Novamente</Button>
                  </div>
              )}
            </CardFooter>
