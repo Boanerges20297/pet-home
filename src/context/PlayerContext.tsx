@@ -189,18 +189,19 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
   }, [level, xpToNextLevel, toast]);
 
   const collectReward = useCallback((day: number, reward: Reward) => {
-    if (day !== currentDay) {
-        toast({
-            title: 'Ops!',
-            description: day < currentDay ? 'Você já coletou este prêmio.' : 'Ainda não é hora de coletar este prêmio.',
-            variant: 'destructive',
-        });
-        return;
-    }
     if (collectedDays.includes(day)) {
         toast({
             title: 'Prêmio já coletado',
             description: 'Você já coletou a recompensa de hoje.',
+            variant: 'destructive',
+        });
+        return;
+    }
+
+    if (day !== currentDay) {
+        toast({
+            title: 'Ops!',
+            description: 'Você só pode coletar o prêmio do dia atual.',
             variant: 'destructive',
         });
         return;
@@ -226,7 +227,7 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
         title: `Recompensa do Dia ${day} Coletada!`,
         description: toastDescription,
     });
-  }, [currentDay, collectedDays, toast, addXp]);
+  }, [currentDay, collectedDays, toast, addXp, addItemToInventory]);
 
 
   const buyPet = (pet: Pet) => {

@@ -49,23 +49,20 @@ export default function DailyRewardsPage() {
   // A lista de recompensas é gerada uma vez e memorizada
   const dailyRewards = useMemo(() => generateRewards(90), []);
 
-  // Verifica se o dia atual já foi coletado
-  const isCollected = (day: number) => collectedDays.includes(day);
-
-  // O ícone é determinado com base no tipo de recompensa
   const getRewardIcon = (reward: Reward) => {
     if (reward.type === 'coins') return <Coins className="h-5 w-5 text-yellow-500" />;
     if (reward.type === 'gems') return <Gem className="h-5 w-5 text-blue-500" />;
     if (reward.type === 'item') {
-      if (reward.item.id.includes('biscuit')) return <Bone className="h-5 w-5 text-yellow-600" />;
-      if (reward.item.id.includes('premium')) return <Beef className="h-5 w-5 text-red-600" />;
-      if (reward.item.id.includes('fruits')) return <Apple className="h-5 w-5 text-green-600" />;
+      const itemInfo = storeItemsForRewards.find(i => i.id === reward.item.id);
+      if (itemInfo) {
+        const Icon = itemInfo.icon;
+        return <Icon className="h-5 w-5" />;
+      }
       return <Utensils className="h-5 w-5 text-muted-foreground" />;
     }
     return <Gift className="h-5 w-5" />;
   };
 
-  // O texto da recompensa também depende do tipo
   const getRewardText = (reward: Reward) => {
       if (reward.type === 'item') {
           return `${reward.item.name}`;
@@ -88,23 +85,22 @@ export default function DailyRewardsPage() {
         <section>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {dailyRewards.map((item) => {
-              const collected = isCollected(item.day);
-              // O botão de coleta só está habilitado para o dia atual E se ainda não foi coletado
-              const canCollect = item.day === currentDay && !collected;
+              const isCollected = collectedDays.includes(item.day);
+              const canCollect = item.day === currentDay && !isCollected;
 
               return (
                 <Card
                   key={item.day}
                   className={`flex flex-col items-center justify-center p-4 text-center transition-all 
                     ${item.isSpecial ? 'border-yellow-400' : ''}
-                    ${collected ? 'bg-muted/50' : 'bg-card'}
+                    ${isCollected ? 'bg-muted/50' : 'bg-card'}
                     ${canCollect ? 'border-primary ring-2 ring-primary' : ''}`}
                 >
                   <CardHeader className="p-2">
                     <CardTitle className="font-headline text-lg text-foreground">Dia {item.day}</CardTitle>
                   </CardHeader>
                   <CardContent className="p-2 flex-grow flex flex-col items-center justify-center">
-                    {collected ? (
+                    {isCollected ? (
                       <CheckCircle2 className="h-10 w-10 mb-2 text-green-500" />
                     ) : (
                       <Gift className="h-10 w-10 mb-2 text-primary" />
@@ -120,7 +116,7 @@ export default function DailyRewardsPage() {
                       disabled={!canCollect} 
                       className="w-full bg-accent text-accent-foreground hover:bg-accent/90 disabled:bg-muted disabled:text-muted-foreground"
                     >
-                      {collected ? 'Coletado' : `Coletar (Dia ${item.day})`}
+                      {isCollected ? 'Coletado' : `Coletar (Dia ${item.day})`}
                     </Button>
                   </CardFooter>
                 </Card>
