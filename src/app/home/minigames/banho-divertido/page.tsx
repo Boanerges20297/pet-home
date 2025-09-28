@@ -10,19 +10,20 @@ import { usePlayer } from '@/context/PlayerContext';
 import { useToast } from '@/hooks/use-toast';
 import { Progress } from '@/components/ui/progress';
 import Image from 'next/image';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const GAME_DURATION = 15; // seconds
 const PROGRESS_PER_CLICK = 5;
 
 export default function FunBathPage() {
-  const { addXp, addCoins, ownedPets } = usePlayer();
+  const { addXp, addCoins, ownedPets, isLoading } = usePlayer();
   const { toast } = useToast();
 
   const [gameState, setGameState] = useState<'idle' | 'playing' | 'finished'>('idle');
   const [timeLeft, setTimeLeft] = useState(GAME_DURATION);
   const [progress, setProgress] = useState(0);
 
-  const pet = ownedPets[0] || { id: 'default', name: 'Amiguinho', imageUrl: 'https://images.unsplash.com/photo-1556872513-f69904c18596?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxkb2clMjBiYXRofGVufDB8fHx8MTc1ODIyMjAxNHww&ixlib=rb-4.1.0&q=80&w=1080' };
+  const pet = ownedPets.length > 0 ? ownedPets[0] : { id: 'default', name: 'Amiguinho', imageUrl: 'https://images.unsplash.com/photo-1556872513-f69904c18596?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxkb2clMjBiYXRofGVufDB8fHx8MTc1ODIyMjAxNHww&ixlib=rb-4.1.0&q=80&w=1080' };
 
   const timerRef = useRef<NodeJS.Timeout>();
 
@@ -76,6 +77,16 @@ export default function FunBathPage() {
           })
       }
   }, [timeLeft, gameState, toast]);
+
+  if (isLoading) {
+    return (
+      <main className="flex-1 overflow-y-auto p-4 md:p-8 flex items-center justify-center">
+        <div className="mx-auto max-w-2xl w-full">
+          <Skeleton className="h-[600px] w-full" />
+        </div>
+      </main>
+    )
+  }
 
 
   return (
