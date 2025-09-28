@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Shirt, Glasses, CircleUser, Save } from 'lucide-react';
@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Label } from '@/components/ui/label';
 
 const accessories = {
   hats: [
@@ -153,3 +154,4 @@ export default function DressThePetPage() {
 // public/accessories/glasses2.png
 // public/accessories/glasses3.png
 // These are simple PNGs with transparent backgrounds.
+
